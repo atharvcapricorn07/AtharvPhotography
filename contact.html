@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Atharv Photography 07</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Contact Page Specific Styles */
+    .contact-container {
+      max-width: 700px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      color: #e0e0e0;
+      text-align: center;
+    }
+
+    .contact-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 1s;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.8rem 1rem;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #fff;
+    }
+
+    .contact-form button {
+      padding: 0.8rem 1.5rem;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .contact-form button:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .social-links {
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+
+    .social-links a {
+      color: #bbb;
+      margin: 0 1rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 500px) {
+      .social-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">atharvphotography07</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)); height: 25vh; display: flex; align-items: center; justify-content: center;">
+    <h1 style="color: #fff; font-size: 3rem; letter-spacing: 2px;">Contact Me</h1>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="contact-container">
+    <h1>Get in Touch</h1>
+    <form class="contact-form" action="https://formspree.io/f/mjkoqoka" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="_replyto" placeholder="Your Email" required>
+      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+
+    <!-- Instagram Links -->
+    <div class="social-links">
+      <p>Connect with me on Instagram:</p>
+      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">@atharvphotography07 (Photography)</a>
+      <a href="https://www.instagram.com/atharvphotoshoots/" target="_blank">@atharvphotoshoots (People Photography)</a>
+    </div>
+    <!-- Optional Contact Number -->
+<div class="contact-number" style="margin-top: 1.5rem; color: #bbb; font-size: 1rem;">
+  <p>Phone: +1 (206) 643-7679</p>
+</div>
+  </section>
+
+
+  <script>
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if(target){
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atharv Photography 07</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Adjust slideshow speed and appearance */
+    .slideshow .slide-track {
+      animation: scroll 60s linear infinite; /* slower, doubled duration */
+      opacity: 1; /* greyed out more */
+    }
+
+    .slideshow.bottom-row .slide-track {
+      animation-direction: reverse;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Remove any user scroll effect on the slideshow */
+    .slideshow img {
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">atharvphotography07</div>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section with dynamic 2-row slideshow -->
+  <section class="hero">
+    <div class="slideshow top-row">
+      <div class="slide-track"></div>
+    </div>
+
+    <div class="slideshow bottom-row">
+      <div class="slide-track"></div>
+    </div>
+
+    <div class="hero-content">
+      <h1>atharvphotography07</h1>
+      <p>Capturing moments, one frame at a time</p>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

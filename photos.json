@@ -1,0 +1,48 @@
+{
+  "cars": [
+    "car1.png",
+    "car10.png",
+    "car11.png",
+    "car2.png",
+    "car3.png",
+    "car4.png",
+    "car5.png",
+    "car6.png",
+    "car7.png",
+    "car8.png",
+    "car9.png"
+  ],
+  "landscapes": [
+    "landscape1.png",
+    "landscape2.png",
+    "landscape3.png",
+    "landscape4.png",
+    "landscape5.png",
+    "landscape6.png",
+    "landscape7.png",
+    "landscape8.png"
+  ],
+  "buildings": [
+    "building1.png",
+    "building2.png",
+    "building3.png",
+    "building4.png",
+    "building5.png"
+  ],
+  "animals": [
+    "animal1.png",
+    "animal2.png",
+    "animal3.png",
+    "animal4.png"
+  ],
+  "misc": [
+    "misc1.png",
+    "misc2.png",
+    "misc3.png",
+    "misc4.png",
+    "misc5.png",
+    "misc6.png",
+    "misc7.png",
+    "misc8.png"
+  ]
+}

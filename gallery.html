@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Atharv Photography 07</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">atharvphotography07</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html" class="active">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Filter Buttons -->
+  <section class="filters">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="cars">Cars</button>
+    <button class="filter-btn" data-category="landscapes">Landscapes</button>
+    <button class="filter-btn" data-category="buildings">Buildings</button>
+    <button class="filter-btn" data-category="animals">Animals</button>
+    <button class="filter-btn" data-category="misc">Misc</button>
+  </section>
+
+  <!-- Gallery Grid -->
+  <section class="gallery-grid" id="gallery"></section>
+
+  <!-- View More Button -->
+  <div class="view-more-container" style="text-align:center; padding: 1rem;">
+    <button id="view-more-btn" class="filter-btn">View More</button>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-img" id="lightbox-img" src="">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

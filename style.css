@@ -1,0 +1,365 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0e0e0e;
+  color: #e0e0e0;
+  font-family: "Georgia", "Times New Roman", serif;
+  line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 3rem;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+
+.logo {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.navbar a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: #fff;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+              url("photos/landscapes/landscape1.jpg") no-repeat center/cover;
+}
+
+.hero-content {
+  max-width: 700px;
+  padding: 2rem;
+  animation: fadeIn 2s ease;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #aaa;
+}
+
+.cta-btn {
+  padding: 0.8rem 1.5rem;
+  border: 1px solid #fff;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Filter Buttons */
+.filters {
+  text-align: center;
+  padding: 2rem;
+  background: #111;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid #555;
+  color: #bbb;
+  margin: 0.3rem;
+  padding: 0.6rem 1.2rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #fff;
+  color: #000;
+}
+
+/* Masonry-style Gallery */
+.gallery-grid {
+  column-count: 3; /* Number of columns */
+  column-gap: 15px; /* Space between columns */
+  padding: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .gallery-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    column-count: 1;
+  }
+}
+
+.gallery-grid img {
+  width: 100%;
+  display: block;
+  margin-bottom: 15px;
+  border-radius: 4px; /* optional subtle rounding */
+  transition: transform 0.3s ease, filter 0.3s ease;
+  object-fit: cover;
+  cursor: pointer;
+  filter: grayscale(30%);
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.02);
+  filter: grayscale(0%);
+}
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.95);
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-img {
+  display: block;
+  max-width: 90%;
+  max-height: 80vh;
+  border: 3px solid #fff;
+  margin: auto;
+}
+
+.lightbox .close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+#view-more-btn {
+  background: transparent;
+  border: 1px solid #555;
+  color: #bbb;
+  padding: 0.6rem 1.2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#view-more-btn:hover {
+  background: #fff;
+  color: #000;
+}
+/* Flexbox Masonry Gallery (keeps order) */
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 2rem;
+  justify-content: center;
+}
+
+.gallery-grid img {
+  width: calc(33.333% - 10px); /* three images per row with gap */
+  margin-bottom: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+  filter: grayscale(30%);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.02);
+  filter: grayscale(0%);
+}
+
+@media (max-width: 1200px) {
+  .gallery-grid img {
+    width: calc(50% - 10px); /* 2 per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid img {
+    width: 100%; /* 1 per row */
+  }
+}
+/* Fade-in animation for newly revealed images */
+.fade-in {
+  opacity: 0;
+  animation: fadeInImages 0.6s forwards;
+}
+
+@keyframes fadeInImages {
+  to {
+    opacity: 1;
+  }
+}
+.social-links {
+  margin-top: 2rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.social-links a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  word-break: break-word; /* allow long text to wrap nicely */
+}
+
+.social-links a:hover {
+  color: #fff;
+}
+.contact-number {
+  text-align: center;
+  font-size: 1rem;
+  color: #bbb;
+  margin-top: 1rem;
+}
+.contact-container {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 0 2rem 6rem 2rem; /* added 4rem padding at bottom */
+  color: #e0e0e0;
+  text-align: center;
+}
+/* ---------------- Hero 2-Row Slideshow ---------------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #0e0e0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideshow {
+  position: absolute;
+  width: 200%;
+  height: 50%;
+  display: flex;
+  overflow: hidden;
+  opacity: 0.15;
+  perspective: 1000px;
+}
+
+.top-row {
+  top: 0;
+  transform: rotateX(2deg);
+}
+
+.bottom-row {
+  top: 50%;
+  transform: rotateX(5deg);
+  opacity: 0.12;
+}
+
+.slide-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 30s linear infinite;
+}
+
+.bottom-row .slide-track {
+  animation: scroll-right 35s linear infinite;
+}
+
+.slide-track img {
+  height: 100%;
+  margin-right: 1rem;
+  object-fit: cover;
+  border-radius: 5px;
+  transform: translateZ(-50px);
+}
+
+/* Animations */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Hero Content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  animation: fadeIn 2s ease;
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  letter-spacing: 2px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-top: 1rem;
+}
