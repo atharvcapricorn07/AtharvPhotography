@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Awards | Atharv Photography 07</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Hero Section */
+    .hero-awards {
+      text-align: center;
+      padding: 4rem 1rem 2rem 1rem;
+      background: #111;
+    }
+
+    .hero-awards h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .hero-awards p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 0 1rem 2rem 1rem;
+      justify-content: center;
+    }
+
+    .gallery-grid img {
+      width: calc(33.333% - 10px);
+      border-radius: 6px;
+      cursor: pointer;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.03);
+      filter: grayscale(0%);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+    }
+
+    #view-more-btn {
+      background: transparent;
+      border: 1px solid #555;
+      color: #bbb;
+      padding: 0.6rem 1.2rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin: 1rem auto 3rem auto;
+    }
+
+    #view-more-btn:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeInImages 0.6s forwards;
+    }
+
+    @keyframes fadeInImages {
+      to { opacity: 1; }
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox-img {
+      display: block;
+      max-width: 90%;
+      max-height: 80vh;
+      border: 3px solid #fff;
+      margin: auto;
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      font-size: 40px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1200px) { .gallery-grid img { width: calc(50% - 10px); } }
+    @media (max-width: 768px) { .gallery-grid img { width: 100%; } }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">atharvphotography07</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="awards.html" class="active">Awards</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero / Intro -->
+  <section class="hero-awards">
+    <h1>Awards & Recognitions</h1>
+    <p>Honors and accolades I’ve received for my photography work.</p>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery-grid" id="gallery"></section>
+
+  <!-- View More -->
+  <div style="text-align:center;">
+    <button id="view-more-btn">View More</button>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-img" id="lightbox-img" src="">
+  </div>
+
+  <script>
+    // Dynamic awards gallery (same logic as gallery.js)
+    async function loadAwards() {
+      const gallery = document.getElementById("gallery");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+      const closeBtn = document.querySelector(".lightbox .close");
+      const viewMoreBtn = document.getElementById("view-more-btn");
+
+      try {
+        const response = await fetch("photos.json");
+        const data = await response.json();
+
+        const awardsList = data.awards || []; // only awards
+        const allImages = [];
+
+        awardsList.forEach(filename => {
+          const img = document.createElement("img");
+          img.src = `photos/awards/${filename}`;
+          img.style.display = "none";
+
+          img.addEventListener("click", () => {
+            lightbox.style.display = "flex";
+            lightboxImg.src = img.src;
+          });
+
+          gallery.appendChild(img);
+          allImages.push(img);
+        });
+
+        const INITIAL_COUNT = 6;
+        allImages.slice(0, INITIAL_COUNT).forEach(img => img.style.display = "block");
+        if (allImages.length <= INITIAL_COUNT) viewMoreBtn.style.display = "none";
+
+        viewMoreBtn.addEventListener("click", () => {
+          allImages.forEach(img => {
+            if (img.style.display === "none") {
+              img.style.display = "block";
+              img.classList.add("fade-in");
+            }
+          });
+          viewMoreBtn.style.display = "none";
+        });
+
+        closeBtn.addEventListener("click", () => {
+          lightbox.style.display = "none";
+          lightboxImg.src = "";
+        });
+
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox) {
+            lightbox.style.display = "none";
+            lightboxImg.src = "";
+          }
+        });
+
+      } catch(err) {
+        console.error("Error loading awards:", err);
+      }
+    }
+
+    loadAwards();
+  </script>
+</body>
+</html>

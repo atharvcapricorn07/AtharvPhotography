@@ -5,7 +5,7 @@ const path = require("path");
 const baseDir = path.join(__dirname, "photos");
 const outputFile = path.join(__dirname, "photos.json");
 
-const categories = ["cars", "landscapes", "buildings", "animals", "misc"];
+const categories = ["cars", "landscapes", "buildings", "animals", "misc", "awards"];
 
 let data = {};
 
