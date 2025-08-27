@@ -19,6 +19,7 @@ function shuffleArray(array) {
 }
 
 // -------------------- Load Gallery with View More --------------------
+// -------------------- Load Gallery with View More --------------------
 async function loadGallery() {
   const gallery = document.getElementById("gallery");
   if (!gallery) return;
@@ -31,6 +32,9 @@ async function loadGallery() {
 
     // Create image elements
     for (let category in data) {
+      // ✅ Skip the awards folder
+      if (category === "awards") continue;
+
       data[category].forEach(filename => {
         let img = document.createElement("img");
         img.src = `photos/${category}/${filename}`;
@@ -77,6 +81,7 @@ async function loadGallery() {
     console.error("Error loading gallery:", err);
   }
 }
+
 loadGallery();
 
 // -------------------- Filters --------------------
