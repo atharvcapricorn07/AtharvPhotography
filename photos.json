@@ -57,5 +57,10 @@
   "awards": [
     "award1.jpg",
     "award2.jpg"
+  ],
+  "shoots": [
+    "shoot_1.jpg",
+    "shoot_2.jpg",
+    "shoot_3.jpg"
   ]
 }

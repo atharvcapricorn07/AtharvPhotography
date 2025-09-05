@@ -5,7 +5,8 @@ const path = require("path");
 const baseDir = path.join(__dirname, "photos");
 const outputFile = path.join(__dirname, "photos.json");
 
-const categories = ["cars", "landscapes", "buildings", "animals", "misc", "awards"];
+// Added "shoots" category
+const categories = ["cars", "landscapes", "buildings", "animals", "misc", "awards", "shoots"];
 
 let data = {};
 
@@ -14,7 +15,7 @@ categories.forEach(category => {
   if (fs.existsSync(folder)) {
     const files = fs.readdirSync(folder)
       .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file))
-      .sort(); // keep them in order
+      .sort(); // keeps them in order
     data[category] = files;
   } else {
     data[category] = [];
