@@ -21,6 +21,7 @@
     "landscape10.jpg",
     "landscape11.jpg",
     "landscape12.jpg",
+    "landscape13.jpg",
     "landscape2.png",
     "landscape3.png",
     "landscape4.png",
@@ -72,7 +73,9 @@
   "awards": [
     "award1.jpg",
     "award2.jpg",
-    "award3.png"
+    "award3.png",
+    "award4.png",
+    "award5.png"
   ],
   "shoots": [
     "shoot_1.jpg",
