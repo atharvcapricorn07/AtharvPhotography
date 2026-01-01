@@ -1,24 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Atharv Photography 07</title>
-  <link rel="stylesheet" href="style.css">
+
   <style>
-    /* Contact Page Specific Styles */
+    /* -------------------- Fonts -------------------- */
+    @font-face {
+      font-family: 'AlikeMisely';
+      src: url('Alika Misely.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'AlusintaBrenob';
+      src: url('Alusinta Brenob.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* -------------------- Global & Background -------------------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html, body { 
+      height: 100%; 
+      color: white; 
+      font-family: Georgia, "Times New Roman", serif;
+      background: url('plain-green-paper-textured.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Depth Overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    a { text-decoration: none; color: inherit; }
+
+    /* -------------------- Navbar (EXACT MATCH) -------------------- */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .navbar-left { display: flex; align-items: center; gap: 2.5rem; }
+
+    .logo {
+      font-family: 'AlusintaBrenob', serif;
+      font-size: 2.2rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    nav { display: flex; gap: 1.6rem; }
+    
+    nav a {
+      font-family: 'AlikeMisely', sans-serif;
+      font-size: 1.05rem;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+      color: white;
+    }
+
+    nav a:hover, nav a.active {
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    .navbar-right img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; gap: 1rem; }
+      nav { justify-content: center; }
+    }
+
+    /* -------------------- Contact Page -------------------- */
+    .page {
+      position: relative;
+      z-index: 5;
+    }
+
     .contact-container {
       max-width: 700px;
       margin: 4rem auto;
       padding: 0 2rem;
-      color: #e0e0e0;
+      color: #ffffff;
       text-align: center;
+      
+      /* Animation */
+      opacity: 0;
+      animation: fadeUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+      animation-delay: 0.2s;
     }
 
     .contact-container h1 {
-      font-size: 2.5rem;
+      font-family: 'AlikeMisely', serif;
+      font-size: 3rem;
       margin-bottom: 2rem;
-      animation: fadeIn 1s;
+      color: white;
+      letter-spacing: 1px;
     }
 
     .contact-form {
@@ -29,33 +127,37 @@
 
     .contact-form input,
     .contact-form textarea {
-      padding: 0.8rem 1rem;
-      background: #111;
-      border: 1px solid #444;
-      border-radius: 6px;
-      color: #e0e0e0;
-      font-size: 1rem;
+      padding: 1.1rem 1.4rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
       resize: vertical;
+      font-family: inherit;
     }
 
     .contact-form input:focus,
     .contact-form textarea:focus {
       outline: none;
       border-color: #fff;
+      background: rgba(255,255,255,0.15);
     }
 
     .contact-form button {
-      padding: 0.8rem 1.5rem;
+      font-family: 'AlikeMisely', sans-serif;
+      padding: 1rem 1.5rem;
       border: 1px solid #fff;
       background: transparent;
       color: #fff;
-      font-size: 1rem;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       cursor: pointer;
       transition: all 0.3s ease;
-      border-radius: 6px;
+      border-radius: 8px;
+      margin-top: 0.5rem;
     }
 
     .contact-form button:hover {
@@ -64,84 +166,97 @@
     }
 
     .social-links {
-      margin-top: 2rem;
-      font-size: 1rem;
+      margin-top: 3rem;
+      font-size: 1.2rem;
     }
 
+    .social-links p { margin-bottom: 0.8rem; color: #fff; opacity: 0.8; }
+
     .social-links a {
-      color: #bbb;
-      margin: 0 1rem;
+      color: #ffffff;
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: opacity 0.3s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding-bottom: 2px;
     }
 
     .social-links a:hover {
-      color: #fff;
+      opacity: 0.6;
     }
 
-    @media (max-width: 500px) {
-      .social-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+    .contact-number {
+      margin-top: 2.5rem;
+      color: #ffffff;
+      opacity: 0.7;
+      font-size: 1.1rem;
+    }
+
+    /* -------------------- Animations -------------------- */
+    @keyframes fadeUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
       }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-container { margin: 2rem auto; }
+      .contact-container h1 { font-size: 2.2rem; }
     }
   </style>
 </head>
+
 <body>
-  <!-- Navbar -->
+
   <header class="navbar">
-    <div class="logo">atharvphotography07</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="gallery.html" class="active">Gallery</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="awards.html">Awards</a></li>
-      </ul>
-    </nav>
+    <div class="navbar-left">
+      <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="awards.html">Awards</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+    </div>
+    <div class="navbar-right">
+      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
+        <img src="images.png" alt="Instagram">
+      </a>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)); height: 25vh; display: flex; align-items: center; justify-content: center;">
-    <h1 style="color: #fff; font-size: 3rem; letter-spacing: 2px;">Contact Me</h1>
+  <section class="page">
+    <section class="contact-container">
+      <h1>Get in Touch</h1>
+
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/mjkoqoka"
+        method="POST"
+      >
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="_replyto" placeholder="Your Email" required />
+        <textarea name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div class="social-links">
+        <p>Connect with me:</p>
+        <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
+          @atharvphotography07
+        </a>
+      </div>
+
+      <div class="contact-number">
+        <p>Direct: +1 (206) 643-7679</p>
+      </div>
+    </section>
   </section>
 
-  <!-- Contact Form Section -->
-  <section class="contact-container">
-    <h1>Get in Touch</h1>
-    <form class="contact-form" action="https://formspree.io/f/mjkoqoka" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="_replyto" placeholder="Your Email" required>
-      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-
-    <!-- Instagram Links -->
-    <div class="social-links">
-      <p>Connect with me on Instagram:</p>
-      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">@atharvphotography07 (Photography)</a>
-      <a href="https://www.instagram.com/atharvphotoshoots/" target="_blank">@atharvphotoshoots (People Photography)</a>
-    </div>
-    <!-- Optional Contact Number -->
-<div class="contact-number" style="margin-top: 1.5rem; color: #bbb; font-size: 1rem;">
-  <p>Phone: +1 (206) 643-7679</p>
-</div>
-  </section>
-
-
-  <script>
-    // Smooth scroll for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener("click", function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute("href"));
-        if(target){
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      });
-    });
-  </script>
 </body>
 </html>

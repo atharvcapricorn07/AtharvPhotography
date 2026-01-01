@@ -1,112 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Awards | Atharv Photography 07</title>
-  <link rel="stylesheet" href="style.css">
+
   <style>
-    /* Hero Section */
-    .hero-awards {
-      text-align: center;
-      padding: 4rem 1rem 2rem 1rem;
-      background: #111;
+    /* -------------------- Fonts -------------------- */
+    @font-face {
+      font-family: 'AlikeMisely';
+      src: url('Alika Misely.ttf') format('truetype');
+      font-weight: normal; font-style: normal;
     }
 
-    .hero-awards h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      margin-bottom: 0.5rem;
-      color: #fff;
+    @font-face {
+      font-family: 'AlusintaBrenob';
+      src: url('Alusinta Brenob.ttf') format('truetype');
+      font-weight: normal; font-style: normal;
     }
 
-    .hero-awards p {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: #ccc;
-      margin-bottom: 2rem;
-    }
-
-    /* Gallery */
-    .gallery-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      padding: 0 1rem 2rem 1rem;
-      justify-content: center;
-    }
-
-    .gallery-grid img {
-      width: calc(33.333% - 10px);
-      border-radius: 6px;
-      cursor: pointer;
-      object-fit: cover;
-      filter: grayscale(20%);
-      transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .gallery-grid img:hover {
-      transform: scale(1.03);
-      filter: grayscale(0%);
-      box-shadow: 0 4px 15px rgba(255,255,255,0.2);
-    }
-
-    #view-more-btn {
-      background: transparent;
-      border: 1px solid #555;
-      color: #bbb;
-      padding: 0.6rem 1.2rem;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-block;
-      margin: 1rem auto 3rem auto;
-    }
-
-    #view-more-btn:hover {
-      background: #fff;
-      color: #000;
-    }
-
-    .fade-in {
-      opacity: 0;
-      animation: fadeInImages 0.6s forwards;
-    }
-
-    @keyframes fadeInImages {
-      to { opacity: 1; }
-    }
-
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      padding-top: 60px;
-      left: 0;
-      top: 0;
-      width: 100%;
+    /* -------------------- Global & Background -------------------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html, body {
       height: 100%;
-      overflow: auto;
-      background: rgba(0,0,0,0.95);
-      justify-content: center;
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      background: url('plain-green-paper-textured.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Depth Overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    a { text-decoration: none; color: inherit; }
+
+    /* -------------------- Navbar -------------------- */
+    .navbar {
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .navbar-left { display: flex; align-items: center; gap: 2.5rem; }
+
+    .logo {
+      font-family: 'AlusintaBrenob', serif;
+      font-size: 2.2rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .lightbox-img {
-      display: block;
-      max-width: 90%;
-      max-height: 80vh;
-      border: 3px solid #fff;
-      margin: auto;
+    nav { display: flex; gap: 1.6rem; }
+    
+    nav a {
+      font-family: 'AlikeMisely', sans-serif;
+      font-size: 1.05rem;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+      color: white;
     }
 
-    .lightbox .close {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      font-size: 40px;
+    nav a:hover, nav a.active {
+      opacity: 1;
       font-weight: bold;
-      color: #fff;
+    }
+
+    .navbar-right img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
       cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; gap: 1rem; }
+      nav { justify-content: center; }
+    }
+
+    /* -------------------- Page Content -------------------- */
+    .page { position: relative; z-index: 5; padding: 5%; }
+    
+    .page-intro { 
+      text-align: center; 
+      margin: 3rem 1rem; 
+      opacity: 0;
+      animation: fadeUp 1s ease forwards;
+    }
+    
+    .page-intro h1 { 
+      font-family: 'AlikeMisely', serif;
+      font-size: 2.5rem; 
+      margin-bottom: 0.5rem; 
+    }
+    
+    .page-intro p { font-size: 1rem; color: #e0e0e0; }
+
+    /* -------------------- Gallery Grid -------------------- */
+    .gallery-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 2rem; }
+    
+    .gallery-grid img { 
+      width: calc(33.333% - 10px); 
+      border-radius: 8px; 
+      object-fit: cover; 
+      cursor: pointer; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+      /* Initial state for animation */
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .gallery-grid img.animate {
+      animation: fadeUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+    
+    .gallery-grid img:hover { 
+      transform: scale(1.03); 
+      box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
+    }
+    
+    .view-more-container { text-align: center; margin-bottom: 3rem; }
+    
+    .filter-btn { 
+      font-family: 'AlikeMisely', sans-serif;
+      padding: 0.5rem 1rem; 
+      border: 1px solid #fff; 
+      background: transparent; 
+      color: #fff; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      text-transform: uppercase; 
+      font-size: 0.9rem; 
+      transition: all 0.3s ease; 
+    }
+    
+    .filter-btn:hover { background: #fff; color: #000; }
+
+    /* -------------------- Lightbox -------------------- */
+    .lightbox { 
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      top:0; left:0; 
+      width:100%; height:100%; 
+      background: rgba(0,0,0,0.85); 
+      justify-content:center; 
+      align-items:center; 
+      padding-top:60px; 
+    }
+    
+    .lightbox-img { max-width: 90%; max-height: 80vh; border-radius: 6px; }
+    
+    .lightbox .close { 
+      position:absolute; 
+      top:20px; 
+      right:35px; 
+      font-size:40px; 
+      color:#fff; 
+      cursor:pointer; 
+    }
+
+    /* -------------------- Animations -------------------- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 1200px) { .gallery-grid img { width: calc(50% - 10px); } }
@@ -114,42 +183,44 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
+
   <header class="navbar">
-    <div class="logo">atharvphotography07</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="awards.html" class="active">Awards</a></li>
-      </ul>
-    </nav>
+    <div class="navbar-left">
+      <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="awards.html" class="active">Awards</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="navbar-right">
+      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
+        <img src="images.png" alt="Instagram">
+      </a>
+    </div>
   </header>
 
-  <!-- Hero / Intro -->
-  <section class="hero-awards">
-    <h1>Awards & Recognitions</h1>
-    <p>Honors and accolades I’ve received for my photography work.</p>
+  <section class="page">
+    <section class="page-intro">
+      <h1>Awards & Recognitions</h1>
+      <p>Honors and accolades I’ve received for my photography work.</p>
+    </section>
+
+    <section class="gallery-grid" id="gallery"></section>
+
+    <div class="view-more-container">
+      <button id="view-more-btn" class="filter-btn">View More</button>
+    </div>
   </section>
 
-  <!-- Gallery -->
-  <section class="gallery-grid" id="gallery"></section>
-
-  <!-- View More -->
-  <div style="text-align:center;">
-    <button id="view-more-btn">View More</button>
-  </div>
-
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox">
     <span class="close">&times;</span>
-    <img class="lightbox-img" id="lightbox-img" src="">
+    <img class="lightbox-img" id="lightbox-img" src="" />
   </div>
 
   <script>
-    // Dynamic awards gallery (same logic as gallery.js)
     async function loadAwards() {
       const gallery = document.getElementById("gallery");
       const lightbox = document.getElementById("lightbox");
@@ -160,11 +231,10 @@
       try {
         const response = await fetch("photos.json");
         const data = await response.json();
-
-        const awardsList = data.awards || []; // only awards
+        const awardsList = data.awards || [];
         const allImages = [];
 
-        awardsList.forEach(filename => {
+        awardsList.forEach((filename, index) => {
           const img = document.createElement("img");
           img.src = `photos/awards/${filename}`;
           img.style.display = "none";
@@ -178,16 +248,28 @@
           allImages.push(img);
         });
 
-        
         const INITIAL_COUNT = 6;
-        allImages.slice(0, INITIAL_COUNT).forEach(img => img.style.display = "block");
+        
+        // Show and animate initial batch
+        allImages.slice(0, INITIAL_COUNT).forEach((img, i) => {
+          img.style.display = "block";
+          // Stagger the animation
+          setTimeout(() => {
+            img.classList.add('animate');
+          }, i * 100 + 400); // 400ms delay to wait for page intro
+        });
+
         if (allImages.length <= INITIAL_COUNT) viewMoreBtn.style.display = "none";
 
         viewMoreBtn.addEventListener("click", () => {
-          allImages.forEach(img => {
+          let delayCount = 0;
+          allImages.forEach(img => { 
             if (img.style.display === "none") {
               img.style.display = "block";
-              img.classList.add("fade-in");
+              setTimeout(() => {
+                img.classList.add('animate');
+              }, delayCount * 100);
+              delayCount++;
             }
           });
           viewMoreBtn.style.display = "none";
@@ -198,19 +280,20 @@
           lightboxImg.src = "";
         });
 
-        lightbox.addEventListener("click", (e) => {
+        lightbox.addEventListener("click", e => {
           if (e.target === lightbox) {
             lightbox.style.display = "none";
             lightboxImg.src = "";
           }
         });
 
-      } catch(err) {
+      } catch (err) {
         console.error("Error loading awards:", err);
       }
     }
 
     loadAwards();
   </script>
+
 </body>
 </html>

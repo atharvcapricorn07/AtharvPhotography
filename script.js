@@ -135,6 +135,23 @@ if (lightbox) {
   });
 }
 
+async function loadStaticHero() {
+  const img = document.getElementById("hero-image");
+  if (!img) return;
+
+  const res = await fetch("photos.json");
+  const data = await res.json();
+
+  const categories = Object.keys(data).filter(c => c !== "awards");
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const images = data[randomCategory];
+
+  const randomImage = images[Math.floor(Math.random() * images.length)];
+  img.src = `photos/${randomCategory}/${randomImage}`;
+}
+
+loadStaticHero();
+
 // -------------------- Dynamic Homepage Slideshow (.png) --------------------
 async function loadHomepageSlideshow() {
   const topTrack = document.querySelector('.top-row .slide-track');

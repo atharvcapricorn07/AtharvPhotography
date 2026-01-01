@@ -1,0 +1,112 @@
+<!-- navbar.html -->
+<style>
+  @font-face {
+    font-family: 'AlikeMisely';
+    src: url('Alike Misely.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'AlusintaBrenob';
+    src: url('Alusinta Brenob.ttf') format('truetype');
+  }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background-color: #8b9d83;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .navbar .logo {
+    font-family: 'AlusintaBrenob', serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .navbar .logo a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .navbar nav {
+    display: flex;
+    gap: 1.6rem;
+    margin-left: 2rem;
+  }
+
+  .navbar nav a {
+    font-family: 'AlikeMisely', sans-serif;
+    font-size: 1.05rem;
+    color: white;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .navbar nav a:hover {
+    opacity: 1;
+  }
+
+  .navbar nav a.active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .navbar .instagram {
+    margin-left: auto; /* push it to the far right */
+  }
+
+  .navbar .instagram img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+
+    .navbar nav {
+      margin-left: 0;
+      justify-content: center;
+    }
+
+    .navbar .instagram {
+      margin-left: 0;
+      align-self: flex-end;
+    }
+  }
+</style>
+
+<header class="navbar">
+  <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+  <nav>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="awards.html">Awards</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="instagram">
+    <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
+      <img src="images.png" alt="Instagram" />
+    </a>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPage = location.pathname.split("/").pop();
+    document.querySelectorAll('nav a').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>

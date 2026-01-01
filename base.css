@@ -1,0 +1,139 @@
+/* ==================== FONTS ==================== */
+@font-face {
+  font-family: 'AlikeMisely';
+  src: url('Alike Misely.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AlusintaBrenob';
+  src: url('Alusinta Brenob.ttf') format('truetype');
+}
+
+/* ==================== GLOBAL RESET ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background-color: #8b9d83; /* SINGLE SOURCE OF TRUTH */
+  color: white;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* ==================== LINKS ==================== */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ==================== NAVBAR ==================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 3rem;
+  background-color: #8b9d83; /* seamless */
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* LOGO */
+.logo {
+  font-family: 'AlusintaBrenob', serif;
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* NAV LINKS */
+nav a {
+  font-family: 'AlikeMisely', sans-serif;
+  font-size: 1.05rem;
+  margin-left: 1.6rem;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+nav a:hover,
+nav a.active {
+  opacity: 1;
+}
+
+/* INSTAGRAM ICON */
+.navbar-right img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  cursor: pointer;
+}
+
+/* ==================== PAGE WRAPPER ==================== */
+.page {
+  min-height: calc(100vh - 90px);
+  padding: 5%;
+  background-color: transparent; /* IMPORTANT */
+}
+
+/* ==================== GLOBAL FORM STYLING ==================== */
+input,
+textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: white;
+  background: rgba(0,0,0,0.35);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: white;
+  color: #000;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  nav a {
+    margin-left: 1rem;
+  }
+}

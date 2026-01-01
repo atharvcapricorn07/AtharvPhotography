@@ -5,48 +5,126 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #0e0e0e;
-  color: #e0e0e0;
-  font-family: "Georgia", "Times New Roman", serif;
-  line-height: 1.6;
+:root {
+  --black: #040303;
+  --dark-slate: #3a4e48;
+  --grey: #6a7b76;
+  --muted-teal: #8b9d83;
+  --silver: #beb0a7;
 }
 
-/* -------------------- Navigation -------------------- */
+body {
+  background: var(--black);
+  color: var(--grey);
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+
+/* -------------------- Homepage Hero -------------------- */
+.static-hero {
+  position: relative;
+  height: 100vh;
+  background: #1a1a1a; /* solid dark color instead of images */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-overlay {
+  text-align: center;
+  color: #ffffff;
+}
+
+.hero-overlay h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.hero-overlay p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #bbb;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* -------------------- Modern Clean Navbar -------------------- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  padding: 1rem 2%;
-  background: #111;
-  border-bottom: 1px solid #222;
+  padding: 1rem 3rem;
+  background: #0f0f0f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.logo {
-  font-size: 1.2rem;
-  letter-spacing: 2px;
+.navbar .logo {
+  font-size: 1.3rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
+  color: #fff;
+  font-weight: bold;
 }
 
 .navbar ul {
   display: flex;
   gap: 2rem;
   list-style: none;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 .navbar a {
-  color: #bbb;
+  color: #ccc;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: color 0.25s ease;
 }
 
 .navbar a:hover,
 .navbar a.active {
   color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
 }
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem 2rem;
+  }
+  
+  .navbar ul {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+.static-hero {
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+}
+.cta-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.8rem;
+  background: #fff;
+  color: #000;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.cta-btn:hover {
+  background: #ccc;
+}
+
+
 
 /* -------------------- Hero Section & Slideshow -------------------- */
 .hero {
