@@ -13,21 +13,23 @@
     
     body, html {
       height: 100%;
-      background-color: #000; /* Deepest black */
+      background-color: #000;
       color: #fff;
       font-family: 'Inter', sans-serif;
-      overflow: hidden; /* No scrolling */
+      overflow: hidden;
     }
 
-    /* -------------------- Fixed Navbar -------------------- */
+    /* -------------------- Fixed Navbar (Synced) -------------------- */
     .navbar {
-      position: absolute;
+      position: fixed;
       top: 0;
       width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 2.5rem 4rem;
       z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
 
     .logo {
@@ -35,21 +37,28 @@
       font-size: 1.4rem;
       letter-spacing: 6px;
       font-weight: 300;
+      text-transform: uppercase;
     }
 
+    .logo a { text-decoration: none; color: white; }
+
     nav { display: flex; gap: 3rem; }
+    
     nav a {
       font-size: 0.75rem;
       letter-spacing: 3px;
+      text-transform: uppercase;
       text-decoration: none;
       color: #fff;
       opacity: 0.4;
       transition: opacity 0.4s ease;
     }
-    nav a:hover { opacity: 1; }
+
+    nav a:hover, nav a.active {
+      opacity: 1;
+    }
 
     /* -------------------- Interactive Light -------------------- */
-    /* This creates the "flashlight" effect */
     .flashlight {
       position: fixed;
       top: 0;
@@ -108,7 +117,6 @@
       filter: drop-shadow(0 0 50px rgba(255,255,255,0.05));
     }
 
-    /* -------------------- Bottom Label -------------------- */
     .coordinates {
       position: absolute;
       bottom: 2.5rem;
@@ -125,11 +133,11 @@
   <div class="flashlight" id="flashlight"></div>
 
   <header class="navbar">
-    <div class="logo">ATHARV KALE</div>
+    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="index.html" class="active">Home</a>
       <a href="about.html">About</a>
-      <a href="gallery.html" class="active">Gallery</a>
+      <a href="gallery.html">Gallery</a>
       <a href="awards.html">Awards</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -153,17 +161,13 @@
   <script>
     const flashlight = document.getElementById('flashlight');
 
-    // Light follows mouse
     window.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
-      
-      // Update the CSS variables for the radial gradient
       flashlight.style.setProperty('--x', x + '%');
       flashlight.style.setProperty('--y', y + '%');
     });
 
-    // Initial load animation
     gsap.from(".content-wrapper", {
       opacity: 0,
       scale: 0.98,

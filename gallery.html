@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* -------------------- Navbar -------------------- */
+    /* -------------------- Navbar (Synced Perfectly) -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -28,7 +28,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 2.5rem 4rem;
-      z-index: 1000;
+      z-index: 100; /* Standardized z-index */
       background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
 
@@ -37,20 +37,26 @@
       font-size: 1.4rem;
       letter-spacing: 6px;
       font-weight: 300;
+      text-transform: uppercase;
     }
 
     .logo a { text-decoration: none; color: white; }
 
     nav { display: flex; gap: 3rem; }
+    
     nav a {
       font-size: 0.75rem;
       letter-spacing: 3px;
+      text-transform: uppercase;
       text-decoration: none;
       color: #fff;
       opacity: 0.4;
       transition: opacity 0.4s ease;
     }
-    nav a.active, nav a:hover { opacity: 1; }
+
+    nav a:hover, nav a.active {
+      opacity: 1;
+    }
 
     /* -------------------- Gallery Header -------------------- */
     .page-intro {
@@ -100,16 +106,14 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 25px;
       padding: 0 4rem 5rem 4rem;
-      /* Ensure grid doesn't collapse */
       min-height: 200px; 
     }
 
     .gallery-item {
       position: relative;
-      aspect-ratio: 3 / 2; /* Forces height to be consistent immediately */
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       background: #0a0a0a;
-      /* Start hidden without removing from flow */
       visibility: hidden;
       opacity: 0;
     }
@@ -133,15 +137,6 @@
       padding-bottom: 10rem;
     }
 
-    @media (max-width: 1024px) {
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 768px) {
-      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem 5rem 2rem; }
-      .navbar { padding: 2rem; }
-      nav { gap: 1.5rem; }
-    }
-
     /* -------------------- Lightbox -------------------- */
     .lightbox {
       display: none;
@@ -154,6 +149,17 @@
     }
     .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
     .close { position: absolute; top: 30px; right: 40px; font-size: 35px; cursor: pointer; color: #444; }
+
+    /* -------------------- Mobile -------------------- */
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem 5rem 2rem; }
+      .navbar { padding: 2rem; }
+      nav { gap: 1.5rem; }
+      .page-intro h1 { font-size: 2.8rem; }
+    }
   </style>
 </head>
 
@@ -205,7 +211,6 @@
         const response = await fetch('photos.json');
         const data = await response.json();
         
-        // Flatten the JSON data into a single array of objects
         Object.keys(data).forEach(cat => {
           if (cat === 'awards') return;
           data[cat].forEach(file => {
@@ -213,27 +218,21 @@
           });
         });
 
-        // Shuffle once
         allPhotoData.sort(() => Math.random() - 0.5);
-        
-        // Initial setup for 'all'
         setCategory('all');
 
       } catch (err) { console.error("Error loading images:", err); }
     }
 
     function setCategory(category) {
-      // 1. Clear the grid and reset counts
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
       visibleCount = 0;
       
-      // 2. Filter the master data set
       currentFilteredSet = (category === 'all') 
         ? allPhotoData 
         : allPhotoData.filter(item => item.category === category);
 
-      // 3. Show first batch
       showMore();
     }
 
@@ -259,7 +258,6 @@
         newElements.push(div);
       });
 
-      // Animate ONLY the new elements
       gsap.fromTo(newElements, 
         { autoAlpha: 0, y: 30 }, 
         { 
@@ -269,7 +267,6 @@
           stagger: 0.1, 
           ease: "power2.out",
           onStart: () => {
-            // Ensure they are visible when animation starts
             newElements.forEach(el => el.style.visibility = 'visible');
           }
         }
@@ -277,7 +274,6 @@
 
       visibleCount = end;
 
-      // Toggle "Load More" button
       document.getElementById('view-more-container').style.display = 
         (visibleCount < currentFilteredSet.length) ? 'block' : 'none';
     }
@@ -287,7 +283,8 @@
     document.querySelectorAll('.filter-btn').forEach(btn => {
       if (btn.id === 'view-more-btn') return;
       btn.onclick = () => {
-        document.querySelector('.filter-btn.active').classList.remove('active');
+        const currentActive = document.querySelector('.filter-btn.active');
+        if (currentActive) currentActive.classList.remove('active');
         btn.classList.add('active');
         setCategory(btn.dataset.category);
       };
