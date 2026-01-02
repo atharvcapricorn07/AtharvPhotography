@@ -24,11 +24,6 @@
     "landscape8.jpg",
     "landscape9.jpg"
   ],
-  "buildings": [
-    "building1.png",
-    "building2.png",
-    "building3.png"
-  ],
   "animals": [
     "animal1.jpg",
     "animal2.jpg",
@@ -53,6 +48,9 @@
     "misc19.jpg",
     "misc2.jpg",
     "misc20.jpg",
+    "misc21.png",
+    "misc22.png",
+    "misc23.png",
     "misc3.jpg",
     "misc4.jpg",
     "misc5.jpg",

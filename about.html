@@ -150,21 +150,27 @@
       
       <div class="about-text" id="text">
         <p>
-          Hi, I’m <strong>Atharv Kale</strong>, the creator of
-          <strong>Atharv Photography</strong>. I’m currently a high school
-          sophomore with a deep-rooted passion for capturing stories through the lens.
+          Hi, I’m <strong>Atharv Kale</strong>, the eyes and vision behind 
+          <strong>Atharv Photography</strong>. As a high school student dedicated to the visual arts, 
+          I have spent years exploring the profound power of storytelling through a lens.
         </p>
 
         <p>
-          Beyond the camera, I find balance in the strategy of chess and the energy of tennis and basketball—but my truest excitement comes from freezing a fleeting moment in time.
+          While I find focus in the strategy of chess and movement in the rhythm of tennis and basketball, 
+          my creative fulfillment comes from the quiet anticipation of a single frame. Photography, for me, 
+          is a deliberate search for the extraordinary within the ordinary.
         </p>
 
         <p>
-          With over 8 years of experience across portraiture, nature, and urban landscapes, I focus on the intersection of light and emotion. My goal is to create imagery that feels both raw and unforgettable.
+          With over eight years of experience spanning intimate portraiture to expansive landscapes, 
+          my work explores the delicate relationship between light, texture, and human emotion. 
+          I strive to create imagery that transcends the visual to become something felt.
         </p>
 
         <p>
-          To me, photography is more than just a composition; it’s about <strong>capturing the silence</strong> between moments. I'm constantly experimenting and evolving my craft to share a unique perspective of the world with you.
+          Ultimately, I believe great photography is about <strong>capturing the silence</strong> that exists 
+          between moments. I am constantly evolving my craft, pushing the boundaries of my perspective 
+          to share a world that is raw, authentic, and unforgettable.
         </p>
       </div>
     </section>
@@ -187,10 +193,12 @@
       ease: "power2.out"
     });
 
-    gsap.from("#text", {
+    // Staggering the paragraphs for a cleaner entrance
+    gsap.from("#text p", {
       opacity: 0,
       x: 40,
-      duration: 1.8,
+      duration: 1.5,
+      stagger: 0.2,
       delay: 0.5,
       ease: "power2.out"
     });

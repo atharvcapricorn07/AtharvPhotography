@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* -------------------- Navbar (MATCHING INDEX) -------------------- */
+    /* -------------------- Navbar -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -71,10 +71,12 @@
     .filter-buttons {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 2rem;
       margin-bottom: 4rem;
       position: relative;
       z-index: 10;
+      padding: 0 1rem;
     }
 
     .filter-btn {
@@ -90,24 +92,26 @@
       transition: opacity 0.3s;
     }
 
-    .filter-btn.active, .filter-btn:hover {
-      opacity: 1;
-    }
+    .filter-btn.active, .filter-btn:hover { opacity: 1; }
 
     /* -------------------- Gallery Grid -------------------- */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 25px;
-      padding: 0 4rem 10rem 4rem;
+      padding: 0 4rem 5rem 4rem;
+      /* Ensure grid doesn't collapse */
+      min-height: 200px; 
     }
 
     .gallery-item {
-      aspect-ratio: 3 / 2;
+      position: relative;
+      aspect-ratio: 3 / 2; /* Forces height to be consistent immediately */
       overflow: hidden;
       background: #0a0a0a;
+      /* Start hidden without removing from flow */
+      visibility: hidden;
       opacity: 0;
-      transform: translateY(20px);
     }
 
     .gallery-item img {
@@ -133,7 +137,7 @@
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
-      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem 5rem 2rem; }
       .navbar { padding: 2rem; }
       nav { gap: 1.5rem; }
     }
@@ -174,9 +178,9 @@
     <button class="filter-btn active" data-category="all">All</button>
     <button class="filter-btn" data-category="cars">Cars</button>
     <button class="filter-btn" data-category="landscapes">Landscapes</button>
-    <button class="filter-btn" data-category="buildings">Architecture</button>
     <button class="filter-btn" data-category="animals">Fauna</button>
-    <button class="filter-btn" data-category="shoots">Editorials</button>
+    <button class="filter-btn" data-category="shoots">Portraits</button>
+    <button class="filter-btn" data-category="misc">Misc</button>
   </div>
 
   <div class="gallery-grid" id="gallery"></div>
@@ -191,77 +195,101 @@
   </div>
 
   <script>
-    let allItems = [];
-    let visibleLimit = 12;
-    let currentCategory = 'all';
+    let allPhotoData = [];
+    let currentFilteredSet = [];
+    let visibleCount = 0;
+    const increment = 12;
 
     async function init() {
       try {
         const response = await fetch('photos.json');
         const data = await response.json();
-        const gallery = document.getElementById('gallery');
-
+        
+        // Flatten the JSON data into a single array of objects
         Object.keys(data).forEach(cat => {
           if (cat === 'awards') return;
           data[cat].forEach(file => {
-            const div = document.createElement('div');
-            div.className = 'gallery-item';
-            div.dataset.category = cat;
-
-            const img = document.createElement('img');
-            img.src = `photos/${cat}/${file}`;
-            img.loading = "lazy";
-            img.onclick = () => openLightbox(img.src);
-
-            div.appendChild(img);
-            allItems.push(div);
-            gallery.appendChild(div);
+            allPhotoData.push({ category: cat, file: file });
           });
         });
 
-        // Randomize initial load
-        allItems.sort(() => Math.random() - 0.5);
-        render();
+        // Shuffle once
+        allPhotoData.sort(() => Math.random() - 0.5);
+        
+        // Initial setup for 'all'
+        setCategory('all');
+
       } catch (err) { console.error("Error loading images:", err); }
     }
 
-    function render() {
-      let shown = 0;
-      let matchCount = 0;
+    function setCategory(category) {
+      // 1. Clear the grid and reset counts
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = '';
+      visibleCount = 0;
+      
+      // 2. Filter the master data set
+      currentFilteredSet = (category === 'all') 
+        ? allPhotoData 
+        : allPhotoData.filter(item => item.category === category);
 
-      allItems.forEach(item => {
-        const isMatch = (currentCategory === 'all' || item.dataset.category === currentCategory);
-        
-        if (isMatch) {
-          matchCount++;
-          if (shown < visibleLimit) {
-            item.style.display = 'block';
-            gsap.to(item, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out", delay: (shown % 6) * 0.1 });
-            shown++;
-          } else {
-            item.style.display = 'none';
-          }
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      document.getElementById('view-more-container').style.display = (visibleLimit < matchCount) ? 'block' : 'none';
+      // 3. Show first batch
+      showMore();
     }
 
-    document.getElementById('view-more-btn').onclick = () => {
-      visibleLimit += 12;
-      render();
-    };
+    function showMore() {
+      const gallery = document.getElementById('gallery');
+      const start = visibleCount;
+      const end = Math.min(visibleCount + increment, currentFilteredSet.length);
+      const batch = currentFilteredSet.slice(start, end);
+
+      const newElements = [];
+
+      batch.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        
+        const img = document.createElement('img');
+        img.src = `photos/${item.category}/${item.file}`;
+        img.loading = "lazy";
+        img.onclick = () => openLightbox(img.src);
+
+        div.appendChild(img);
+        gallery.appendChild(div);
+        newElements.push(div);
+      });
+
+      // Animate ONLY the new elements
+      gsap.fromTo(newElements, 
+        { autoAlpha: 0, y: 30 }, 
+        { 
+          autoAlpha: 1, 
+          y: 0, 
+          duration: 0.8, 
+          stagger: 0.1, 
+          ease: "power2.out",
+          onStart: () => {
+            // Ensure they are visible when animation starts
+            newElements.forEach(el => el.style.visibility = 'visible');
+          }
+        }
+      );
+
+      visibleCount = end;
+
+      // Toggle "Load More" button
+      document.getElementById('view-more-container').style.display = 
+        (visibleCount < currentFilteredSet.length) ? 'block' : 'none';
+    }
+
+    document.getElementById('view-more-btn').onclick = showMore;
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
       if (btn.id === 'view-more-btn') return;
       btn.onclick = () => {
         document.querySelector('.filter-btn.active').classList.remove('active');
         btn.classList.add('active');
-        currentCategory = btn.dataset.category;
-        visibleLimit = 12;
-        render();
+        setCategory(btn.dataset.category);
       };
     });
 
