@@ -5,165 +5,185 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery | Atharv Photography 07</title>
 
-  <style>
-    /* -------------------- Fonts -------------------- */
-    @font-face {
-      font-family: 'AlikeMisely';
-      src: url('Alika Misely.ttf') format('truetype'); 
-      font-weight: normal; font-style: normal;
-    }
-    @font-face {
-      font-family: 'AlusintaBrenob';
-      src: url('Alusinta Brenob.ttf') format('truetype');
-      font-weight: normal; font-style: normal;
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-    /* -------------------- Global & Background -------------------- */
+  <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body { 
-      height: 100%; 
-      color: white; 
-      font-family: Georgia, serif; 
-      background: url('plain-green-paper-textured.jpg') no-repeat center center fixed;
-      background-size: cover;
+    body, html {
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
     }
 
-    /* Depth Overlay */
-    body::after {
-      content: "";
+    /* -------------------- Navbar (MATCHING INDEX) -------------------- */
+    .navbar {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 100%);
-      pointer-events: none;
-      z-index: 1;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 4rem;
+      z-index: 1000;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
 
-    a { text-decoration: none; color: inherit; }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      font-weight: 300;
+    }
 
-    /* -------------------- Navbar -------------------- */
-    .navbar { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 1.2rem 3rem; 
+    .logo a { text-decoration: none; color: white; }
+
+    nav { display: flex; gap: 3rem; }
+    nav a {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-decoration: none;
+      color: #fff;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
+    }
+    nav a.active, nav a:hover { opacity: 1; }
+
+    /* -------------------- Gallery Header -------------------- */
+    .page-intro {
+      padding-top: 18vh;
+      text-align: center;
+      margin-bottom: 5vh;
+    }
+
+    .page-intro h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 2px;
+    }
+
+    /* -------------------- Filter Buttons -------------------- */
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 4rem;
       position: relative;
       z-index: 10;
     }
-    .navbar-left { display: flex; align-items: center; gap: 2.5rem; }
-    .logo { font-family: 'AlusintaBrenob', serif; font-size: 2.2rem; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; }
-    nav { display: flex; gap: 1.6rem; }
-    nav a { font-family: 'AlikeMisely', sans-serif; font-size: 1.05rem; opacity: 0.9; color: white; transition: opacity 0.2s ease; }
-    nav a:hover, nav a.active { opacity: 1; font-weight: bold; }
-    .navbar-right img { width: 28px; height: 28px; filter: brightness(0) invert(1); cursor: pointer; }
 
-    @media (max-width: 768px) { .navbar { flex-direction: column; gap: 1rem; } nav { justify-content: center; } }
-
-    /* -------------------- Gallery -------------------- */
-    .page { position: relative; z-index: 5; padding: 5%; }
-    
-    .page-intro { 
-        text-align: center; 
-        margin: 3rem 1rem; 
-        opacity: 0;
-        animation: fadeUp 1s ease forwards;
+    .filter-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0.3;
+      transition: opacity 0.3s;
     }
-    .page-intro h1 { font-family: 'AlikeMisely', serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
-    
-    .filter-buttons { 
-        text-align: center; 
-        margin-bottom: 2rem; 
-        display: flex; 
-        justify-content: center; 
-        gap: 0.5rem; 
-        flex-wrap: wrap;
-        opacity: 0;
-        animation: fadeUp 1s ease forwards;
-        animation-delay: 0.2s;
-    }
-    .filter-btn { font-family: 'AlikeMisely', sans-serif; padding: 0.5rem 1rem; border: 1px solid #fff; background: transparent; color: #fff; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-    .filter-btn:hover, .filter-btn.active { background: #fff; color: #000; }
 
-    .gallery-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 2rem; }
-    
-    .gallery-item { 
-      width: calc(33.333% - 10px); 
-      display: none; 
-      aspect-ratio: 3 / 2; 
-      overflow: hidden; 
-      border-radius: 8px;
-      /* Animation properties */
+    .filter-btn.active, .filter-btn:hover {
+      opacity: 1;
+    }
+
+    /* -------------------- Gallery Grid -------------------- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      padding: 0 4rem 10rem 4rem;
+    }
+
+    .gallery-item {
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: #0a0a0a;
       opacity: 0;
       transform: translateY(20px);
     }
-    
-    /* Animation Class triggered by JS */
-    .gallery-item.animate {
-      animation: fadeUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+      filter: grayscale(0.2) contrast(1.05);
     }
 
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.3s ease; display: block; }
-    .gallery-item img:hover { transform: scale(1.05); }
-
-    .view-more-container { text-align: center; margin-bottom: 3rem; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .gallery-item img:hover {
+      transform: scale(1.04);
+      filter: grayscale(0);
     }
 
-    @media (max-width: 1200px) { .gallery-item { width: calc(50% - 10px); } }
-    @media (max-width: 768px) { .gallery-item { width: 100%; aspect-ratio: 4 / 3; } }
+    .view-more-container {
+      text-align: center;
+      padding-bottom: 10rem;
+    }
+
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .navbar { padding: 2rem; }
+      nav { gap: 1.5rem; }
+    }
 
     /* -------------------- Lightbox -------------------- */
-    .lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-    .lightbox-img { max-width: 90%; max-height: 85vh; border-radius: 6px; object-fit: contain; }
-    .lightbox .close { position: absolute; top: 20px; right: 35px; font-size: 50px; color: #fff; cursor: pointer; }
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #000;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
+    .close { position: absolute; top: 30px; right: 40px; font-size: 35px; cursor: pointer; color: #444; }
   </style>
 </head>
 
 <body>
 
   <header class="navbar">
-    <div class="navbar-left">
-      <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html" class="active">Gallery</a>
-        <a href="awards.html">Awards</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-    <div class="navbar-right">
-      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
-        <img src="images.png" alt="Instagram">
-      </a>
-    </div>
+    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="awards.html">Awards</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
 
-  <section class="page">
-    <div class="page-intro">
-      <h1>Gallery</h1>
-      <p>Browse the collection.</p>
-    </div>
-
-    <div class="filter-buttons">
-      <button class="filter-btn active" data-category="all">All</button>
-      <button class="filter-btn" data-category="cars">Cars</button>
-      <button class="filter-btn" data-category="buildings">Buildings</button>
-      <button class="filter-btn" data-category="landscapes">Landscapes</button>
-      <button class="filter-btn" data-category="animals">Animals</button>
-      <button class="filter-btn" data-category="misc">Misc</button>
-      <button class="filter-btn" data-category="shoots">Shoots</button>
-    </div>
-
-    <div class="gallery-grid" id="gallery"></div>
-
-    <div class="view-more-container" id="view-more-container">
-      <button id="view-more-btn" class="filter-btn" type="button">View More</button>
-    </div>
+  <section class="page-intro">
+    <h1>Archive</h1>
   </section>
+
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="cars">Cars</button>
+    <button class="filter-btn" data-category="landscapes">Landscapes</button>
+    <button class="filter-btn" data-category="buildings">Architecture</button>
+    <button class="filter-btn" data-category="animals">Fauna</button>
+    <button class="filter-btn" data-category="shoots">Editorials</button>
+  </div>
+
+  <div class="gallery-grid" id="gallery"></div>
+
+  <div class="view-more-container" id="view-more-container">
+    <button id="view-more-btn" class="filter-btn">Load More</button>
+  </div>
 
   <div id="lightbox" class="lightbox">
     <span class="close">&times;</span>
@@ -176,11 +196,10 @@
     let currentCategory = 'all';
 
     async function init() {
-      const gallery = document.getElementById('gallery');
-      
       try {
         const response = await fetch('photos.json');
         const data = await response.json();
+        const gallery = document.getElementById('gallery');
 
         Object.keys(data).forEach(cat => {
           if (cat === 'awards') return;
@@ -191,25 +210,19 @@
 
             const img = document.createElement('img');
             img.src = `photos/${cat}/${file}`;
-            img.onclick = (e) => {
-                e.stopPropagation();
-                openLightbox(img.src);
-            };
+            img.loading = "lazy";
+            img.onclick = () => openLightbox(img.src);
 
             div.appendChild(img);
             allItems.push(div);
+            gallery.appendChild(div);
           });
         });
 
-        // Shuffle once
+        // Randomize initial load
         allItems.sort(() => Math.random() - 0.5);
-
-        // Add to DOM
-        allItems.forEach(item => gallery.appendChild(item));
-
         render();
-
-      } catch (err) { console.error("Error:", err); }
+      } catch (err) { console.error("Error loading images:", err); }
     }
 
     function render() {
@@ -217,65 +230,51 @@
       let matchCount = 0;
 
       allItems.forEach(item => {
-        // Reset animation class so it can re-trigger
-        item.classList.remove('animate');
-        item.style.animationDelay = '0s';
-        
         const isMatch = (currentCategory === 'all' || item.dataset.category === currentCategory);
         
         if (isMatch) {
           matchCount++;
-          if (currentCategory === 'all') {
-            if (shown < visibleLimit) {
-              item.style.display = 'block';
-              // Stagger the animation of visible items
-              item.style.animationDelay = `${(shown % 12) * 0.1}s`;
-              item.classList.add('animate');
-              shown++;
-            } else {
-              item.style.display = 'none';
-            }
-          } else {
+          if (shown < visibleLimit) {
             item.style.display = 'block';
-            item.classList.add('animate');
+            gsap.to(item, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out", delay: (shown % 6) * 0.1 });
+            shown++;
+          } else {
+            item.style.display = 'none';
           }
         } else {
           item.style.display = 'none';
         }
       });
 
-      const btnCont = document.getElementById('view-more-container');
-      btnCont.style.display = (currentCategory === 'all' && visibleLimit < matchCount) ? 'block' : 'none';
+      document.getElementById('view-more-container').style.display = (visibleLimit < matchCount) ? 'block' : 'none';
     }
 
-    document.getElementById('view-more-btn').addEventListener('click', function(e) {
-      e.preventDefault();
+    document.getElementById('view-more-btn').onclick = () => {
       visibleLimit += 12;
       render();
-    });
+    };
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
       if (btn.id === 'view-more-btn') return;
-      btn.addEventListener('click', () => {
+      btn.onclick = () => {
         document.querySelector('.filter-btn.active').classList.remove('active');
         btn.classList.add('active');
         currentCategory = btn.dataset.category;
-        visibleLimit = 12; 
+        visibleLimit = 12;
         render();
-      });
+      };
     });
 
     function openLightbox(src) {
-      const lb = document.getElementById('lightbox');
       document.getElementById('lightbox-img').src = src;
-      lb.style.display = 'flex';
+      document.getElementById('lightbox').style.display = 'flex';
     }
 
     document.querySelector('.close').onclick = () => document.getElementById('lightbox').style.display = 'none';
     document.getElementById('lightbox').onclick = (e) => {
-      if (e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none';
+      if(e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none';
     };
-
+    
     init();
   </script>
 </body>

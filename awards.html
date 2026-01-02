@@ -5,213 +5,184 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Awards | Atharv Photography 07</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100;200&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
   <style>
-    /* -------------------- Fonts -------------------- */
-    @font-face {
-      font-family: 'AlikeMisely';
-      src: url('Alika Misely.ttf') format('truetype');
-      font-weight: normal; font-style: normal;
-    }
-
-    @font-face {
-      font-family: 'AlusintaBrenob';
-      src: url('Alusinta Brenob.ttf') format('truetype');
-      font-weight: normal; font-style: normal;
-    }
-
-    /* -------------------- Global & Background -------------------- */
+    /* -------------------- Global & Theme -------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body {
+    body, html {
       height: 100%;
-      color: white;
-      font-family: Georgia, "Times New Roman", serif;
-      background: url('plain-green-paper-textured.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    /* Depth Overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 100%);
-      pointer-events: none;
-      z-index: 1;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
     }
     
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar -------------------- */
+    /* -------------------- Navbar (MATCHING THEME) -------------------- */
     .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1.2rem 3rem;
-      position: relative;
-      z-index: 10;
+      align-items: center;
+      padding: 2.5rem 4rem;
+      z-index: 1000;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
-    
-    .navbar-left { display: flex; align-items: center; gap: 2.5rem; }
 
     .logo {
-      font-family: 'AlusintaBrenob', serif;
-      font-size: 2.2rem;
-      letter-spacing: 3px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      font-weight: 300;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
-    nav { display: flex; gap: 1.6rem; }
+    nav { display: flex; gap: 3rem; }
     
     nav a {
-      font-family: 'AlikeMisely', sans-serif;
-      font-size: 1.05rem;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
-      color: white;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
     }
 
-    nav a:hover, nav a.active {
-      opacity: 1;
-      font-weight: bold;
-    }
-
-    .navbar-right img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .navbar { flex-direction: column; gap: 1rem; }
-      nav { justify-content: center; }
-    }
+    nav a.active, nav a:hover { opacity: 1; }
 
     /* -------------------- Page Content -------------------- */
-    .page { position: relative; z-index: 5; padding: 5%; }
-    
     .page-intro { 
+      padding-top: 18vh;
       text-align: center; 
-      margin: 3rem 1rem; 
-      opacity: 0;
-      animation: fadeUp 1s ease forwards;
+      margin-bottom: 6vh;
     }
     
     .page-intro h1 { 
-      font-family: 'AlikeMisely', serif;
-      font-size: 2.5rem; 
-      margin-bottom: 0.5rem; 
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; 
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 2px;
     }
     
-    .page-intro p { font-size: 1rem; color: #e0e0e0; }
+    .page-intro p { 
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      opacity: 0.5;
+      margin-top: 10px;
+    }
 
-    /* -------------------- Gallery Grid -------------------- */
-    .gallery-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 2rem; }
+    /* -------------------- Awards Grid -------------------- */
+    .gallery-grid { 
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 0 4rem 5rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
     
     .gallery-grid img { 
-      width: calc(33.333% - 10px); 
-      border-radius: 8px; 
+      width: 100%;
+      aspect-ratio: 4 / 5; /* Award certificates usually look better in portrait */
       object-fit: cover; 
       cursor: pointer; 
-      transition: transform 0.3s ease, box-shadow 0.3s ease; 
-      /* Initial state for animation */
+      background: #0a0a0a;
+      transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+      filter: grayscale(0.4) contrast(1.1);
       opacity: 0;
       transform: translateY(20px);
     }
     
     .gallery-grid img.animate {
-      animation: fadeUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .gallery-grid img:hover { 
       transform: scale(1.03); 
-      box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
+      filter: grayscale(0);
     }
     
-    .view-more-container { text-align: center; margin-bottom: 3rem; }
+    .view-more-container { text-align: center; padding-bottom: 10rem; }
     
     .filter-btn { 
-      font-family: 'AlikeMisely', sans-serif;
-      padding: 0.5rem 1rem; 
-      border: 1px solid #fff; 
-      background: transparent; 
-      color: #fff; 
-      border-radius: 6px; 
-      cursor: pointer; 
-      text-transform: uppercase; 
-      font-size: 0.9rem; 
-      transition: all 0.3s ease; 
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+      border-bottom: 1px solid transparent;
     }
     
-    .filter-btn:hover { background: #fff; color: #000; }
+    .filter-btn:hover { opacity: 1; border-bottom: 1px solid white; }
 
     /* -------------------- Lightbox -------------------- */
     .lightbox { 
       display: none; 
       position: fixed; 
-      z-index: 1000; 
-      top:0; left:0; 
-      width:100%; height:100%; 
-      background: rgba(0,0,0,0.85); 
-      justify-content:center; 
-      align-items:center; 
-      padding-top:60px; 
+      z-index: 2000; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      background: #000; 
+      justify-content: center; 
+      align-items: center; 
     }
     
-    .lightbox-img { max-width: 90%; max-height: 80vh; border-radius: 6px; }
+    .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
     
-    .lightbox .close { 
-      position:absolute; 
-      top:20px; 
-      right:35px; 
-      font-size:40px; 
-      color:#fff; 
-      cursor:pointer; 
+    .close { 
+      position: absolute; 
+      top: 30px; 
+      right: 40px; 
+      font-size: 35px; 
+      color: #444; 
+      cursor: pointer; 
     }
 
-    /* -------------------- Animations -------------------- */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (max-width: 1024px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { 
+      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem; }
+      .navbar { padding: 2rem; }
+      nav { gap: 1.5rem; }
     }
-
-    @media (max-width: 1200px) { .gallery-grid img { width: calc(50% - 10px); } }
-    @media (max-width: 768px) { .gallery-grid img { width: 100%; } }
   </style>
 </head>
 <body>
 
   <header class="navbar">
-    <div class="navbar-left">
-      <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="awards.html" class="active">Awards</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-    <div class="navbar-right">
-      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
-        <img src="images.png" alt="Instagram">
-      </a>
-    </div>
+    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="awards.html" class="active">Awards</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
 
   <section class="page">
     <section class="page-intro">
-      <h1>Awards & Recognitions</h1>
-      <p>Honors and accolades I’ve received for my photography work.</p>
+      <h1>Honors</h1>
+      <p>Recognitions of light and perspective</p>
     </section>
 
     <section class="gallery-grid" id="gallery"></section>
 
     <div class="view-more-container">
-      <button id="view-more-btn" class="filter-btn">View More</button>
+      <button id="view-more-btn" class="filter-btn">Expand Archive</button>
     </div>
   </section>
 
@@ -225,7 +196,7 @@
       const gallery = document.getElementById("gallery");
       const lightbox = document.getElementById("lightbox");
       const lightboxImg = document.getElementById("lightbox-img");
-      const closeBtn = document.querySelector(".lightbox .close");
+      const closeBtn = document.querySelector(".close");
       const viewMoreBtn = document.getElementById("view-more-btn");
 
       try {
@@ -234,10 +205,11 @@
         const awardsList = data.awards || [];
         const allImages = [];
 
-        awardsList.forEach((filename, index) => {
+        awardsList.forEach((filename) => {
           const img = document.createElement("img");
           img.src = `photos/awards/${filename}`;
           img.style.display = "none";
+          img.loading = "lazy";
 
           img.addEventListener("click", () => {
             lightbox.style.display = "flex";
@@ -250,13 +222,11 @@
 
         const INITIAL_COUNT = 6;
         
-        // Show and animate initial batch
         allImages.slice(0, INITIAL_COUNT).forEach((img, i) => {
           img.style.display = "block";
-          // Stagger the animation
           setTimeout(() => {
             img.classList.add('animate');
-          }, i * 100 + 400); // 400ms delay to wait for page intro
+          }, i * 150 + 200);
         });
 
         if (allImages.length <= INITIAL_COUNT) viewMoreBtn.style.display = "none";
@@ -268,23 +238,16 @@
               img.style.display = "block";
               setTimeout(() => {
                 img.classList.add('animate');
-              }, delayCount * 100);
+              }, delayCount * 150);
               delayCount++;
             }
           });
           viewMoreBtn.style.display = "none";
         });
 
-        closeBtn.addEventListener("click", () => {
-          lightbox.style.display = "none";
-          lightboxImg.src = "";
-        });
-
+        closeBtn.addEventListener("click", () => { lightbox.style.display = "none"; });
         lightbox.addEventListener("click", e => {
-          if (e.target === lightbox) {
-            lightbox.style.display = "none";
-            lightboxImg.src = "";
-          }
+          if (e.target === lightbox) lightbox.style.display = "none";
         });
 
       } catch (err) {

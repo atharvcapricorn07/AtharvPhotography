@@ -5,207 +5,162 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Atharv Photography 07</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100;200&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
   <style>
-    /* -------------------- Fonts -------------------- */
-    @font-face {
-      font-family: 'AlikeMisely';
-      src: url('Alika Misely.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: 'AlusintaBrenob';
-      src: url('Alusinta Brenob.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    /* -------------------- Global & Background -------------------- */
+    /* -------------------- Global & Theme -------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body { 
+    body, html { 
       height: 100%; 
       color: white; 
-      font-family: Georgia, "Times New Roman", serif;
-      background: url('plain-green-paper-textured.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    /* Depth Overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 100%);
-      pointer-events: none;
-      z-index: 1;
+      font-family: 'Inter', sans-serif;
+      background-color: #000; /* Deep Black Theme */
+      overflow-x: hidden;
     }
     
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar (EXACT MATCH) -------------------- */
+    /* -------------------- Navbar (MATCHING HOME) -------------------- */
     .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1.2rem 3rem;
-      position: relative;
-      z-index: 10;
+      align-items: center;
+      padding: 2.5rem 4rem;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
-    
-    .navbar-left { display: flex; align-items: center; gap: 2.5rem; }
 
     .logo {
-      font-family: 'AlusintaBrenob', serif;
-      font-size: 2.2rem;
-      letter-spacing: 3px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      font-weight: 300;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
-    nav { display: flex; gap: 1.6rem; }
+    nav { display: flex; gap: 3rem; }
     
     nav a {
-      font-family: 'AlikeMisely', sans-serif;
-      font-size: 1.05rem;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
-      color: white;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
     }
 
     nav a:hover, nav a.active {
       opacity: 1;
-      font-weight: bold;
-    }
-
-    .navbar-right img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .navbar { flex-direction: column; gap: 1rem; }
-      nav { justify-content: center; }
     }
 
     /* -------------------- Contact Page -------------------- */
-    .page {
-      position: relative;
-      z-index: 5;
+    .page-intro { 
+      padding-top: 18vh;
+      text-align: center; 
+      margin-bottom: 4vh;
+    }
+    
+    .page-intro h1 { 
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; 
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 2px;
     }
 
     .contact-container {
-      max-width: 700px;
-      margin: 4rem auto;
-      padding: 0 2rem;
-      color: #ffffff;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 2rem 10rem 2rem;
       text-align: center;
-      
-      /* Animation */
-      opacity: 0;
-      animation: fadeUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-      animation-delay: 0.2s;
-    }
-
-    .contact-container h1 {
-      font-family: 'AlikeMisely', serif;
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      color: white;
-      letter-spacing: 1px;
     }
 
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1.5rem;
+      margin-top: 2rem;
     }
 
     .contact-form input,
     .contact-form textarea {
-      padding: 1.1rem 1.4rem;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 8px;
+      padding: 1.2rem 1rem;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
       color: #fff;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      resize: vertical;
-      font-family: inherit;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.4s ease;
+      resize: none;
+      border-radius: 0;
     }
 
     .contact-form input:focus,
     .contact-form textarea:focus {
       outline: none;
-      border-color: #fff;
-      background: rgba(255,255,255,0.15);
+      border-bottom-color: #fff;
     }
 
     .contact-form button {
-      font-family: 'AlikeMisely', sans-serif;
-      padding: 1rem 1.5rem;
-      border: 1px solid #fff;
+      margin-top: 2rem;
+      padding: 1.2rem;
       background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
       color: #fff;
-      font-size: 1.1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border-radius: 8px;
-      margin-top: 0.5rem;
+      transition: all 0.4s ease;
     }
 
     .contact-form button:hover {
       background: #fff;
       color: #000;
+      border-color: #fff;
     }
 
-    .social-links {
-      margin-top: 3rem;
-      font-size: 1.2rem;
-    }
-
-    .social-links p { margin-bottom: 0.8rem; color: #fff; opacity: 0.8; }
-
-    .social-links a {
-      color: #ffffff;
-      text-decoration: none;
-      transition: opacity 0.3s ease;
-      border-bottom: 1px solid rgba(255,255,255,0.4);
-      padding-bottom: 2px;
-    }
-
-    .social-links a:hover {
+    .info-grid {
+      margin-top: 5rem;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
       opacity: 0.6;
     }
 
-    .contact-number {
-      margin-top: 2.5rem;
-      color: #ffffff;
-      opacity: 0.7;
-      font-size: 1.1rem;
+    .info-item h3 {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      font-weight: 400;
     }
 
-    /* -------------------- Animations -------------------- */
-    @keyframes fadeUp {
-      from { 
-        opacity: 0; 
-        transform: translateY(30px); 
-      }
-      to { 
-        opacity: 1; 
-        transform: translateY(0); 
-      }
+    .info-item p, .info-item a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
     }
 
+    .info-item a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* -------------------- Mobile -------------------- */
     @media (max-width: 768px) {
-      .contact-container { margin: 2rem auto; }
-      .contact-container h1 { font-size: 2.2rem; }
+      .navbar { padding: 2rem; }
+      nav { gap: 1.5rem; }
+      .info-grid { flex-direction: column; gap: 2.5rem; }
+      .page-intro h1 { font-size: 2.8rem; }
     }
   </style>
 </head>
@@ -213,50 +168,72 @@
 <body>
 
   <header class="navbar">
-    <div class="navbar-left">
-      <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="awards.html">Awards</a>
-        <a href="contact.html" class="active">Contact</a>
-      </nav>
-    </div>
-    <div class="navbar-right">
-      <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
-        <img src="images.png" alt="Instagram">
-      </a>
-    </div>
+    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="awards.html">Awards</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
   </header>
 
   <section class="page">
-    <section class="contact-container">
-      <h1>Get in Touch</h1>
+    <section class="page-intro">
+      <h1>Let's Connect</h1>
+    </section>
 
+    <div class="contact-container">
       <form
         class="contact-form"
         action="https://formspree.io/f/mjkoqoka"
         method="POST"
       >
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="_replyto" placeholder="Your Email" required />
-        <textarea name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
-        <button type="submit">Send Message</button>
+        <input type="text" name="name" placeholder="FULL NAME" required />
+        <input type="email" name="_replyto" placeholder="EMAIL ADDRESS" required />
+        <textarea name="message" rows="4" placeholder="HOW CAN I HELP YOU?" required></textarea>
+        <button type="submit">Send Inquiry</button>
       </form>
 
-      <div class="social-links">
-        <p>Connect with me:</p>
-        <a href="https://www.instagram.com/atharvphotography07/" target="_blank">
-          @atharvphotography07
-        </a>
+      <div class="info-grid">
+        <div class="info-item">
+          <h3>Instagram</h3>
+          <a href="https://www.instagram.com/atharvphotography07/" target="_blank">@atharvphotography07</a>
+        </div>
+        <div class="info-item">
+          <h3>Direct</h3>
+          <p>+1 (206) 643-7679</p>
+        </div>
       </div>
-
-      <div class="contact-number">
-        <p>Direct: +1 (206) 643-7679</p>
-      </div>
-    </section>
+    </div>
   </section>
+
+  <script>
+    // Reveal Animations
+    gsap.from(".page-intro h1", {
+      opacity: 0,
+      y: 30,
+      duration: 1.5,
+      ease: "power3.out"
+    });
+
+    gsap.from(".contact-form", {
+      opacity: 0,
+      y: 20,
+      duration: 1.5,
+      delay: 0.4,
+      ease: "power2.out"
+    });
+
+    gsap.from(".info-item", {
+      opacity: 0,
+      y: 20,
+      duration: 1.2,
+      delay: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  </script>
 
 </body>
 </html>
