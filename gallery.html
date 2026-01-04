@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* -------------------- Navbar (Synced Perfectly) -------------------- */
+    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -28,7 +28,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 2.5rem 4rem;
-      z-index: 100; /* Standardized z-index */
+      z-index: 100;
       background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
 
@@ -54,9 +54,7 @@
       transition: opacity 0.4s ease;
     }
 
-    nav a:hover, nav a.active {
-      opacity: 1;
-    }
+    nav a:hover, nav a.active { opacity: 1; }
 
     /* -------------------- Gallery Header -------------------- */
     .page-intro {
@@ -150,15 +148,50 @@
     .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
     .close { position: absolute; top: 30px; right: 40px; font-size: 35px; cursor: pointer; color: #444; }
 
-    /* -------------------- Mobile -------------------- */
-    @media (max-width: 1024px) {
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 768px) {
-      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem 5rem 2rem; }
-      .navbar { padding: 2rem; }
-      nav { gap: 1.5rem; }
+    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
+    @media (max-width: 770px) {
+      .navbar { 
+        padding: 2rem 1rem;
+        flex-direction: column; 
+        gap: 1.5rem;
+        background: rgba(0,0,0,0.9);
+      }
+      
+      nav { 
+        gap: 1.2rem; 
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+
+      .page-intro { padding-top: 160px; }
       .page-intro h1 { font-size: 2.8rem; }
+
+      .filter-buttons {
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .filter-btn {
+        font-size: 0.55rem;
+        letter-spacing: 1.5px;
+      }
+
+      .gallery-grid { 
+        grid-template-columns: 1fr; /* Single column for mobile viewing */
+        padding: 0 1.5rem 5rem 1.5rem; 
+        gap: 15px;
+      }
+
+      .close { top: 20px; right: 20px; }
+    }
+
+    @media (min-width: 771px) and (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -293,11 +326,20 @@
     function openLightbox(src) {
       document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox').style.display = 'flex';
+      // Prevent body scroll when lightbox is open
+      document.body.style.overflow = 'hidden';
     }
 
-    document.querySelector('.close').onclick = () => document.getElementById('lightbox').style.display = 'none';
+    document.querySelector('.close').onclick = () => {
+      document.getElementById('lightbox').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    };
+
     document.getElementById('lightbox').onclick = (e) => {
-      if(e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none';
+      if(e.target.id === 'lightbox') {
+        document.getElementById('lightbox').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
     };
     
     init();

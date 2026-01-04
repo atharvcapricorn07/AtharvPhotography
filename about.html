@@ -1,5 +1,5 @@
 <!DOCTYPE html>
- <html lang="en">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,7 +16,7 @@
       height: 100%; 
       color: white; 
       font-family: 'Inter', sans-serif;
-      background-color: #000; /* Deep Black Theme */
+      background-color: #000; 
       overflow-x: hidden;
     }
     
@@ -32,6 +32,7 @@
       align-items: center;
       padding: 2.5rem 4rem;
       z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
     }
 
     .logo {
@@ -111,16 +112,50 @@
 
     .about-text p { margin-bottom: 1.5rem; }
 
-    /* -------------------- Mobile -------------------- */
-    @media (max-width: 900px) {
+    /* -------------------- Mobile (MATCHING HOME) -------------------- */
+    @media (max-width: 770px) {
+      body, html {
+        overflow-y: auto; /* Allow scrolling for text content */
+      }
+
+      .navbar { 
+        padding: 2rem 1rem;
+        flex-direction: column; 
+        gap: 1.5rem;
+        background: rgba(0,0,0,0.9);
+      }
+      
+      nav { 
+        gap: 1.2rem; 
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+
+      .page-intro {
+        padding-top: 160px; /* Space for stacked navbar */
+      }
+
+      .page-intro h1 {
+        font-size: 2.2rem;
+      }
+
       .about-container {
         flex-direction: column;
         gap: 3rem;
         text-align: center;
+        padding-bottom: 5rem;
       }
-      .about-photo-wrapper { flex: 0 0 auto; width: 80%; }
-      .navbar { padding: 2rem; }
-      nav { gap: 1.5rem; }
+
+      .about-photo-wrapper { 
+        flex: 0 0 auto; 
+        width: 100%; 
+        max-width: 320px;
+      }
     }
   </style>
 </head>
@@ -187,16 +222,15 @@
 
     gsap.from("#pfp", {
       opacity: 0,
-      x: -40,
+      y: 20, // Switched from X to Y for cleaner mobile entry
       duration: 1.8,
       delay: 0.3,
       ease: "power2.out"
     });
 
-    // Staggering the paragraphs for a cleaner entrance
     gsap.from("#text p", {
       opacity: 0,
-      x: 40,
+      y: 20, // Switched from X to Y for cleaner mobile entry
       duration: 1.5,
       stagger: 0.2,
       delay: 0.5,

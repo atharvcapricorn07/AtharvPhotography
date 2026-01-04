@@ -22,7 +22,7 @@
     
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar (MATCHING THEME) -------------------- */
+    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -91,7 +91,7 @@
     
     .gallery-grid img { 
       width: 100%;
-      aspect-ratio: 4 / 5; /* Award certificates usually look better in portrait */
+      aspect-ratio: 4 / 5;
       object-fit: cover; 
       cursor: pointer; 
       background: #0a0a0a;
@@ -152,11 +152,41 @@
       cursor: pointer; 
     }
 
-    @media (max-width: 1024px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 768px) { 
-      .gallery-grid { grid-template-columns: 1fr; padding: 0 2rem; }
-      .navbar { padding: 2rem; }
-      nav { gap: 1.5rem; }
+    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
+    @media (max-width: 770px) {
+      .navbar { 
+        padding: 2rem 1rem;
+        flex-direction: column; 
+        gap: 1.5rem;
+        background: rgba(0,0,0,0.9);
+      }
+      
+      nav { 
+        gap: 1.2rem; 
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+
+      .page-intro { padding-top: 160px; }
+      .page-intro h1 { font-size: 2.8rem; }
+      .page-intro p { font-size: 0.6rem; }
+
+      .gallery-grid { 
+        grid-template-columns: 1fr; /* Stacked for mobile readability */
+        padding: 0 1.5rem 5rem 1.5rem; 
+        gap: 20px;
+      }
+
+      .close { top: 20px; right: 20px; font-size: 30px; }
+    }
+
+    @media (min-width: 771px) and (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -214,6 +244,7 @@
           img.addEventListener("click", () => {
             lightbox.style.display = "flex";
             lightboxImg.src = img.src;
+            document.body.style.overflow = 'hidden'; // Prevent mobile scroll
           });
 
           gallery.appendChild(img);
@@ -245,9 +276,14 @@
           viewMoreBtn.style.display = "none";
         });
 
-        closeBtn.addEventListener("click", () => { lightbox.style.display = "none"; });
+        const closeLightbox = () => {
+          lightbox.style.display = "none";
+          document.body.style.overflow = 'auto'; // Restore scroll
+        };
+
+        closeBtn.addEventListener("click", closeLightbox);
         lightbox.addEventListener("click", e => {
-          if (e.target === lightbox) lightbox.style.display = "none";
+          if (e.target === lightbox) closeLightbox();
         });
 
       } catch (err) {

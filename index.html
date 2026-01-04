@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Atharv Kale | Photography</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100&display=swap" rel="stylesheet">
@@ -16,10 +16,10 @@
       background-color: #000;
       color: #fff;
       font-family: 'Inter', sans-serif;
-      overflow: hidden;
+      overflow: hidden; 
     }
 
-    /* -------------------- Fixed Navbar (Synced) -------------------- */
+    /* -------------------- Fixed Navbar -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -54,9 +54,7 @@
       transition: opacity 0.4s ease;
     }
 
-    nav a:hover, nav a.active {
-      opacity: 1;
-    }
+    nav a:hover, nav a.active { opacity: 1; }
 
     /* -------------------- Interactive Light -------------------- */
     .flashlight {
@@ -92,9 +90,7 @@
       width: 90%;
     }
 
-    .hero-text {
-      max-width: 500px;
-    }
+    .hero-text { max-width: 500px; }
 
     .hero-text h1 {
       font-family: 'Cormorant Garamond', serif;
@@ -125,6 +121,62 @@
       letter-spacing: 2px;
       opacity: 0.3;
       font-family: monospace;
+    }
+
+    /* -------------------- Mobile Layout Fixes (≤ 770px) -------------------- */
+    @media (max-width: 770px) {
+      .navbar { 
+        padding: 2rem 1rem;
+        flex-direction: column; 
+        gap: 1.5rem;
+        background: rgba(0,0,0,0.8);
+      }
+      
+      nav { 
+        gap: 1.2rem; 
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 4vh;
+        margin-top: 60px; /* Space for the stacked navbar */
+      }
+
+      .hero-text h1 { font-size: 1.8rem; }
+      .camera-visual { width: 65vw; max-width: 260px; }
+      
+      .coordinates {
+        left: 0;
+        width: 100%;
+        text-align: center;
+        bottom: 1.5rem;
+      }
+
+      #mobile-ent-btn {
+        position: fixed;
+        bottom: 12%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 12px 20px;
+        background: #fff;
+        color: #000;
+        border: none;
+        font-family: 'Inter';
+        font-size: 9px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 2px;
+      }
     }
   </style>
 </head>
@@ -161,6 +213,7 @@
   <script>
     const flashlight = document.getElementById('flashlight');
 
+    // 1. DESKTOP LOGIC (Mouse)
     window.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
@@ -168,6 +221,44 @@
       flashlight.style.setProperty('--y', y + '%');
     });
 
+    // 2. MOBILE LOGIC (Gyroscope)
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      const btn = document.createElement('button');
+      btn.id = "mobile-ent-btn";
+      btn.innerHTML = "Enable Motion Light";
+      document.body.appendChild(btn);
+
+      btn.onclick = function() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(state => {
+              if (state === 'granted') {
+                window.addEventListener('deviceorientation', handleTilt);
+                btn.remove();
+              }
+            }).catch(e => console.error(e));
+        } else {
+          window.addEventListener('deviceorientation', handleTilt);
+          btn.remove();
+        }
+      };
+    }
+
+    function handleTilt(e) {
+      // Mapping device tilt to the 0-100 range
+      let x = ((e.gamma + 35) / 70) * 100; 
+      let y = ((e.beta - 20) / 60) * 100;
+
+      x = Math.max(0, Math.min(100, x));
+      y = Math.max(0, Math.min(100, y));
+
+      flashlight.style.setProperty('--x', x + '%');
+      flashlight.style.setProperty('--y', y + '%');
+    }
+
+    // GSAP Initial Load
     gsap.from(".content-wrapper", {
       opacity: 0,
       scale: 0.98,

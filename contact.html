@@ -16,13 +16,13 @@
       height: 100%; 
       color: white; 
       font-family: 'Inter', sans-serif;
-      background-color: #000; /* Deep Black Theme */
+      background-color: #000;
       overflow-x: hidden;
     }
     
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar (MATCHING HOME) -------------------- */
+    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
     .navbar {
       position: fixed;
       top: 0;
@@ -155,12 +155,42 @@
       text-decoration: underline;
     }
 
-    /* -------------------- Mobile -------------------- */
-    @media (max-width: 768px) {
-      .navbar { padding: 2rem; }
-      nav { gap: 1.5rem; }
-      .info-grid { flex-direction: column; gap: 2.5rem; }
+    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
+    @media (max-width: 770px) {
+      .navbar { 
+        padding: 2rem 1rem;
+        flex-direction: column; 
+        gap: 1.5rem;
+        background: rgba(0,0,0,0.9);
+      }
+      
+      nav { 
+        gap: 1.2rem; 
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+      }
+
+      .page-intro { padding-top: 160px; }
       .page-intro h1 { font-size: 2.8rem; }
+
+      .contact-container {
+        padding-bottom: 5rem;
+      }
+
+      .info-grid { 
+        flex-direction: column; 
+        gap: 2.5rem; 
+        margin-top: 4rem;
+      }
+
+      .info-item p, .info-item a {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
@@ -200,7 +230,6 @@
           <h3>Instagram</h3>
           <a href="https://www.instagram.com/atharvphotography07/" target="_blank">@atharvphotography07</a>
         </div>
-        
       </div>
     </div>
   </section>
