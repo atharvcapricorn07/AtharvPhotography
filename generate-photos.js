@@ -5,12 +5,7 @@ const path = require("path");
 const baseDir = path.join(__dirname, "photos");
 const outputFile = path.join(__dirname, "photos.json");
 
-/**
- * Updated Categories:
- * Removed "buildings" per request.
- * "shoots" maps to "Portraits" in your Gallery UI.
- * "misc" added for general photography.
- */
+
 const categories = ["cars", "landscapes", "animals", "misc", "awards", "shoots"];
 
 let data = {};
