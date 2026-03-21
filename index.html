@@ -1,277 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Atharv Kale | Photography</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atharv Kale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&family=Jost:wght@100;200;300&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+:root {
+  --bg:     #13110e;
+  --bg2:    #1c1915;
+  --cream:  #e9e1ce;
+  --dim:    rgba(233,225,206,0.36);
+  --dimmer: rgba(233,225,206,0.16);
+  --amber:  #c8873a;
+}
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body, html {
-      height: 100%;
-      background-color: #000;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      overflow: hidden; 
-    }
+html, body {
+  width:100%; height:100%;
+  overflow:hidden;
+  background: var(--bg);
 
-    /* -------------------- Fixed Navbar -------------------- */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2.5rem 4rem;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-    }
+}
 
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      font-weight: 300;
-      text-transform: uppercase;
-    }
+/* Grain */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E");
+  background-size:220px;
+  pointer-events:none;
+  z-index:50;
+  animation:gr 0.3s steps(1) infinite;
+}
+@keyframes gr {
+  0%  { transform:translate(0,0); }
+  33% { transform:translate(-4px,3px); }
+  66% { transform:translate(4px,-3px); }
+}
 
-    .logo a { text-decoration: none; color: white; }
+/* Canvas fills background */
+#canvas { position:fixed; inset:0; z-index:0; }
 
-    nav { display: flex; gap: 3rem; }
-    
-    nav a {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #fff;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
-    }
+/* Layout */
+.layout {
+  position:fixed; inset:0; z-index:10;
+  display:grid;
+  grid-template-columns: 1fr 520px;
+  grid-template-rows: 1fr;
+}
 
-    nav a:hover, nav a.active { opacity: 1; }
+/* ── LEFT PANEL ── */
+.left {
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:44px 0 44px 52px;
+}
 
-    /* -------------------- Interactive Light -------------------- */
-    .flashlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 2;
-      background: radial-gradient(
-        circle at var(--x, 50%) var(--y, 50%), 
-        transparent 0%, 
-        rgba(0,0,0,0.95) 45%
-      );
-    }
+.logo {
+  font-family:'Jost', sans-serif;
+  font-weight:100;
+  font-size:11px;
+  letter-spacing:0.44em;
+  text-transform:uppercase;
+  color:var(--dimmer);
+  opacity:0;
+  animation:up 1s 0.1s ease forwards;
+}
 
-    /* -------------------- Hero Content -------------------- */
-    main {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
+.name-block {
+  opacity:0;
+  animation:up 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+  margin-left: auto;
+  margin-right: auto;
+}
+.name-first {
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(52px, 7.5vw, 102px);
+  line-height:0.95;
+  color:var(--cream);
+  letter-spacing:-0.01em;
+  display:block;
+}
+.name-last {
+  font-family:'Playfair Display', serif;
+  font-weight:700;
+  font-size:clamp(52px, 7.5vw, 102px);
+  line-height:0.95;
+  color:var(--cream);
+  letter-spacing:-0.01em;
+  display:block;
+}
+.name-rule {
+  width:40px; height:1px;
+  background:var(--amber);
+  margin: 22px 0 18px;
+}
+.name-sub {
+  font-family:'Jost', sans-serif;
+  font-weight:200;
+  font-size:12px;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--amber);
+}
 
-    .content-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10vw;
-      width: 90%;
-    }
+.bottom-left {
+  opacity:0;
+  animation:up 1s 0.8s ease forwards;
+}
+.coord {
+  font-family:'Jost', sans-serif;
+  font-weight:100;
+  font-size:10px;
+  letter-spacing:0.22em;
+  color:var(--dimmer);
+  margin-bottom:6px;
+}
+.avail {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Jost', sans-serif;
+  font-weight:200;
+  font-size:10px;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.dot {
+  width:5px; height:5px;
+  border-radius:50%;
+  background:var(--amber);
+  animation:pulse-dot 2.4s ease infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.7); }
+}
 
-    .hero-text { max-width: 500px; }
+/* ── RIGHT PANEL — NAV ── */
+.right {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:0 64px;
+  border-left:1px solid rgba(233,225,206,0.06);
+  opacity:0;
+  animation:up 1.3s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+  gap:4px;
+}
 
-    .hero-text h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
-      font-weight: 300;
-      line-height: 1.1;
-      font-style: italic;
-    }
+.nav-label {
+  font-family:'Jost', sans-serif;
+  font-weight:100;
+  font-size:9px;
+  letter-spacing:0.48em;
+  text-transform:uppercase;
+  color:var(--dimmer);
+  margin-bottom:28px;
+}
 
-    .hero-text p {
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      opacity: 0.6;
-    }
+nav a {
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  font-family:'Playfair Display', serif;
+  font-weight:400;
+  font-size:clamp(30px, 3.6vw, 48px);
+  color:rgba(233,225,206,0.2);
+  text-decoration:none;
+  line-height:1.3;
 
-    .camera-visual {
-      width: 500px;
-      filter: drop-shadow(0 0 50px rgba(255,255,255,0.05));
-    }
+  transition:color 0.3s ease, transform 0.3s ease;
+  position:relative;
+}
+nav a .num {
+  font-family:'Jost', sans-serif;
+  font-weight:100;
+  font-size:10px;
+  letter-spacing:0.2em;
+  color:var(--amber);
+  opacity:0;
+  transition:opacity 0.3s;
+  min-width:22px;
+}
+nav a:hover { color:var(--cream); transform:translateX(6px); }
+nav a:hover .num { opacity:1; }
+nav a.active { color:rgba(233,225,206,0.75); }
+nav a.active .num { opacity:1; }
 
-    .coordinates {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 4rem;
-      font-size: 10px;
-      letter-spacing: 2px;
-      opacity: 0.3;
-      font-family: monospace;
-    }
+/* ── CURSOR ── */
 
-    /* -------------------- Mobile Layout Fixes (≤ 770px) -------------------- */
-    @media (max-width: 770px) {
-      .navbar { 
-        padding: 2rem 1rem;
-        flex-direction: column; 
-        gap: 1.5rem;
-        background: rgba(0,0,0,0.8);
-      }
-      
-      nav { 
-        gap: 1.2rem; 
-        flex-wrap: wrap;
-        justify-content: center;
-      }
 
-      nav a {
-        font-size: 0.65rem;
-        letter-spacing: 2px;
-      }
-      
-      .content-wrapper {
-        flex-direction: column;
-        text-align: center;
-        gap: 4vh;
-        margin-top: 60px; /* Space for the stacked navbar */
-      }
-
-      .hero-text h1 { font-size: 1.8rem; }
-      .camera-visual { width: 65vw; max-width: 260px; }
-      
-      .coordinates {
-        left: 0;
-        width: 100%;
-        text-align: center;
-        bottom: 1.5rem;
-      }
-
-      #mobile-ent-btn {
-        position: fixed;
-        bottom: 12%;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        padding: 12px 20px;
-        background: #fff;
-        color: #000;
-        border: none;
-        font-family: 'Inter';
-        font-size: 9px;
-        font-weight: bold;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        border-radius: 2px;
-      }
-    }
-  </style>
+@keyframes up {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
 </head>
 <body>
 
-  <div class="flashlight" id="flashlight"></div>
+<canvas id="canvas"></canvas>
 
-  <header class="navbar">
-    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-    <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="awards.html">Awards</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
 
-  <main>
-    <div class="content-wrapper">
-      <div class="hero-text">
-        <h1>I capture the stories <br> hidden in the light.</h1>
-        <p>Visual Narrative & Editorial</p>
-      </div>
-      
-      <div class="camera-container">
-        <img src="camera.png" alt="Hardware" class="camera-visual">
+
+<div class="layout">
+
+  <!-- LEFT -->
+  <div class="left">
+    <a href="index.html" class="logo" style="text-decoration:none;">Photography Studio</a>
+
+    <div class="name-block">
+      <span class="name-first">Atharv</span>
+      <span class="name-last">Kale.</span>
+      <div class="name-rule"></div>
+      <div class="name-sub">Creative &amp; Editorial</div>
+    </div>
+
+    <div class="bottom-left">
+      <div class="coord">28°36′N · 77°12′E · New Delhi</div>
+      <div class="avail">
+        <div class="dot"></div>
+        Available for commissions
       </div>
     </div>
-  </main>
+  </div>
 
-  <div class="coordinates">LAT: 47.6061 | LONG: 122.3328 // SHUTTER_EXP_007</div>
+  <!-- RIGHT NAV -->
+  <div class="right">
+    <div class="nav-label">Pages</div>
+    <nav>
+      <a href="index.html" class="active"><span class="num">01</span>Home</a>
+      <a href="gallery.html"><span class="num">02</span>Gallery</a>
+      <a href="about.html"><span class="num">03</span>About</a>
+      <a href="awards.html"><span class="num">04</span>Awards</a>
+      <a href="contact.html"><span class="num">05</span>Contact</a>
+    </nav>
+  </div>
 
-  <script>
-    const flashlight = document.getElementById('flashlight');
+</div>
 
-    // 1. DESKTOP LOGIC (Mouse)
-    window.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      flashlight.style.setProperty('--x', x + '%');
-      flashlight.style.setProperty('--y', y + '%');
+<script>
+// ── CURSOR ──
+let mx = innerWidth/2, my = innerHeight/2;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+// ── CANVAS ──
+const cv = document.getElementById('canvas');
+const g  = cv.getContext('2d');
+let W, H;
+
+function resize() {
+  W = cv.width  = innerWidth;
+  H = cv.height = innerHeight;
+}
+resize();
+addEventListener('resize', resize);
+
+// ── LONG EXPOSURE TRAILS ──
+// Each trail is a particle orbiting a center point at a constant radius,
+// leaving a fading streak — mimics long-exposure star trails.
+
+function makeCenter() {
+  // Center is in the overlap zone — right side of left panel
+  return { x: W * 0.57, y: H * 0.5 };
+}
+
+// Orbital rings: each has multiple particles at different phases
+const rings = [
+  { r:0.130, count:3, speed:0.00060, lw:0.9, hue:'amber',  trailLen:1.6 },
+  { r:0.095, count:2, speed:-0.00090, lw:0.6, hue:'cream', trailLen:1.2 },
+  { r:0.165, count:4, speed:0.00040, lw:0.5, hue:'cream',  trailLen:2.2 },
+  { r:0.055, count:1, speed:-0.00140, lw:0.7, hue:'amber', trailLen:0.9 },
+  { r:0.205, count:3, speed:0.00028, lw:0.4, hue:'cream',  trailLen:2.8 },
+  { r:0.240, count:2, speed:-0.00018, lw:0.3, hue:'amber', trailLen:3.4 },
+];
+
+// Seed phases so they look spread out
+const particles = [];
+rings.forEach(ring => {
+  for (let i = 0; i < ring.count; i++) {
+    particles.push({
+      angle: (i / ring.count) * Math.PI * 2 + Math.random() * 0.4,
+      r:     ring.r,
+      speed: ring.speed,
+      lw:    ring.lw,
+      hue:   ring.hue,
+      trailLen: ring.trailLen,  // radians of trail arc
     });
+  }
+});
 
-    // 2. MOBILE LOGIC (Gyroscope)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+// Subtle slow-drifting vignette center
+let t = 0;
 
-    if (isMobile) {
-      const btn = document.createElement('button');
-      btn.id = "mobile-ent-btn";
-      btn.innerHTML = "Enable Motion Light";
-      document.body.appendChild(btn);
+function getBaseRadius(frac) {
+  return frac * Math.min(W, H) * 0.82;
+}
 
-      btn.onclick = function() {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          DeviceOrientationEvent.requestPermission()
-            .then(state => {
-              if (state === 'granted') {
-                window.addEventListener('deviceorientation', handleTilt);
-                btn.remove();
-              }
-            }).catch(e => console.error(e));
-        } else {
-          window.addEventListener('deviceorientation', handleTilt);
-          btn.remove();
-        }
-      };
+function draw() {
+  t += 0.01;
+
+  // Clear and redraw solid background each frame
+  g.clearRect(0, 0, W, H);
+  g.fillStyle = '#13110e';
+  g.fillRect(0, 0, W, H);
+
+  const { x: cx, y: cy } = makeCenter();
+
+  // ── Faint orbit guide rings ──
+  [0.055, 0.095, 0.130, 0.165, 0.205, 0.240].forEach((fr, i) => {
+    const rr = getBaseRadius(fr);
+    g.beginPath();
+    g.arc(cx, cy, rr, 0, Math.PI * 2);
+    g.strokeStyle = `rgba(233,225,206,0.025)`;
+    g.lineWidth = 0.4;
+    g.stroke();
+  });
+
+  // ── Orbital trail particles ──
+  for (const p of particles) {
+    p.angle += p.speed;
+    const rr = getBaseRadius(p.r);
+
+    // Draw arc trail
+    const startA = p.angle - p.trailLen * Math.sign(p.speed);
+    const endA   = p.angle;
+    const ccw    = p.speed < 0;
+
+    const grad = g.createConicalGradient
+      ? null // fallback below
+      : null;
+
+    // Approximate conical gradient with multiple arc segments
+    const SEG = 28;
+    for (let s = 0; s < SEG; s++) {
+      const frac = s / SEG;
+      const a0 = startA + (endA - startA) * frac;
+      const a1 = startA + (endA - startA) * ((s + 1) / SEG);
+      const alpha = frac * frac * (p.hue === 'amber' ? 0.72 : 0.45);
+
+      g.beginPath();
+      g.arc(cx, cy, rr, a0, a1, p.speed < 0);
+      g.strokeStyle = p.hue === 'amber'
+        ? `rgba(200,135,58,${alpha})`
+        : `rgba(233,225,206,${alpha})`;
+      g.lineWidth = p.lw;
+      g.stroke();
     }
 
-    function handleTilt(e) {
-      // Mapping device tilt to the 0-100 range
-      let x = ((e.gamma + 35) / 70) * 100; 
-      let y = ((e.beta - 20) / 60) * 100;
+    // Bright head dot
+    const hx = cx + Math.cos(p.angle) * rr;
+    const hy = cy + Math.sin(p.angle) * rr;
+    const grd = g.createRadialGradient(hx, hy, 0, hx, hy, p.lw * 4);
+    grd.addColorStop(0, p.hue === 'amber'
+      ? 'rgba(220,170,90,0.9)'
+      : 'rgba(240,232,215,0.7)');
+    grd.addColorStop(1, 'transparent');
+    g.beginPath();
+    g.arc(hx, hy, p.lw * 4, 0, Math.PI * 2);
+    g.fillStyle = grd;
+    g.fill();
+  }
 
-      x = Math.max(0, Math.min(100, x));
-      y = Math.max(0, Math.min(100, y));
+  // ── Subtle center glow ──
+  const cg = g.createRadialGradient(cx, cy, 0, cx, cy, getBaseRadius(0.14));
+  cg.addColorStop(0, 'rgba(200,135,58,0.06)');
+  cg.addColorStop(1, 'transparent');
+  g.fillStyle = cg;
+  g.fillRect(0, 0, W, H);
 
-      flashlight.style.setProperty('--x', x + '%');
-      flashlight.style.setProperty('--y', y + '%');
-    }
+  // ── Mouse proximity: barely-visible warm halo ──
+  const md = Math.hypot(mx - cx, my - cy);
+  const reach = getBaseRadius(0.55);
+  if (md < reach) {
+    const strength = (1 - md / reach) * 0.07;
+    const mg = g.createRadialGradient(mx, my, 0, mx, my, 100);
+    mg.addColorStop(0, `rgba(200,135,58,${strength})`);
+    mg.addColorStop(1, 'transparent');
+    g.fillStyle = mg;
+    g.fillRect(0, 0, W, H);
+  }
 
-    // GSAP Initial Load
-    gsap.from(".content-wrapper", {
-      opacity: 0,
-      scale: 0.98,
-      duration: 2.5,
-      ease: "power2.out"
-    });
+  requestAnimationFrame(draw);
+}
 
-    gsap.from(".logo", {
-      y: -20,
-      opacity: 0,
-      duration: 1.5,
-      delay: 0.5
-    });
-  </script>
+// Prime the canvas dark first
+g.fillStyle = '#13110e';
+g.fillRect(0, 0, W, H);
+draw();
+</script>
 </body>
 </html>

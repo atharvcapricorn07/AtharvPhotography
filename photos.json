@@ -6,6 +6,7 @@
     "car12.jpg",
     "car13.jpg",
     "car14.jpg",
+    "car15.jpg",
     "car2.png",
     "car3.png",
     "car4.png",
@@ -29,8 +30,6 @@
   "animals": [
     "animal1.jpg",
     "animal10.jpg",
-    "animal11.jpg",
-    "animal12.jpg",
     "animal2.jpg",
     "animal3.jpg",
     "animal4.jpg",
@@ -38,7 +37,7 @@
     "animal6.jpg",
     "animal7.jpg",
     "animal8.jpg",
-    "animal9.jpg"
+    "animal_9.jpg"
   ],
   "misc": [
     "misc1.jpg",

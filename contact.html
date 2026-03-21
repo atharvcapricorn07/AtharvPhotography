@@ -3,247 +3,412 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact | Atharv Photography 07</title>
+  <title>Contact | Atharv Kale</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100;200&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&family=Jost:wght@100;200;300&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
-    /* -------------------- Global & Theme -------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body, html { 
-      height: 100%; 
-      color: white; 
-      font-family: 'Inter', sans-serif;
-      background-color: #000;
-      overflow-x: hidden;
+
+    :root {
+      --bg:     #13110e;
+      --cream:  #e9e1ce;
+      --dim:    rgba(233,225,206,0.36);
+      --dimmer: rgba(233,225,206,0.16);
+      --amber:  #c8873a;
     }
-    
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      overflow: hidden;
+    }
+
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
+    /* Grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E");
+      background-size: 220px;
+      pointer-events: none;
+      z-index: 50;
+      animation: gr 0.3s steps(1) infinite;
+    }
+    @keyframes gr {
+      0%  { transform: translate(0,0); }
+      33% { transform: translate(-4px,3px); }
+      66% { transform: translate(4px,-3px); }
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      position: fixed; inset: 0;
+      display: grid;
+      grid-template-columns: 220px 1fr 480px;
+    }
+
+    /* ── LEFT SIDEBAR ── */
+    .left {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      padding: 2.5rem 4rem;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+      padding: 44px 0 44px 52px;
+      border-right: 1px solid rgba(233,225,206,0.06);
+      flex-shrink: 0;
     }
 
     .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      font-weight: 300;
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 11px;
+      letter-spacing: 0.44em;
       text-transform: uppercase;
+      color: var(--dimmer);
+      opacity: 0;
+      animation: up 1s 0.1s ease forwards;
     }
 
-    nav { display: flex; gap: 3rem; }
-    
-    nav a {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #fff;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
+    .name-block {
+      opacity: 0;
+      animation: up 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-
-    nav a:hover, nav a.active {
-      opacity: 1;
-    }
-
-    /* -------------------- Contact Page -------------------- */
-    .page-intro { 
-      padding-top: 18vh;
-      text-align: center; 
-      margin-bottom: 4vh;
-    }
-    
-    .page-intro h1 { 
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem; 
-      font-weight: 300;
+    .name-first {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
-      letter-spacing: 2px;
+      font-weight: 300;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+    .name-last {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+    .name-rule {
+      width: 28px; height: 1px;
+      background: var(--amber);
+      margin: 14px 0 12px;
+    }
+    .name-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
     }
 
-    .contact-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 2rem 10rem 2rem;
-      text-align: center;
+    .bottom-left {
+      opacity: 0;
+      animation: up 1s 0.8s ease forwards;
+    }
+    .coord {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--dimmer);
+      margin-bottom: 6px;
+    }
+    .avail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+      animation: pulse-dot 2.4s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
     }
 
+    /* ── MAIN ── */
+    .main {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 52px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(233,225,206,0.1); border-radius: 2px; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 58px);
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .page-rule {
+      width: 40px; height: 1px;
+      background: var(--amber);
+      margin-bottom: 40px;
+    }
+
+    /* Form */
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      margin-top: 2rem;
+      gap: 0;
+      max-width: 480px;
     }
 
     .contact-form input,
     .contact-form textarea {
-      padding: 1.2rem 1rem;
+      padding: 16px 0;
       background: transparent;
       border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      font-size: 0.9rem;
-      font-family: 'Inter', sans-serif;
+      border-bottom: 1px solid rgba(233,225,206,0.1);
+      color: var(--cream);
+      font-size: 12px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
       transition: border-color 0.4s ease;
       resize: none;
       border-radius: 0;
+      width: 100%;
     }
-
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: var(--dimmer);
+    }
     .contact-form input:focus,
     .contact-form textarea:focus {
       outline: none;
-      border-bottom-color: #fff;
+      border-bottom-color: var(--amber);
     }
 
     .contact-form button {
-      margin-top: 2rem;
-      padding: 1.2rem;
+      margin-top: 36px;
+      padding: 16px 0;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
+      border: 1px solid rgba(233,225,206,0.18);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      font-weight: 200;
       text-transform: uppercase;
-      letter-spacing: 4px;
+      letter-spacing: 0.42em;
       cursor: pointer;
       transition: all 0.4s ease;
+      max-width: 480px;
     }
-
     .contact-form button:hover {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
+      background: var(--cream);
+      color: var(--bg);
+      border-color: var(--cream);
     }
 
+    /* Info */
     .info-grid {
-      margin-top: 5rem;
+      margin-top: 48px;
       display: flex;
-      justify-content: center;
-      gap: 4rem;
-      opacity: 0.6;
+      gap: 48px;
     }
-
     .info-item h3 {
-      font-size: 0.6rem;
-      letter-spacing: 3px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 8px;
+      letter-spacing: 0.42em;
       text-transform: uppercase;
-      margin-bottom: 0.8rem;
-      font-weight: 400;
+      color: var(--dimmer);
+      margin-bottom: 10px;
     }
-
-    .info-item p, .info-item a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+    .info-item a,
+    .info-item p {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
+      font-weight: 300;
+      font-size: 16px;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .info-item a:hover { color: var(--cream); }
+
+    /* ── RIGHT NAV ── */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 64px;
+      border-left: 1px solid rgba(233,225,206,0.06);
+      gap: 4px;
+      opacity: 0;
+      animation: up 1.3s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .nav-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.48em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      margin-bottom: 28px;
+    }
+    nav a {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: clamp(30px, 3.6vw, 48px);
+      color: rgba(233,225,206,0.2);
+      text-decoration: none;
+      line-height: 1.3;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    nav a .num {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 0.3s;
+      min-width: 22px;
+    }
+    nav a:hover           { color: var(--cream); transform: translateX(6px); }
+    nav a:hover .num      { opacity: 1; }
+    nav a.active          { color: rgba(233,225,206,0.75); }
+    nav a.active .num     { opacity: 1; }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .info-item a:hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-
-    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
-    @media (max-width: 770px) {
-      .navbar { 
-        padding: 2rem 1rem;
-        flex-direction: column; 
-        gap: 1.5rem;
-        background: rgba(0,0,0,0.9);
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      html, body { overflow-y: auto; }
+      .layout {
+        position: relative;
+        display: flex;
+        flex-direction: column;
       }
-      
-      nav { 
-        gap: 1.2rem; 
+      .left {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(233,225,206,0.06);
+      }
+      .name-block { display: flex; gap: 8px; align-items: baseline; }
+      .name-rule, .name-sub, .bottom-left { display: none; }
+      .main { padding: 32px 24px 60px; overflow-y: visible; justify-content: flex-start; }
+      .info-grid { flex-direction: column; gap: 28px; }
+      .right {
+        border-left: none;
+        border-top: 1px solid rgba(233,225,206,0.06);
+        flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        padding: 20px 24px;
+        gap: 0;
       }
-
-      nav a {
-        font-size: 0.65rem;
-        letter-spacing: 2px;
-      }
-
-      .page-intro { padding-top: 160px; }
-      .page-intro h1 { font-size: 2.8rem; }
-
-      .contact-container {
-        padding-bottom: 5rem;
-      }
-
-      .info-grid { 
-        flex-direction: column; 
-        gap: 2.5rem; 
-        margin-top: 4rem;
-      }
-
-      .info-item p, .info-item a {
-        font-size: 1.1rem;
-      }
+      .nav-label { display: none; }
+      nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+      nav a { font-size: 22px; }
     }
   </style>
 </head>
-
 <body>
 
-  <header class="navbar">
-    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="awards.html">Awards</a>
-      <a href="contact.html" class="active">Contact</a>
-    </nav>
-  </header>
+  <div class="layout">
 
-  <section class="page">
-    <section class="page-intro">
-      <h1>Let's Connect</h1>
-    </section>
+    <!-- LEFT SIDEBAR -->
+    <div class="left">
+      <a href="index.html" class="logo">Photography Studio</a>
+      <div class="name-block">
+        <span class="name-first">Atharv</span>
+        <span class="name-last">Kale.</span>
+        <div class="name-rule"></div>
+        <div class="name-sub">Creative &amp; Editorial</div>
+      </div>
+      <div class="bottom-left">
+        <div class="coord">28°36′N · 77°12′E · New Delhi</div>
+        <div class="avail"><div class="dot"></div>Available for commissions</div>
+      </div>
+    </div>
 
-    <div class="contact-container">
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <div class="page-title" id="page-title">Let's Connect</div>
+      <div class="page-rule"></div>
+
       <form
         class="contact-form"
         action="https://formspree.io/f/mjkoqoka"
         method="POST"
+        id="contact-form"
       >
-        <input type="text" name="name" placeholder="FULL NAME" required />
-        <input type="email" name="_replyto" placeholder="EMAIL ADDRESS" required />
-        <textarea name="message" rows="4" placeholder="HOW CAN I HELP YOU?" required></textarea>
+        <input type="text"  name="name"     placeholder="Full Name"       required />
+        <input type="email" name="_replyto" placeholder="Email Address"   required />
+        <textarea name="message" rows="4"   placeholder="How can I help?" required></textarea>
         <button type="submit">Send Inquiry</button>
       </form>
 
-      <div class="info-grid">
+      <div class="info-grid" id="info-grid">
         <div class="info-item">
           <h3>Instagram</h3>
           <a href="https://www.instagram.com/atharvphotography07/" target="_blank">@atharvphotography07</a>
         </div>
       </div>
     </div>
-  </section>
+
+    <!-- RIGHT NAV -->
+    <div class="right">
+      <div class="nav-label">Pages</div>
+      <nav>
+        <a href="index.html"  ><span class="num">01</span>Home</a>
+        <a href="gallery.html"><span class="num">02</span>Gallery</a>
+        <a href="about.html"  ><span class="num">03</span>About</a>
+        <a href="awards.html" ><span class="num">04</span>Awards</a>
+        <a href="contact.html" class="active"><span class="num">05</span>Contact</a>
+      </nav>
+    </div>
+
+  </div>
 
   <script>
-    // Reveal Animations
-    gsap.from(".page-intro h1", {
+    gsap.from("#page-title", {
       opacity: 0,
       y: 30,
       duration: 1.5,
       ease: "power3.out"
     });
 
-    gsap.from(".contact-form", {
+    gsap.from("#contact-form", {
       opacity: 0,
       y: 20,
       duration: 1.5,
@@ -251,7 +416,7 @@
       ease: "power2.out"
     });
 
-    gsap.from(".info-item", {
+    gsap.from("#info-grid .info-item", {
       opacity: 0,
       y: 20,
       duration: 1.2,

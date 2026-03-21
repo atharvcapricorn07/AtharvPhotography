@@ -3,219 +3,401 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Awards | Atharv Photography 07</title>
+  <title>Awards | Atharv Kale</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100;200&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&family=Jost:wght@100;200;300&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
-    /* -------------------- Global & Theme -------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body, html {
-      height: 100%;
-      background-color: #000;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+
+    :root {
+      --bg:     #13110e;
+      --cream:  #e9e1ce;
+      --dim:    rgba(233,225,206,0.36);
+      --dimmer: rgba(233,225,206,0.16);
+      --amber:  #c8873a;
     }
-    
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      overflow: hidden;
+    }
+
     a { text-decoration: none; color: inherit; }
 
-    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
+    /* Grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E");
+      background-size: 220px;
+      pointer-events: none;
+      z-index: 50;
+      animation: gr 0.3s steps(1) infinite;
+    }
+    @keyframes gr {
+      0%  { transform: translate(0,0); }
+      33% { transform: translate(-4px,3px); }
+      66% { transform: translate(4px,-3px); }
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      position: fixed; inset: 0;
+      display: grid;
+      grid-template-columns: 220px 1fr 480px;
+    }
+
+    /* ── LEFT SIDEBAR ── */
+    .left {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      padding: 2.5rem 4rem;
-      z-index: 1000;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+      padding: 44px 0 44px 52px;
+      border-right: 1px solid rgba(233,225,206,0.06);
+      flex-shrink: 0;
     }
 
     .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      font-weight: 300;
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 11px;
+      letter-spacing: 0.44em;
       text-transform: uppercase;
+      color: var(--dimmer);
+      opacity: 0;
+      animation: up 1s 0.1s ease forwards;
     }
 
-    nav { display: flex; gap: 3rem; }
-    
-    nav a {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #fff;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
+    .name-block {
+      opacity: 0;
+      animation: up 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-
-    nav a.active, nav a:hover { opacity: 1; }
-
-    /* -------------------- Page Content -------------------- */
-    .page-intro { 
-      padding-top: 18vh;
-      text-align: center; 
-      margin-bottom: 6vh;
-    }
-    
-    .page-intro h1 { 
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem; 
-      font-weight: 300;
+    .name-first {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
-      letter-spacing: 2px;
+      font-weight: 300;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
     }
-    
-    .page-intro p { 
-      font-size: 0.75rem; 
-      text-transform: uppercase; 
-      letter-spacing: 3px; 
-      opacity: 0.5;
-      margin-top: 10px;
+    .name-last {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+    .name-rule {
+      width: 28px; height: 1px;
+      background: var(--amber);
+      margin: 14px 0 12px;
+    }
+    .name-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
     }
 
-    /* -------------------- Awards Grid -------------------- */
-    .gallery-grid { 
+    .bottom-left {
+      opacity: 0;
+      animation: up 1s 0.8s ease forwards;
+    }
+    .coord {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--dimmer);
+      margin-bottom: 6px;
+    }
+    .avail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+      animation: pulse-dot 2.4s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ── MAIN SCROLLABLE CONTENT ── */
+    .main {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 52px 40px 80px;
+      opacity: 0;
+      animation: up 1.2s 0.4s ease forwards;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(233,225,206,0.1); border-radius: 2px; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 64px);
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .page-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      margin-bottom: 10px;
+    }
+    .page-rule {
+      width: 40px; height: 1px;
+      background: var(--amber);
+      margin-bottom: 36px;
+    }
+
+    /* Awards grid */
+    .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      padding: 0 4rem 5rem 4rem;
-      max-width: 1400px;
-      margin: 0 auto;
+      gap: 14px;
+      min-height: 100px;
     }
-    
-    .gallery-grid img { 
+
+    .gallery-grid img {
       width: 100%;
       aspect-ratio: 4 / 5;
-      object-fit: cover; 
-      cursor: pointer; 
-      background: #0a0a0a;
+      object-fit: cover;
+      cursor: pointer;
+      background: #1a1714;
       transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
       filter: grayscale(0.4) contrast(1.1);
       opacity: 0;
       transform: translateY(20px);
     }
-    
     .gallery-grid img.animate {
       opacity: 1;
       transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease, filter 0.4s ease, scale 1.2s cubic-bezier(0.19,1,0.22,1);
     }
-    
-    .gallery-grid img:hover { 
-      transform: scale(1.03); 
+    .gallery-grid img:hover {
+      transform: scale(1.03);
       filter: grayscale(0);
     }
-    
-    .view-more-container { text-align: center; padding-bottom: 10rem; }
-    
-    .filter-btn { 
+
+    .view-more-container {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+    .filter-btn {
       background: none;
       border: none;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 3px;
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      font-weight: 200;
+      letter-spacing: 0.36em;
       text-transform: uppercase;
       cursor: pointer;
       opacity: 0.3;
       transition: opacity 0.3s;
-      border-bottom: 1px solid transparent;
+      padding: 10px 28px;
+      border: 1px solid rgba(233,225,206,0.15);
+      border-radius: 1px;
     }
-    
-    .filter-btn:hover { opacity: 1; border-bottom: 1px solid white; }
+    .filter-btn:hover { opacity: 1; }
 
-    /* -------------------- Lightbox -------------------- */
-    .lightbox { 
-      display: none; 
-      position: fixed; 
-      z-index: 2000; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      background: #000; 
-      justify-content: center; 
-      align-items: center; 
+    /* ── RIGHT NAV ── */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 64px;
+      border-left: 1px solid rgba(233,225,206,0.06);
+      gap: 4px;
+      opacity: 0;
+      animation: up 1.3s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-    
-    .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
-    
-    .close { 
-      position: absolute; 
-      top: 30px; 
-      right: 40px; 
-      font-size: 35px; 
-      color: #444; 
-      cursor: pointer; 
+    .nav-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.48em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      margin-bottom: 28px;
+    }
+    nav a {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: clamp(30px, 3.6vw, 48px);
+      color: rgba(233,225,206,0.2);
+      text-decoration: none;
+      line-height: 1.3;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    nav a .num {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 0.3s;
+      min-width: 22px;
+    }
+    nav a:hover           { color: var(--cream); transform: translateX(6px); }
+    nav a:hover .num      { opacity: 1; }
+    nav a.active          { color: rgba(233,225,206,0.75); }
+    nav a.active .num     { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(19,17,14,0.96);
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-img {
+      max-width: 88%;
+      max-height: 88vh;
+      object-fit: contain;
+    }
+    .close {
+      position: absolute;
+      top: 28px; right: 40px;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--dimmer);
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      transition: color 0.2s;
+    }
+    .close:hover { color: var(--cream); }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
-    @media (max-width: 770px) {
-      .navbar { 
-        padding: 2rem 1rem;
-        flex-direction: column; 
-        gap: 1.5rem;
-        background: rgba(0,0,0,0.9);
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .layout {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
-      
-      nav { 
-        gap: 1.2rem; 
+      .left {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(233,225,206,0.06);
+      }
+      .name-block { display: flex; gap: 8px; align-items: baseline; }
+      .name-rule, .name-sub, .bottom-left { display: none; }
+      .main { padding: 24px 20px 60px; flex: 1; overflow-y: auto; }
+      .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      .right {
+        border-left: none;
+        border-top: 1px solid rgba(233,225,206,0.06);
+        flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        padding: 20px 24px;
+        gap: 0;
       }
-
-      nav a {
-        font-size: 0.65rem;
-        letter-spacing: 2px;
-      }
-
-      .page-intro { padding-top: 160px; }
-      .page-intro h1 { font-size: 2.8rem; }
-      .page-intro p { font-size: 0.6rem; }
-
-      .gallery-grid { 
-        grid-template-columns: 1fr; /* Stacked for mobile readability */
-        padding: 0 1.5rem 5rem 1.5rem; 
-        gap: 20px;
-      }
-
-      .close { top: 20px; right: 20px; font-size: 30px; }
+      .nav-label { display: none; }
+      nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+      nav a { font-size: 22px; }
+      .close { top: 20px; right: 20px; }
     }
 
-    @media (min-width: 771px) and (max-width: 1024px) {
+    @media (min-width: 901px) and (max-width: 1200px) {
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="awards.html" class="active">Awards</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+  <div class="layout">
 
-  <section class="page">
-    <section class="page-intro">
-      <h1>Honors</h1>
-      <p>Recognitions of light and perspective</p>
-    </section>
-
-    <section class="gallery-grid" id="gallery"></section>
-
-    <div class="view-more-container">
-      <button id="view-more-btn" class="filter-btn">Expand Archive</button>
+    <!-- LEFT SIDEBAR -->
+    <div class="left">
+      <a href="index.html" class="logo">Photography Studio</a>
+      <div class="name-block">
+        <span class="name-first">Atharv</span>
+        <span class="name-last">Kale.</span>
+        <div class="name-rule"></div>
+        <div class="name-sub">Creative &amp; Editorial</div>
+      </div>
+      <div class="bottom-left">
+        <div class="coord">28°36′N · 77°12′E · New Delhi</div>
+        <div class="avail"><div class="dot"></div>Available for commissions</div>
+      </div>
     </div>
-  </section>
 
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <div class="page-title">Honors</div>
+      <div class="page-sub">Recognitions of light and perspective</div>
+      <div class="page-rule"></div>
+
+      <section class="gallery-grid" id="gallery"></section>
+
+      <div class="view-more-container">
+        <button id="view-more-btn" class="filter-btn">Expand Archive</button>
+      </div>
+    </div>
+
+    <!-- RIGHT NAV -->
+    <div class="right">
+      <div class="nav-label">Pages</div>
+      <nav>
+        <a href="index.html"  ><span class="num">01</span>Home</a>
+        <a href="gallery.html"><span class="num">02</span>Gallery</a>
+        <a href="about.html"  ><span class="num">03</span>About</a>
+        <a href="awards.html" class="active"><span class="num">04</span>Awards</a>
+        <a href="contact.html"><span class="num">05</span>Contact</a>
+      </nav>
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox">
     <span class="close">&times;</span>
     <img class="lightbox-img" id="lightbox-img" src="" />
@@ -244,7 +426,7 @@
           img.addEventListener("click", () => {
             lightbox.style.display = "flex";
             lightboxImg.src = img.src;
-            document.body.style.overflow = 'hidden'; // Prevent mobile scroll
+            document.body.style.overflow = 'hidden';
           });
 
           gallery.appendChild(img);
@@ -252,7 +434,7 @@
         });
 
         const INITIAL_COUNT = 6;
-        
+
         allImages.slice(0, INITIAL_COUNT).forEach((img, i) => {
           img.style.display = "block";
           setTimeout(() => {
@@ -264,7 +446,7 @@
 
         viewMoreBtn.addEventListener("click", () => {
           let delayCount = 0;
-          allImages.forEach(img => { 
+          allImages.forEach(img => {
             if (img.style.display === "none") {
               img.style.display = "block";
               setTimeout(() => {
@@ -278,7 +460,7 @@
 
         const closeLightbox = () => {
           lightbox.style.display = "none";
-          document.body.style.overflow = 'auto'; // Restore scroll
+          document.body.style.overflow = 'auto';
         };
 
         closeBtn.addEventListener("click", closeLightbox);

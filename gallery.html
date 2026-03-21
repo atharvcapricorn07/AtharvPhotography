@@ -3,115 +3,217 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery | Atharv Photography 07</title>
+  <title>Gallery | Atharv Kale</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&family=Jost:wght@100;200;300&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body, html {
-      height: 100%;
-      background-color: #000;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+
+    :root {
+      --bg:     #13110e;
+      --cream:  #e9e1ce;
+      --dim:    rgba(233,225,206,0.36);
+      --dimmer: rgba(233,225,206,0.16);
+      --amber:  #c8873a;
     }
 
-    /* -------------------- Navbar (MATCHING ALL PAGES) -------------------- */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E");
+      background-size: 220px;
+      pointer-events: none;
+      z-index: 50;
+      animation: gr 0.3s steps(1) infinite;
+    }
+    @keyframes gr {
+      0%  { transform: translate(0,0); }
+      33% { transform: translate(-4px,3px); }
+      66% { transform: translate(4px,-3px); }
+    }
+
+    /* ── OUTER GRID: left sidebar | main content | right nav ── */
+    .layout {
+      position: fixed; inset: 0;
+      display: grid;
+      grid-template-columns: 220px 1fr 480px;
+    }
+
+    /* ── LEFT SIDEBAR ── */
+    .left {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      padding: 2.5rem 4rem;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+      padding: 44px 0 44px 52px;
+      border-right: 1px solid rgba(233,225,206,0.06);
+      flex-shrink: 0;
     }
 
     .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      font-weight: 300;
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 11px;
+      letter-spacing: 0.44em;
       text-transform: uppercase;
-    }
-
-    .logo a { text-decoration: none; color: white; }
-
-    nav { display: flex; gap: 3rem; }
-    
-    nav a {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      color: var(--dimmer);
       text-decoration: none;
-      color: #fff;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
+      opacity: 0;
+      animation: up 1s 0.1s ease forwards;
     }
 
-    nav a:hover, nav a.active { opacity: 1; }
-
-    /* -------------------- Gallery Header -------------------- */
-    .page-intro {
-      padding-top: 18vh;
-      text-align: center;
-      margin-bottom: 5vh;
+    .name-block {
+      opacity: 0;
+      animation: up 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
     }
-
-    .page-intro h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
-      font-weight: 300;
+    .name-first {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
-      letter-spacing: 2px;
+      font-weight: 300;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+    .name-last {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      display: block;
+    }
+    .name-rule {
+      width: 28px; height: 1px;
+      background: var(--amber);
+      margin: 14px 0 12px;
+    }
+    .name-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
     }
 
-    /* -------------------- Filter Buttons -------------------- */
+    .bottom-left {
+      opacity: 0;
+      animation: up 1s 0.8s ease forwards;
+    }
+    .coord {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--dimmer);
+      margin-bottom: 6px;
+    }
+    .avail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+      animation: pulse-dot 2.4s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ── MAIN SCROLLABLE CONTENT ── */
+    .main {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 52px 40px 80px;
+      opacity: 0;
+      animation: up 1.2s 0.4s ease forwards;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(233,225,206,0.1); border-radius: 2px; }
+
+    /* Page title */
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 64px);
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .page-rule {
+      width: 40px; height: 1px;
+      background: var(--amber);
+      margin-bottom: 32px;
+    }
+
+    /* Filter buttons */
     .filter-buttons {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 2rem;
-      margin-bottom: 4rem;
-      position: relative;
-      z-index: 10;
-      padding: 0 1rem;
+      gap: 8px 24px;
+      margin-bottom: 36px;
     }
-
     .filter-btn {
       background: none;
       border: none;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 3px;
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      font-weight: 200;
+      letter-spacing: 0.36em;
       text-transform: uppercase;
       cursor: pointer;
       opacity: 0.3;
       transition: opacity 0.3s;
+      padding: 4px 0;
+    }
+    .filter-btn.active,
+    .filter-btn:hover { opacity: 1; }
+    .filter-btn.active {
+      border-bottom: 1px solid var(--amber);
+      color: var(--amber);
     }
 
-    .filter-btn.active, .filter-btn:hover { opacity: 1; }
-
-    /* -------------------- Gallery Grid -------------------- */
+    /* Gallery grid */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-      padding: 0 4rem 5rem 4rem;
-      min-height: 200px; 
+      gap: 14px;
+      min-height: 100px;
     }
 
     .gallery-item {
       position: relative;
       aspect-ratio: 3 / 2;
       overflow: hidden;
-      background: #0a0a0a;
+      background: #1a1714;
       visibility: hidden;
       opacity: 0;
     }
@@ -124,7 +226,6 @@
       transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
       filter: grayscale(0.2) contrast(1.05);
     }
-
     .gallery-item img:hover {
       transform: scale(1.04);
       filter: grayscale(0);
@@ -132,102 +233,190 @@
 
     .view-more-container {
       text-align: center;
-      padding-bottom: 10rem;
+      padding: 40px 0 20px;
     }
+    #view-more-btn {
+      font-size: 9px;
+      letter-spacing: 0.36em;
+      padding: 10px 28px;
+      border: 1px solid rgba(233,225,206,0.15);
+      border-radius: 1px;
+      opacity: 0.5;
+    }
+    #view-more-btn:hover { opacity: 1; }
 
-    /* -------------------- Lightbox -------------------- */
+    /* ── RIGHT NAV ── */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 64px;
+      border-left: 1px solid rgba(233,225,206,0.06);
+      gap: 4px;
+      opacity: 0;
+      animation: up 1.3s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .nav-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 9px;
+      letter-spacing: 0.48em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      margin-bottom: 28px;
+    }
+    nav a {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: clamp(30px, 3.6vw, 48px);
+      color: rgba(233,225,206,0.2);
+      text-decoration: none;
+      line-height: 1.3;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    nav a .num {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 0.3s;
+      min-width: 22px;
+    }
+    nav a:hover           { color: var(--cream); transform: translateX(6px); }
+    nav a:hover .num      { opacity: 1; }
+    nav a.active          { color: rgba(233,225,206,0.75); }
+    nav a.active .num     { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
     .lightbox {
       display: none;
       position: fixed;
-      z-index: 2000;
+      z-index: 200;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: #000;
+      background: rgba(19,17,14,0.96);
       justify-content: center;
       align-items: center;
     }
-    .lightbox-img { max-width: 90%; max-height: 85vh; object-fit: contain; }
-    .close { position: absolute; top: 30px; right: 40px; font-size: 35px; cursor: pointer; color: #444; }
+    .lightbox-img {
+      max-width: 88%;
+      max-height: 88vh;
+      object-fit: contain;
+    }
+    .close {
+      position: absolute;
+      top: 28px; right: 40px;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--dimmer);
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      transition: color 0.2s;
+    }
+    .close:hover { color: var(--cream); }
 
-    /* -------------------- Mobile (MATCHING ALL PAGES) -------------------- */
-    @media (max-width: 770px) {
-      .navbar { 
-        padding: 2rem 1rem;
-        flex-direction: column; 
-        gap: 1.5rem;
-        background: rgba(0,0,0,0.9);
-      }
-      
-      nav { 
-        gap: 1.2rem; 
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      nav a {
-        font-size: 0.65rem;
-        letter-spacing: 2px;
-      }
-
-      .page-intro { padding-top: 160px; }
-      .page-intro h1 { font-size: 2.8rem; }
-
-      .filter-buttons {
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-
-      .filter-btn {
-        font-size: 0.55rem;
-        letter-spacing: 1.5px;
-      }
-
-      .gallery-grid { 
-        grid-template-columns: 1fr; /* Single column for mobile viewing */
-        padding: 0 1.5rem 5rem 1.5rem; 
-        gap: 15px;
-      }
-
-      .close { top: 20px; right: 20px; }
+    @keyframes up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    @media (min-width: 771px) and (max-width: 1024px) {
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+      }
+      .left {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 24px;
+        border-right: none;
+        border-bottom: 1px solid rgba(233,225,206,0.06);
+      }
+      .name-block { display: flex; gap: 8px; align-items: baseline; }
+      .name-rule, .name-sub, .bottom-left { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      .right {
+        border-left: none;
+        border-top: 1px solid rgba(233,225,206,0.06);
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 20px 24px;
+        gap: 0;
+        justify-content: flex-start;
+      }
+      .nav-label { display: none; }
+      nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+      nav a { font-size: 22px; }
+    }
+
+    @media (min-width: 901px) and (max-width: 1200px) {
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
-
 <body>
 
-  <header class="navbar">
-    <div class="logo"><a href="index.html">ATHARV KALE</a></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="gallery.html" class="active">Gallery</a>
-      <a href="awards.html">Awards</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+  <div class="layout">
 
-  <section class="page-intro">
-    <h1>Archive</h1>
-  </section>
+    <!-- LEFT SIDEBAR -->
+    <div class="left">
+      <a href="index.html" class="logo">Photography Studio</a>
+      <div class="name-block">
+        <span class="name-first">Atharv</span>
+        <span class="name-last">Kale.</span>
+        <div class="name-rule"></div>
+        <div class="name-sub">Creative &amp; Editorial</div>
+      </div>
+      <div class="bottom-left">
+        <div class="coord">28°36′N · 77°12′E · New Delhi</div>
+        <div class="avail"><div class="dot"></div>Available for commissions</div>
+      </div>
+    </div>
 
-  <div class="filter-buttons">
-    <button class="filter-btn active" data-category="all">All</button>
-    <button class="filter-btn" data-category="cars">Cars</button>
-    <button class="filter-btn" data-category="landscapes">Landscapes</button>
-    <button class="filter-btn" data-category="animals">Fauna</button>
-    <button class="filter-btn" data-category="shoots">Portraits</button>
-    <button class="filter-btn" data-category="misc">Misc</button>
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <div class="page-title">Archive</div>
+      <div class="page-rule"></div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="cars">Cars</button>
+        <button class="filter-btn" data-category="landscapes">Landscapes</button>
+        <button class="filter-btn" data-category="animals">Fauna</button>
+        <button class="filter-btn" data-category="shoots">Portraits</button>
+        <button class="filter-btn" data-category="misc">Misc</button>
+      </div>
+
+      <div class="gallery-grid" id="gallery"></div>
+
+      <div class="view-more-container" id="view-more-container">
+        <button id="view-more-btn" class="filter-btn">Load More</button>
+      </div>
+    </div>
+
+    <!-- RIGHT NAV -->
+    <div class="right">
+      <div class="nav-label">Pages</div>
+      <nav>
+        <a href="index.html"  ><span class="num">01</span>Home</a>
+        <a href="gallery.html" class="active"><span class="num">02</span>Gallery</a>
+        <a href="about.html"  ><span class="num">03</span>About</a>
+        <a href="awards.html" ><span class="num">04</span>Awards</a>
+        <a href="contact.html"><span class="num">05</span>Contact</a>
+      </nav>
+    </div>
+
   </div>
 
-  <div class="gallery-grid" id="gallery"></div>
-
-  <div class="view-more-container" id="view-more-container">
-    <button id="view-more-btn" class="filter-btn">Load More</button>
-  </div>
-
+  <!-- LIGHTBOX -->
   <div id="lightbox" class="lightbox">
     <span class="close">&times;</span>
     <img class="lightbox-img" id="lightbox-img">
@@ -243,7 +432,7 @@
       try {
         const response = await fetch('photos.json');
         const data = await response.json();
-        
+
         Object.keys(data).forEach(cat => {
           if (cat === 'awards') return;
           data[cat].forEach(file => {
@@ -261,9 +450,9 @@
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
       visibleCount = 0;
-      
-      currentFilteredSet = (category === 'all') 
-        ? allPhotoData 
+
+      currentFilteredSet = (category === 'all')
+        ? allPhotoData
         : allPhotoData.filter(item => item.category === category);
 
       showMore();
@@ -274,13 +463,12 @@
       const start = visibleCount;
       const end = Math.min(visibleCount + increment, currentFilteredSet.length);
       const batch = currentFilteredSet.slice(start, end);
-
       const newElements = [];
 
       batch.forEach(item => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
-        
+
         const img = document.createElement('img');
         img.src = `photos/${item.category}/${item.file}`;
         img.loading = "lazy";
@@ -291,23 +479,20 @@
         newElements.push(div);
       });
 
-      gsap.fromTo(newElements, 
-        { autoAlpha: 0, y: 30 }, 
-        { 
-          autoAlpha: 1, 
-          y: 0, 
-          duration: 0.8, 
-          stagger: 0.1, 
+      gsap.fromTo(newElements,
+        { autoAlpha: 0, y: 30 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
           ease: "power2.out",
-          onStart: () => {
-            newElements.forEach(el => el.style.visibility = 'visible');
-          }
+          onStart: () => { newElements.forEach(el => el.style.visibility = 'visible'); }
         }
       );
 
       visibleCount = end;
-
-      document.getElementById('view-more-container').style.display = 
+      document.getElementById('view-more-container').style.display =
         (visibleCount < currentFilteredSet.length) ? 'block' : 'none';
     }
 
@@ -316,8 +501,7 @@
     document.querySelectorAll('.filter-btn').forEach(btn => {
       if (btn.id === 'view-more-btn') return;
       btn.onclick = () => {
-        const currentActive = document.querySelector('.filter-btn.active');
-        if (currentActive) currentActive.classList.remove('active');
+        document.querySelector('.filter-btn.active')?.classList.remove('active');
         btn.classList.add('active');
         setCategory(btn.dataset.category);
       };
@@ -326,22 +510,18 @@
     function openLightbox(src) {
       document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox').style.display = 'flex';
-      // Prevent body scroll when lightbox is open
-      document.body.style.overflow = 'hidden';
     }
 
     document.querySelector('.close').onclick = () => {
       document.getElementById('lightbox').style.display = 'none';
-      document.body.style.overflow = 'auto';
     };
 
     document.getElementById('lightbox').onclick = (e) => {
-      if(e.target.id === 'lightbox') {
+      if (e.target.id === 'lightbox') {
         document.getElementById('lightbox').style.display = 'none';
-        document.body.style.overflow = 'auto';
       }
     };
-    
+
     init();
   </script>
 </body>
