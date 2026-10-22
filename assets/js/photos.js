@@ -74,7 +74,6 @@
     img.decoding = "async";
     if (opts.eager) img.fetchPriority = "high";
     else img.loading = "lazy";
-    if (opts.sizes) img.sizes = opts.sizes;
 
     img.addEventListener("load", function () {
       if (opts.frame && img.naturalWidth) {
