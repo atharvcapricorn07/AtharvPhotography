@@ -305,6 +305,7 @@ a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   }
   .js .nav__list { flex-direction: column; align-items: stretch; gap: 0; }
   .js .nav__link {
+    display: flex;
     min-height: 56px;
     padding: 0;
     border-bottom: 1px solid var(--separator);
@@ -836,7 +837,9 @@ a.photo { cursor: pointer; }
 }
 @media (min-width: 560px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.grid .photo { aspect-ratio: 4 / 3; }
+.grid .photo { aspect-ratio: 4 / 5; }
+/* Award images are mostly tall contest screenshots whose result banner sits at the top. */
+.grid .photo img { object-position: center top; }
 
 /* ---------- Contact ---------- */
 
