@@ -6,6 +6,7 @@
   const CATEGORIES = ["all", "cars", "landscapes", "animals", "shoots", "misc"];
   const ALIASES = { fauna: "animals", portraits: "shoots" };
   const DEFAULT_RATIO = 3 / 2;
+  const GAP = 16;
 
   const grid = document.querySelector("[data-masonry]");
   const footer = document.querySelector("[data-gallery-footer]");
@@ -19,54 +20,61 @@
   let current = [];
   let category = "all";
   let shown = 0;
-  let rendered = []; // { el, ratio }
-  let columns = [];
-  let heights = [];
+  let entries = []; // { el, ratio, col }
+  let columns = 0;
+  let frame = 0;
 
   function columnCount() {
     const w = grid.clientWidth;
     return w < 560 ? 1 : w < 1024 ? 2 : w < 1600 ? 3 : 4;
   }
 
-  function buildColumns(n) {
-    grid.innerHTML = "";
-    columns = [];
-    heights = [];
-    for (let i = 0; i < n; i++) {
-      const col = document.createElement("div");
-      col.className = "masonry__col";
-      grid.appendChild(col);
-      columns.push(col);
-      heights.push(0);
-    }
-  }
-
-  // Heights are tracked in units of column width, so placement needs no layout reads.
-  function place(entry) {
-    let target = 0;
-    for (let i = 1; i < heights.length; i++) if (heights[i] < heights[target] - 0.01) target = i;
-    columns[target].appendChild(entry.el);
-    heights[target] += 1 / entry.ratio + 0.05;
-    entry.col = target;
-    entry.placed = entry.ratio;
-  }
-
-  function relayout() {
-    buildColumns(columnCount());
-    rendered.forEach(place);
-  }
-
-  function showSkeleton() {
-    buildColumns(columnCount());
-    [1.5, 0.8, 1.33, 1, 1.5, 0.75].forEach((ratio, i) => {
-      const s = document.createElement("div");
-      s.className = "skeleton";
-      s.style.aspectRatio = String(ratio);
-      columns[i % columns.length].appendChild(s);
+  // Items stay in DOM order (the shuffled order, which is also tab and lightbox order) and are
+  // absolutely positioned. Each item keeps the column it was first given, so loading photos
+  // only pushes items down their own column instead of reshuffling the layout.
+  function assign(list) {
+    const units = new Array(columns).fill(0);
+    entries.forEach((e) => {
+      if (e.col !== undefined && list.indexOf(e) === -1) units[e.col] += 1 / e.ratio + 0.05;
+    });
+    list.forEach((e) => {
+      let target = 0;
+      for (let i = 1; i < columns; i++) if (units[i] < units[target] - 0.01) target = i;
+      e.col = target;
+      units[target] += 1 / e.ratio + 0.05;
     });
   }
 
-  function makeItem(photo, index) {
+  function layout() {
+    frame = 0;
+    const width = grid.clientWidth;
+    const colWidth = (width - GAP * (columns - 1)) / columns;
+    const tops = new Array(columns).fill(0);
+    entries.forEach((e) => {
+      e.el.style.width = colWidth + "px";
+      e.el.style.left = e.col * (colWidth + GAP) + "px";
+      e.el.style.top = tops[e.col] + "px";
+      tops[e.col] += colWidth / e.ratio + GAP;
+    });
+    grid.style.height = entries.length ? Math.max.apply(null, tops) - GAP + "px" : "";
+  }
+
+  function scheduleLayout() {
+    if (!frame) frame = requestAnimationFrame(layout);
+  }
+
+  function showSkeleton() {
+    grid.classList.add("is-loading");
+    grid.style.height = "";
+    grid.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+      const s = document.createElement("div");
+      s.className = "skeleton";
+      grid.appendChild(s);
+    }
+  }
+
+  function makeEntry(photo, index) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "photo lift";
@@ -79,14 +87,12 @@
         frame: btn,
         onRatio: (r) => {
           entry.ratio = r;
-          if (columns[entry.col] && columns[entry.col].contains(btn)) {
-            heights[entry.col] += 1 / r - 1 / entry.placed;
-            entry.placed = r;
-          }
+          scheduleLayout();
         },
         onError: () => {
           btn.remove();
-          rendered = rendered.filter((e) => e !== entry);
+          entries = entries.filter((e) => e !== entry);
+          scheduleLayout();
         },
       })
     );
@@ -95,27 +101,30 @@
   }
 
   function showMore(focusFirst) {
-    const batch = current.slice(shown, shown + BATCH);
-    const entries = batch.map((photo, i) => makeItem(photo, shown + i));
-    entries.forEach((entry) => {
-      rendered.push(entry);
-      place(entry);
+    const batch = current.slice(shown, shown + BATCH).map((photo, i) => makeEntry(photo, shown + i));
+    batch.forEach((e) => {
+      entries.push(e);
+      grid.appendChild(e.el);
     });
+    assign(batch);
+    layout();
     shown += batch.length;
     reveal(grid);
 
     footer.hidden = current.length === 0;
     loadMore.hidden = shown >= current.length;
     progress.textContent = "Showing " + shown + " of " + current.length + " photos";
-    if (focusFirst && entries[0]) entries[0].el.focus({ preventScroll: false });
+    if (focusFirst && batch[0]) batch[0].el.focus();
   }
 
   function setCategory(next, opts) {
     category = next;
     current = next === "all" ? all : all.filter((p) => p.category === next);
     shown = 0;
-    rendered = [];
-    buildColumns(columnCount());
+    entries = [];
+    grid.classList.remove("is-loading");
+    grid.innerHTML = "";
+    columns = columnCount();
 
     buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.category === next)));
     emptyState.hidden = current.length > 0;
@@ -152,6 +161,7 @@
       })
       .catch((err) => {
         console.warn("Could not load photos.json:", err);
+        grid.classList.remove("is-loading");
         grid.innerHTML = "";
         grid.setAttribute("aria-busy", "false");
         errorState.hidden = false;
@@ -160,20 +170,23 @@
 
   buttons.forEach((b) =>
     b.addEventListener("click", () => {
-      if (b.dataset.category !== category || !all.length) setCategory(b.dataset.category);
+      if (b.dataset.category !== category) setCategory(b.dataset.category);
     })
   );
   loadMore.addEventListener("click", () => showMore(true));
   document.querySelector("[data-show-all]").addEventListener("click", () => setCategory("all"));
   errorState.querySelector("[data-retry]").addEventListener("click", init);
 
-  let lastCount = 0;
-  window.addEventListener("resize", () => {
+  new ResizeObserver(() => {
+    if (!entries.length) return;
     const n = columnCount();
-    if (n !== lastCount && rendered.length) relayout();
-    lastCount = n;
-  });
+    if (n !== columns) {
+      columns = n;
+      entries.forEach((e) => (e.col = undefined));
+      assign(entries);
+    }
+    scheduleLayout();
+  }).observe(grid);
 
   init();
-  lastCount = columnCount();
 })();

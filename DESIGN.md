@@ -58,7 +58,7 @@ Body measure: `max-width: 65ch`.
 ## 4. Space, layout, shape
 
 - Spacing: 8 px scale, `--s-1` 4, `--s-2` 8, `--s-3` 16, `--s-4` 24, `--s-5` 32, `--s-6` 48, `--s-7` 64, `--s-8` 96, `--s-9` 128.
-- Gutter: `clamp(16px, 4vw, 48px)`. Content max: 1200 px (`--max`); gallery max: 2000 px (`--max-wide`).
+- Gutter: `clamp(16px, 4vw, 48px)`. Content max: 1280 px (`--max`) on every page, so the header, gallery and footer edges align.
 - Radii: photos 10 px (`--r-photo`), controls 12 px, pills 999 px. No shadows except a 1-step lift on hover.
 - Nav height 52 px (`--nav-h`). Touch targets at least 44 by 44 px.
 
@@ -85,7 +85,7 @@ HOME (regular)                                  HOME (compact, 390)
 └───────────────────────────────────────────┘   └───────────────────┘
 
 GALLERY: h1 + count │ sticky segmented pill bar (scrolls horizontally on compact)
-         masonry columns 1 / 2 / 3 / 4 at <560 / <1024 / <1600 / ≥1600
+         masonry columns 1 / 2 / 3 at <560 / <1024 / ≥1024
          [ Load More ] + "Showing 12 of 77"
 AWARDS:  h1 + subtitle │ uniform 4:3 grid 1 / 2 / 3 columns │ [ Show All 19 Awards ]
 ABOUT:   regular: portrait (4:5, 5 of 12 cols) │ copy (65ch)   compact: stacked

@@ -31,5 +31,20 @@
   Site.reveal = reveal;
   Site.reducedMotion = reduced;
 
-  document.addEventListener("DOMContentLoaded", () => reveal());
+  // Static images in the markup fade in once loaded (or immediately if already cached or broken).
+  function fadeStatic() {
+    document.querySelectorAll("img.fade:not(.is-loaded)").forEach((img) => {
+      const done = () => img.classList.add("is-loaded");
+      if (img.complete) done();
+      else {
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    fadeStatic();
+    reveal();
+  });
 })();

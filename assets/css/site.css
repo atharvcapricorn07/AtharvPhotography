@@ -39,8 +39,7 @@
   --s-9: 128px;
 
   --gutter: clamp(16px, 4vw, 48px);
-  --max: 1200px;
-  --max-wide: 2000px;
+  --max: 1280px;
   --nav-h: 52px;
 
   --r-photo: 10px;
@@ -154,7 +153,6 @@ a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   width: min(100% - 2 * var(--gutter), var(--max));
   margin-inline: auto;
 }
-.container--wide { width: min(100% - 2 * var(--gutter), var(--max-wide)); }
 .container--narrow { width: min(100% - 2 * var(--gutter), 560px); }
 
 /* ---------- Type roles ---------- */
@@ -485,18 +483,16 @@ a.photo { cursor: pointer; }
 
 /* ---------- Masonry ---------- */
 
-.masonry {
-  display: flex;
-  gap: var(--s-3);
-  align-items: flex-start;
-}
-.masonry__col {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
+/* Positions are set by gallery.js; the 16px gap there matches --s-3. */
+.masonry { position: relative; }
+.masonry > .photo { position: absolute; }
+.masonry.is-loading {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: var(--s-3);
 }
+.masonry.is-loading .skeleton { aspect-ratio: 3 / 2; }
+.masonry.is-loading .skeleton:nth-child(3n + 2) { aspect-ratio: 4 / 5; }
 
 .gallery-footer {
   display: flex;
