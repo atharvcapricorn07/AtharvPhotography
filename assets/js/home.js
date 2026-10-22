@@ -1,10 +1,35 @@
-// Home: hero crossfade, featured shelf, and subject tiles, all drawn at random from photos.json.
+// Home: hero crossfade, featured shelf, and subject tiles, from a fixed set of horizontal photos.
 (function () {
-  const { photos, lightbox, reveal, reducedMotion } = window.Site;
+  const { photos, lightbox, reducedMotion } = window.Site;
 
-  const HERO_COUNT = 5;
+  // Real pixel sizes, so every frame can take the photo's own ratio before it loads.
+  // `position` keeps the subject in view where the full-bleed hero crops a photo.
+  const PHOTOS = {
+    landscape13: { src: "photos/landscapes/landscape13.jpg", width: 5328, height: 4000, position: "50% 22%", alt: "Snow-covered Mount Rainier rising at the end of a road with double yellow center lines, lined with evergreens and street lamps" },
+    misc10: { src: "photos/misc/misc10.jpg", width: 4467, height: 3092, position: "40% 30%", alt: "A full moon glowing amber in a dark sky above the silhouetted tops of evergreen trees" },
+    landscape11: { src: "photos/landscapes/landscape11.jpg", width: 5328, height: 4000, position: "50% 70%", alt: "Black-and-white view of the Seattle skyline, with the Space Needle standing in front of the downtown towers" },
+    animal1: { src: "photos/animals/animal1.jpg", width: 6000, height: 4000, position: "50% 45%", alt: "A honeybee feeding at the center of a deep red zinnia against dark green foliage" },
+    landscape12: { src: "photos/landscapes/landscape12.jpg", width: 4784, height: 3592, position: "50% 42%", alt: "Mount Rainier towering over a tree-lined lakeshore of homes, with a person paddling on the lake in the foreground" },
+    misc20: { src: "photos/misc/misc20.jpg", width: 6000, height: 4000, position: "50% 50%", alt: "Sunlit blackberry leaves in green and gold standing out against deep shadow" },
+    misc1: { src: "photos/misc/misc1.jpg", width: 1876, height: 1226, position: "50% 50%", alt: "A waxing gibbous moon with its craters and dark maria in sharp detail against a black sky" },
+    car10: { src: "photos/cars/car10.jpg", width: 6000, height: 4000, position: "50% 50%", alt: "A black Porsche 911 parked on gravel at sunset, with an orange sky and a lakeside terrace behind it" },
+    shoot4: { src: "photos/shoots/shoot_4.jpg", width: 4000, height: 5328, position: "50% 50%", alt: "Portrait of a person in a knit beanie and navy hoodie glancing back at the camera on a grey lakeside dock" },
+  };
+
+  // Hero alternates subjects and opens on Rainier. misc1 is too small to run full-bleed.
+  const HERO = ["landscape13", "misc10", "landscape11", "animal1", "landscape12", "misc20"].map((k) => PHOTOS[k]);
+  const SHELF = ["misc20", "landscape12", "misc10", "animal1", "landscape11", "misc1", "landscape13"].map((k) => PHOTOS[k]);
+  // No horizontal portrait exists yet, so that tile shows the whole vertical photo in a 3:2 frame.
+  const TILES = { cars: PHOTOS.car10, landscapes: PHOTOS.landscape12, animals: PHOTOS.animal1, shoots: PHOTOS.shoot4 };
+  const TILE_FRAME = 3 / 2;
+
   const HERO_INTERVAL = 7000;
-  const FEATURED_COUNT = 6;
+
+  function sized(img, photo) {
+    img.width = photo.width;
+    img.height = photo.height;
+    return img;
+  }
 
   function initHero(set) {
     const media = document.querySelector("[data-hero-media]");
@@ -12,9 +37,10 @@
     if (!media || !set.length) return;
 
     const layers = set.map((photo, i) => {
-      const img = document.createElement("img");
+      const img = sized(document.createElement("img"), photo);
       img.alt = photo.alt;
       img.decoding = "async";
+      img.style.objectPosition = photo.position;
       if (i === 0) {
         img.fetchPriority = "high";
         img.addEventListener("load", () => img.classList.add("is-active"), { once: true });
@@ -85,11 +111,12 @@
     set.forEach((photo, i) => {
       const li = document.createElement("li");
       li.className = "shelf__item";
+      li.style.aspectRatio = photo.width + " / " + photo.height;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "photo lift";
       btn.setAttribute("aria-label", "Open " + photo.alt);
-      btn.appendChild(photos.image(photo, { frame: li, onError: () => li.remove() }));
+      btn.appendChild(sized(photos.image(photo, { onError: () => li.remove() }), photo));
       btn.addEventListener("click", () => lightbox.open(set, i, btn));
       li.appendChild(btn);
       shelf.appendChild(li);
@@ -105,33 +132,42 @@
     next.addEventListener("click", () => by(1));
     shelf.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
-    shelf.addEventListener("load", update, true);
     update();
   }
 
-  function initTiles(data) {
+  // Horizontal photos set their tile's ratio; a vertical one sits whole in a 3:2 frame over a blurred copy.
+  function initTiles() {
     document.querySelectorAll("[data-tile]").forEach((tile) => {
-      const key = tile.dataset.tile;
-      const list = photos.list(data, key);
-      const count = tile.querySelector("[data-count]");
-      if (count) count.textContent = list.length + (list.length === 1 ? " photo" : " photos");
-      if (!list.length) return;
-      const photo = list[Math.floor(Math.random() * list.length)];
-      tile.querySelector("[data-frame]").appendChild(photos.image(photo));
+      const photo = TILES[tile.dataset.tile];
+      if (!photo) return;
+      const frame = tile.querySelector("[data-frame]");
+      const horizontal = photo.width > photo.height;
+      tile.parentElement.style.setProperty("--r", horizontal ? photo.width / photo.height : TILE_FRAME);
+      if (!horizontal) {
+        const fill = sized(photos.image({ src: photo.src, alt: "" }), photo);
+        fill.classList.add("photo__fill");
+        fill.setAttribute("aria-hidden", "true");
+        frame.appendChild(fill);
+        frame.classList.add("photo--whole");
+      }
+      frame.appendChild(sized(photos.image(photo), photo));
     });
   }
 
+  function initCounts(data) {
+    document.querySelectorAll("[data-tile]").forEach((tile) => {
+      const count = tile.querySelector("[data-count]");
+      const n = photos.list(data, tile.dataset.tile).length;
+      if (count) count.textContent = n + (n === 1 ? " photo" : " photos");
+    });
+  }
+
+  initHero(HERO);
+  initShelf(SHELF);
+  initTiles();
+
   photos
     .load()
-    .then((data) => {
-      const pool = photos.shuffle(photos.flatten(data));
-      initHero(pool.slice(0, HERO_COUNT));
-      initShelf(pool.slice(HERO_COUNT, HERO_COUNT + FEATURED_COUNT));
-      initTiles(data);
-      reveal();
-    })
-    .catch((err) => {
-      console.warn("Could not load photos.json:", err);
-      document.querySelectorAll("[data-shelf] .skeleton").forEach((el) => el.classList.remove("skeleton"));
-    });
+    .then(initCounts)
+    .catch((err) => console.warn("Could not load photos.json:", err));
 })();
