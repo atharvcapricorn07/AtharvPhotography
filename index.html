@@ -1,400 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atharv Kale</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&family=Jost:wght@100;200;300&display=swap" rel="stylesheet">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-:root {
-  --bg:     #13110e;
-  --bg2:    #1c1915;
-  --cream:  #e9e1ce;
-  --dim:    rgba(233,225,206,0.36);
-  --dimmer: rgba(233,225,206,0.16);
-  --amber:  #c8873a;
-}
-
-html, body {
-  width:100%; height:100%;
-  overflow:hidden;
-  background: var(--bg);
-
-}
-
-/* Grain */
-body::after {
-  content:'';
-  position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E");
-  background-size:220px;
-  pointer-events:none;
-  z-index:50;
-  animation:gr 0.3s steps(1) infinite;
-}
-@keyframes gr {
-  0%  { transform:translate(0,0); }
-  33% { transform:translate(-4px,3px); }
-  66% { transform:translate(4px,-3px); }
-}
-
-/* Canvas fills background */
-#canvas { position:fixed; inset:0; z-index:0; }
-
-/* Layout */
-.layout {
-  position:fixed; inset:0; z-index:10;
-  display:grid;
-  grid-template-columns: 1fr 520px;
-  grid-template-rows: 1fr;
-}
-
-/* ── LEFT PANEL ── */
-.left {
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  padding:44px 0 44px 52px;
-}
-
-.logo {
-  font-family:'Jost', sans-serif;
-  font-weight:100;
-  font-size:11px;
-  letter-spacing:0.44em;
-  text-transform:uppercase;
-  color:var(--dimmer);
-  opacity:0;
-  animation:up 1s 0.1s ease forwards;
-}
-
-.name-block {
-  opacity:0;
-  animation:up 1.2s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
-  margin-left: auto;
-  margin-right: auto;
-}
-.name-first {
-  font-family:'Playfair Display', serif;
-  font-style:italic;
-  font-weight:300;
-  font-size:clamp(52px, 7.5vw, 102px);
-  line-height:0.95;
-  color:var(--cream);
-  letter-spacing:-0.01em;
-  display:block;
-}
-.name-last {
-  font-family:'Playfair Display', serif;
-  font-weight:700;
-  font-size:clamp(52px, 7.5vw, 102px);
-  line-height:0.95;
-  color:var(--cream);
-  letter-spacing:-0.01em;
-  display:block;
-}
-.name-rule {
-  width:40px; height:1px;
-  background:var(--amber);
-  margin: 22px 0 18px;
-}
-.name-sub {
-  font-family:'Jost', sans-serif;
-  font-weight:200;
-  font-size:12px;
-  letter-spacing:0.28em;
-  text-transform:uppercase;
-  color:var(--amber);
-}
-
-.bottom-left {
-  opacity:0;
-  animation:up 1s 0.8s ease forwards;
-}
-.coord {
-  font-family:'Jost', sans-serif;
-  font-weight:100;
-  font-size:10px;
-  letter-spacing:0.22em;
-  color:var(--dimmer);
-  margin-bottom:6px;
-}
-.avail {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-family:'Jost', sans-serif;
-  font-weight:200;
-  font-size:10px;
-  letter-spacing:0.28em;
-  text-transform:uppercase;
-  color:var(--dim);
-}
-.dot {
-  width:5px; height:5px;
-  border-radius:50%;
-  background:var(--amber);
-  animation:pulse-dot 2.4s ease infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%      { opacity:0.4; transform:scale(0.7); }
-}
-
-/* ── RIGHT PANEL — NAV ── */
-.right {
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:0 64px;
-  border-left:1px solid rgba(233,225,206,0.06);
-  opacity:0;
-  animation:up 1.3s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
-  gap:4px;
-}
-
-.nav-label {
-  font-family:'Jost', sans-serif;
-  font-weight:100;
-  font-size:9px;
-  letter-spacing:0.48em;
-  text-transform:uppercase;
-  color:var(--dimmer);
-  margin-bottom:28px;
-}
-
-nav a {
-  display:flex;
-  align-items:baseline;
-  gap:16px;
-  font-family:'Playfair Display', serif;
-  font-weight:400;
-  font-size:clamp(30px, 3.6vw, 48px);
-  color:rgba(233,225,206,0.2);
-  text-decoration:none;
-  line-height:1.3;
-
-  transition:color 0.3s ease, transform 0.3s ease;
-  position:relative;
-}
-nav a .num {
-  font-family:'Jost', sans-serif;
-  font-weight:100;
-  font-size:10px;
-  letter-spacing:0.2em;
-  color:var(--amber);
-  opacity:0;
-  transition:opacity 0.3s;
-  min-width:22px;
-}
-nav a:hover { color:var(--cream); transform:translateX(6px); }
-nav a:hover .num { opacity:1; }
-nav a.active { color:rgba(233,225,206,0.75); }
-nav a.active .num { opacity:1; }
-
-/* ── CURSOR ── */
-
-
-@keyframes up {
-  from { opacity:0; transform:translateY(10px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Atharv Kale | Photography</title>
+  <meta name="description" content="Photography by Atharv Kale: cars, landscapes, wildlife, and portraits.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Atharv Kale Photography">
+  <meta property="og:title" content="Atharv Kale | Photography">
+  <meta property="og:description" content="Photography by Atharv Kale: cars, landscapes, wildlife, and portraits.">
+  <meta property="og:url" content="https://atharvphotography.studio/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://atharvphotography.studio/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <script src="assets/js/photos.js" defer></script>
+  <script src="assets/js/lightbox.js" defer></script>
+  <script src="assets/js/home.js" defer></script>
 </head>
-<body>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<canvas id="canvas"></canvas>
-
-
-
-<div class="layout">
-
-  <!-- LEFT -->
-  <div class="left">
-    <a href="index.html" class="logo" style="text-decoration:none;">Photography Studio</a>
-
-    <div class="name-block">
-      <span class="name-first">Atharv</span>
-      <span class="name-last">Kale.</span>
-      <div class="name-rule"></div>
-      <div class="name-sub">Creative &amp; Editorial</div>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="wordmark" href="index.html" aria-current="page">Atharv Kale</a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+          <li><a class="nav__link" href="about.html">About</a></li>
+          <li><a class="nav__link" href="awards.html">Awards</a></li>
+          <li><a class="nav__link" href="contact.html">Contact</a></li>
+        </ul>
+        <a class="icon-link" href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      </nav>
     </div>
+  </header>
 
-    <div class="bottom-left">
-      <div class="coord">47.61°′N · 122.33°′E · Seattle, WA</div>
-      <div class="avail">
-        <div class="dot"></div>
-        Available for commissions
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__media" data-hero-media></div>
+      <div class="hero__content">
+        <div class="container hero__inner">
+          <div class="hero__text">
+            <p class="status">Available for commissions</p>
+            <h1 class="t-large" id="hero-title">Atharv Kale</h1>
+            <p class="hero__lede">Photographer. A deliberate search for the extraordinary within the ordinary.</p>
+            <div class="hero__actions">
+              <a class="btn btn--on-photo" href="gallery.html">View the Gallery</a>
+            </div>
+          </div>
+          <button class="round-btn hero__pause" type="button" aria-pressed="false" aria-label="Pause slideshow" hidden>
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="3.5" height="14" rx="1"/><rect x="14" y="5" width="3.5" height="14" rx="1"/></svg>
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
+        </div>
       </div>
+    </section>
+
+    <section class="section" aria-labelledby="featured-title">
+      <div class="container section-head" data-reveal>
+        <div>
+          <h2 class="t-title" id="featured-title">Selected Work</h2>
+          <p class="t-secondary">A different set every visit.</p>
+        </div>
+        <div class="section-head__actions">
+          <button class="round-btn" type="button" data-shelf-prev aria-label="Scroll back" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="round-btn" type="button" data-shelf-next aria-label="Scroll forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+      <ul class="shelf" data-shelf aria-label="Selected photographs">
+        <li class="shelf__item skeleton"></li>
+        <li class="shelf__item skeleton"></li>
+        <li class="shelf__item skeleton"></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="subjects-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <h2 class="t-title" id="subjects-title">Browse by Subject</h2>
+        </div>
+        <ul class="tiles">
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=cars" data-tile="cars">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Cars</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=landscapes" data-tile="landscapes">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Landscapes</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=animals" data-tile="animals">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Fauna</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=shoots" data-tile="shoots">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Portraits</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="about-title">
+      <div class="container about-blurb" data-reveal>
+        <h2 class="t-title" id="about-title">The Person Behind the Lens</h2>
+        <div class="prose">
+          <p>I’m Atharv Kale, a high school student dedicated to the visual arts. With over eight years of experience spanning intimate portraiture to expansive landscapes, my work explores the relationship between light, texture, and human emotion.</p>
+          <p><a class="text-link" href="about.html">More About Me <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>&copy; <span data-year>2026</span> Atharv Kale</p>
+      <ul class="site-footer__links">
+        <li><a href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+        <li><a href="#top"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>Back to Top</a></li>
+      </ul>
     </div>
-  </div>
-
-  <!-- RIGHT NAV -->
-  <div class="right">
-    <div class="nav-label">Pages</div>
-    <nav>
-      <a href="index.html" class="active"><span class="num">01</span>Home</a>
-      <a href="gallery.html"><span class="num">02</span>Gallery</a>
-      <a href="about.html"><span class="num">03</span>About</a>
-      <a href="awards.html"><span class="num">04</span>Awards</a>
-      <a href="contact.html"><span class="num">05</span>Contact</a>
-    </nav>
-  </div>
-
-</div>
-
-<script>
-// ── CURSOR ──
-let mx = innerWidth/2, my = innerHeight/2;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-// ── CANVAS ──
-const cv = document.getElementById('canvas');
-const g  = cv.getContext('2d');
-let W, H;
-
-function resize() {
-  W = cv.width  = innerWidth;
-  H = cv.height = innerHeight;
-}
-resize();
-addEventListener('resize', resize);
-
-// ── LONG EXPOSURE TRAILS ──
-// Each trail is a particle orbiting a center point at a constant radius,
-// leaving a fading streak — mimics long-exposure star trails.
-
-function makeCenter() {
-  // Center is in the overlap zone — right side of left panel
-  return { x: W * 0.57, y: H * 0.5 };
-}
-
-// Orbital rings: each has multiple particles at different phases
-const rings = [
-  { r:0.130, count:3, speed:0.00060, lw:0.9, hue:'amber',  trailLen:1.6 },
-  { r:0.095, count:2, speed:-0.00090, lw:0.6, hue:'cream', trailLen:1.2 },
-  { r:0.165, count:4, speed:0.00040, lw:0.5, hue:'cream',  trailLen:2.2 },
-  { r:0.055, count:1, speed:-0.00140, lw:0.7, hue:'amber', trailLen:0.9 },
-  { r:0.205, count:3, speed:0.00028, lw:0.4, hue:'cream',  trailLen:2.8 },
-  { r:0.240, count:2, speed:-0.00018, lw:0.3, hue:'amber', trailLen:3.4 },
-];
-
-// Seed phases so they look spread out
-const particles = [];
-rings.forEach(ring => {
-  for (let i = 0; i < ring.count; i++) {
-    particles.push({
-      angle: (i / ring.count) * Math.PI * 2 + Math.random() * 0.4,
-      r:     ring.r,
-      speed: ring.speed,
-      lw:    ring.lw,
-      hue:   ring.hue,
-      trailLen: ring.trailLen,  // radians of trail arc
-    });
-  }
-});
-
-// Subtle slow-drifting vignette center
-let t = 0;
-
-function getBaseRadius(frac) {
-  return frac * Math.min(W, H) * 0.82;
-}
-
-function draw() {
-  t += 0.01;
-
-  // Clear and redraw solid background each frame
-  g.clearRect(0, 0, W, H);
-  g.fillStyle = '#13110e';
-  g.fillRect(0, 0, W, H);
-
-  const { x: cx, y: cy } = makeCenter();
-
-  // ── Faint orbit guide rings ──
-  [0.055, 0.095, 0.130, 0.165, 0.205, 0.240].forEach((fr, i) => {
-    const rr = getBaseRadius(fr);
-    g.beginPath();
-    g.arc(cx, cy, rr, 0, Math.PI * 2);
-    g.strokeStyle = `rgba(233,225,206,0.025)`;
-    g.lineWidth = 0.4;
-    g.stroke();
-  });
-
-  // ── Orbital trail particles ──
-  for (const p of particles) {
-    p.angle += p.speed;
-    const rr = getBaseRadius(p.r);
-
-    // Draw arc trail
-    const startA = p.angle - p.trailLen * Math.sign(p.speed);
-    const endA   = p.angle;
-    const ccw    = p.speed < 0;
-
-    const grad = g.createConicalGradient
-      ? null // fallback below
-      : null;
-
-    // Approximate conical gradient with multiple arc segments
-    const SEG = 28;
-    for (let s = 0; s < SEG; s++) {
-      const frac = s / SEG;
-      const a0 = startA + (endA - startA) * frac;
-      const a1 = startA + (endA - startA) * ((s + 1) / SEG);
-      const alpha = frac * frac * (p.hue === 'amber' ? 0.72 : 0.45);
-
-      g.beginPath();
-      g.arc(cx, cy, rr, a0, a1, p.speed < 0);
-      g.strokeStyle = p.hue === 'amber'
-        ? `rgba(200,135,58,${alpha})`
-        : `rgba(233,225,206,${alpha})`;
-      g.lineWidth = p.lw;
-      g.stroke();
-    }
-
-    // Bright head dot
-    const hx = cx + Math.cos(p.angle) * rr;
-    const hy = cy + Math.sin(p.angle) * rr;
-    const grd = g.createRadialGradient(hx, hy, 0, hx, hy, p.lw * 4);
-    grd.addColorStop(0, p.hue === 'amber'
-      ? 'rgba(220,170,90,0.9)'
-      : 'rgba(240,232,215,0.7)');
-    grd.addColorStop(1, 'transparent');
-    g.beginPath();
-    g.arc(hx, hy, p.lw * 4, 0, Math.PI * 2);
-    g.fillStyle = grd;
-    g.fill();
-  }
-
-  // ── Subtle center glow ──
-  const cg = g.createRadialGradient(cx, cy, 0, cx, cy, getBaseRadius(0.14));
-  cg.addColorStop(0, 'rgba(200,135,58,0.06)');
-  cg.addColorStop(1, 'transparent');
-  g.fillStyle = cg;
-  g.fillRect(0, 0, W, H);
-
-  // ── Mouse proximity: barely-visible warm halo ──
-  const md = Math.hypot(mx - cx, my - cy);
-  const reach = getBaseRadius(0.55);
-  if (md < reach) {
-    const strength = (1 - md / reach) * 0.07;
-    const mg = g.createRadialGradient(mx, my, 0, mx, my, 100);
-    mg.addColorStop(0, `rgba(200,135,58,${strength})`);
-    mg.addColorStop(1, 'transparent');
-    g.fillStyle = mg;
-    g.fillRect(0, 0, W, H);
-  }
-
-  requestAnimationFrame(draw);
-}
-
-// Prime the canvas dark first
-g.fillStyle = '#13110e';
-g.fillRect(0, 0, W, H);
-draw();
-</script>
+  </footer>
 </body>
 </html>
