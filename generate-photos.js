@@ -1,14 +1,35 @@
-// Kept so the old command still works: `node generate-photos.js`.
-// Installs dependencies the first time, then runs the image build (same as `npm run photos`).
-import { execSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+// generate-photos.js
+const fs = require("fs");
+const path = require("path");
 
-const dir = path.dirname(fileURLToPath(import.meta.url));
-process.chdir(dir);
-if (!fs.existsSync(path.join(dir, "node_modules", "sharp"))) {
-  console.log("First run: installing image tools (one time only)...");
-  execSync("npm install", { stdio: "inherit" });
+const baseDir = path.join(__dirname, "photos");
+const outputFile = path.join(__dirname, "photos.json");
+
+
+const categories = ["cars", "landscapes", "animals", "misc", "awards", "shoots"];
+
+let data = {};
+
+categories.forEach(category => {
+  const folder = path.join(baseDir, category);
+  
+  if (fs.existsSync(folder)) {
+    const files = fs.readdirSync(folder)
+      .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file))
+      .sort(); // Keeps filenames organized alphabetically or numerically
+    
+    data[category] = files;
+  } else {
+    // Creates an empty array if the folder doesn't exist to prevent site errors
+    data[category] = [];
+    console.warn(`⚠️  Warning: Folder not found: ${folder}`);
+  }
+});
+
+try {
+  fs.writeFileSync(outputFile, JSON.stringify(data, null, 2));
+  console.log("✅ photos.json generated successfully!");
+  console.log("Included categories:", categories.join(", "));
+} catch (err) {
+  console.error("❌ Error writing photos.json:", err);
 }
-execSync("node scripts/build-photos.mjs", { stdio: "inherit" });

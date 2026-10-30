@@ -4,116 +4,150 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Atharv Kale | Photography</title>
-  <meta name="description" content="Photography by Atharv Kale: cars, landscapes, wildlife and portraits.">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#ededea" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#151616" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Photography by Atharv Kale: cars, landscapes, wildlife, and portraits.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Atharv Kale Photography">
   <meta property="og:title" content="Atharv Kale | Photography">
-  <meta property="og:description" content="Photography by Atharv Kale: cars, landscapes, wildlife and portraits.">
+  <meta property="og:description" content="Photography by Atharv Kale: cars, landscapes, wildlife, and portraits.">
   <meta property="og:url" content="https://atharvphotography.studio/">
-  <meta property="og:image" content="https://atharvphotography.studio/media/site/og.jpg">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://atharvphotography.studio/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/site.css">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <script src="assets/js/photos.js" defer></script>
+  <script src="assets/js/lightbox.js" defer></script>
   <script src="assets/js/home.js" defer></script>
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="wordmark" href="index.html" aria-current="page">Atharv Kale</a>
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
-        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9h16M4 15h16"/></svg>
-        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
       <nav class="nav" id="site-nav" aria-label="Main">
         <ul class="nav__list">
           <li><a class="nav__link" href="gallery.html">Gallery</a></li>
-          <li><a class="nav__link" href="awards.html">Awards</a></li>
           <li><a class="nav__link" href="about.html">About</a></li>
+          <li><a class="nav__link" href="awards.html">Awards</a></li>
           <li><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
-        <a class="icon-link" href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+        <a class="icon-link" href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero container" aria-labelledby="hero-title">
-      <h1 class="hero__name display" id="hero-title">Atharv Kale</h1>
-      <div class="hero__row">
-        <p class="lede">Photographer. Cars, landscapes, wildlife and portraits, made with patience and good light.</p>
-        <div class="hero__actions">
-          <a class="btn" href="gallery.html">Browse the gallery</a>
-          <a class="btn btn--ghost" href="contact.html">Book a shoot</a>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__media" data-hero-media></div>
+      <div class="hero__content">
+        <div class="container hero__inner">
+          <div class="hero__text">
+            <p class="status">Available for commissions</p>
+            <h1 class="t-large" id="hero-title">Atharv Kale</h1>
+            <p class="hero__lede">Photographer. A deliberate search for the extraordinary within the ordinary.</p>
+            <div class="hero__actions">
+              <a class="btn btn--on-photo" href="gallery.html">View the Gallery</a>
+            </div>
+          </div>
+          <button class="round-btn hero__pause" type="button" aria-pressed="false" aria-label="Pause slideshow" hidden>
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="3.5" height="14" rx="1"/><rect x="14" y="5" width="3.5" height="14" rx="1"/></svg>
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
         </div>
       </div>
-      <figure class="hero__figure">
-        <span class="ph hero__frame" data-hero></span>
-        <figcaption class="hero__caption" data-hero-caption>&nbsp;</figcaption>
-      </figure>
     </section>
 
-    <section class="section container" aria-labelledby="selected-title">
-      <div class="section-head">
-        <h2 class="h2" id="selected-title">Selected work</h2>
-        <a class="link small" href="gallery.html">See all photos</a>
+    <section class="section" aria-labelledby="featured-title">
+      <div class="container section-head" data-reveal>
+        <div>
+          <h2 class="t-title" id="featured-title">Selected Work</h2>
+        </div>
+        <div class="section-head__actions">
+          <button class="round-btn" type="button" data-shelf-prev aria-label="Scroll back" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="round-btn" type="button" data-shelf-next aria-label="Scroll forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
       </div>
-      <div class="justified" data-selected></div>
+      <ul class="shelf" data-shelf aria-label="Selected photographs">
+        <li class="shelf__item skeleton"></li>
+        <li class="shelf__item skeleton"></li>
+        <li class="shelf__item skeleton"></li>
+      </ul>
     </section>
 
-    <section class="section container" aria-labelledby="subjects-title">
-      <div class="section-head">
-        <h2 class="h2" id="subjects-title">Browse by subject</h2>
+    <section class="section" aria-labelledby="subjects-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <h2 class="t-title" id="subjects-title">Browse by Subject</h2>
+        </div>
+        <ul class="tiles">
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=cars" data-tile="cars">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Cars</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=landscapes" data-tile="landscapes">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Landscapes</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=animals" data-tile="animals">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Fauna</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a class="tile" href="gallery.html?category=shoots" data-tile="shoots">
+              <span class="photo lift" data-frame></span>
+              <span class="tile__label">
+                <span class="t-headline">Portraits</span>
+                <span class="t-caption" data-count></span>
+              </span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <nav class="subjects" data-subjects aria-label="Gallery subjects"></nav>
     </section>
 
-    <section class="section container split" aria-labelledby="awards-title">
-      <div>
-        <h2 class="h2" id="awards-title">Recognition</h2>
-        <p class="muted" style="margin-top:16px;max-width:38ch" data-award-summary>Results from international photo contests.</p>
-        <p style="margin-top:20px"><a class="link" href="awards.html">All awards and certificates</a></p>
-      </div>
-      <ul class="honors" data-honors></ul>
-    </section>
-
-    <section class="section container" aria-labelledby="about-title">
-      <div class="about-teaser">
-        <div data-portrait></div>
+    <section class="section" aria-labelledby="about-title">
+      <div class="container about-blurb" data-reveal>
+        <h2 class="t-title" id="about-title">The Person Behind the Lens</h2>
         <div class="prose">
-          <h2 class="h2" id="about-title">About</h2>
-          <p style="margin-top:16px">I&rsquo;m a high school photographer with more than eight years behind the camera. I shoot on a Canon EOS R10, mostly around home and wherever travel takes me, and I&rsquo;m drawn to quiet moments: low sun, still water, an animal that stops to look back.</p>
-          <p><a class="link" href="about.html">Read more about me</a></p>
+          <p>I’m Atharv Kale, a high school student dedicated to the visual arts. With over eight years of experience spanning intimate portraiture to expansive landscapes, my work explores the relationship between light, texture, and human emotion.</p>
+          <p><a class="text-link" href="about.html">More About Me <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></p>
         </div>
-      </div>
-    </section>
-
-    <section class="section container" aria-labelledby="cta-title">
-      <div class="cta">
-        <h2 class="cta__text" id="cta-title">Portraits, car shoots and events.</h2>
-        <a class="btn" href="contact.html">Get in touch</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container site-footer__inner">
-      <p class="site-footer__name">Atharv Kale</p>
+      <p>&copy; <span data-year>2026</span> Atharv Kale</p>
       <ul class="site-footer__links">
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="awards.html">Awards</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+        <li><a href="#top"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg>Back to Top</a></li>
       </ul>
-      <p class="site-footer__meta">&copy; <span data-year>2026</span> Atharv Kale. All photographs are my own; please ask before using them.</p>
     </div>
   </footer>
 </body>
