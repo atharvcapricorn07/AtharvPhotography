@@ -1,0 +1,1768 @@
+{
+ "generated": "2026-10-30T20:39:40.133Z",
+ "categories": {
+  "cars": [
+   {
+    "id": "car1",
+    "file": "car1.png",
+    "w": 651,
+    "h": 900,
+    "color": "#080808",
+    "sizes": [
+     480,
+     651
+    ],
+    "title": "Porsche interior"
+   },
+   {
+    "id": "car2",
+    "file": "car2.png",
+    "w": 606,
+    "h": 900,
+    "color": "#080808",
+    "sizes": [
+     480,
+     606
+    ],
+    "title": "Lamborghini hood in grey"
+   },
+   {
+    "id": "car3",
+    "file": "car3.png",
+    "w": 653,
+    "h": 877,
+    "color": "#080808",
+    "sizes": [
+     480,
+     653
+    ],
+    "title": "Ferrari shield on blue"
+   },
+   {
+    "id": "car4",
+    "file": "car4.png",
+    "w": 699,
+    "h": 903,
+    "color": "#080808",
+    "sizes": [
+     480,
+     699
+    ],
+    "title": "Lamborghini at the garage door"
+   },
+   {
+    "id": "car5",
+    "file": "car5.png",
+    "w": 648,
+    "h": 897,
+    "color": "#080808",
+    "sizes": [
+     480,
+     648
+    ],
+    "title": "Red Ferrari"
+   },
+   {
+    "id": "car6",
+    "file": "car6.png",
+    "w": 615,
+    "h": 900,
+    "color": "#080808",
+    "sizes": [
+     480,
+     615
+    ],
+    "title": "Lime Lamborghini"
+   },
+   {
+    "id": "car7",
+    "file": "car7.png",
+    "w": 607,
+    "h": 898,
+    "color": "#e8e8e8",
+    "sizes": [
+     480,
+     607
+    ],
+    "title": "Audi R8 from below"
+   },
+   {
+    "id": "car8",
+    "file": "car8.png",
+    "w": 614,
+    "h": 896,
+    "color": "#080808",
+    "sizes": [
+     480,
+     614
+    ],
+    "title": "Porsche 911 in the driveway"
+   },
+   {
+    "id": "car9",
+    "file": "car9.jpg",
+    "w": 648,
+    "h": 884,
+    "color": "#080808",
+    "sizes": [
+     480,
+     648
+    ],
+    "date": "2025-08-19",
+    "title": "BMW in the trees"
+   },
+   {
+    "id": "car10",
+    "file": "car10.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/2.8",
+    "shutter": "1/80s",
+    "iso": 200,
+    "date": "2025-09-09",
+    "title": "Porsche 911 at sunset"
+   },
+   {
+    "id": "car11",
+    "file": "car11.jpg",
+    "w": 3713,
+    "h": 5894,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2025-10-17",
+    "title": "Five-spoke wheel"
+   },
+   {
+    "id": "car12",
+    "file": "car12.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2025-10-17",
+    "title": "Stingray badge"
+   },
+   {
+    "id": "car13",
+    "file": "car13.jpg",
+    "w": 5163,
+    "h": 3021,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "95mm",
+    "aperture": "f/6.3",
+    "shutter": "1/80s",
+    "iso": 200,
+    "date": "2025-10-26",
+    "title": "Mercedes G-Class in autumn"
+   },
+   {
+    "id": "car14",
+    "file": "car14.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "18mm",
+    "aperture": "f/4",
+    "shutter": "1/15s",
+    "iso": 1600,
+    "date": "2026-01-10",
+    "title": "Yellow Porsche in the garage"
+   },
+   {
+    "id": "car15",
+    "file": "car15.jpg",
+    "w": 3896,
+    "h": 5189,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/2.8",
+    "shutter": "1/640s",
+    "iso": 400,
+    "date": "2026-03-12",
+    "title": "Black SUV under the trees"
+   },
+   {
+    "id": "car16",
+    "file": "car16.jpg",
+    "w": 3582,
+    "h": 4771,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "18mm",
+    "aperture": "f/4",
+    "shutter": "1/500s",
+    "iso": 200,
+    "date": "2026-04-03",
+    "title": "Gold wheel on a white Porsche"
+   },
+   {
+    "id": "car17",
+    "file": "car17.jpg",
+    "w": 3678,
+    "h": 4904,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "76mm",
+    "aperture": "f/6.3",
+    "shutter": "1/100s",
+    "iso": 200,
+    "date": "2026-04-03",
+    "title": "Green Lamborghini Huracán"
+   },
+   {
+    "id": "car18",
+    "file": "car18.jpg",
+    "w": 3775,
+    "h": 5028,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "24mm",
+    "aperture": "f/4",
+    "shutter": "1/1000s",
+    "iso": 1250,
+    "date": "2026-04-03",
+    "title": "Black and white Mercedes-AMG"
+   }
+  ],
+  "landscapes": [
+   {
+    "id": "landscape3",
+    "file": "landscape3.png",
+    "w": 698,
+    "h": 927,
+    "color": "#f8f8f8",
+    "sizes": [
+     480,
+     698
+    ],
+    "title": "Rocky shore in black and white"
+   },
+   {
+    "id": "landscape4",
+    "file": "landscape4.jpg",
+    "w": 3415,
+    "h": 5122,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "250mm",
+    "aperture": "f/5.6",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2025-09-03",
+    "title": "Sun behind the pines"
+   },
+   {
+    "id": "landscape5",
+    "file": "landscape5.jpg",
+    "w": 3410,
+    "h": 5137,
+    "color": "#f8f8f8",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "24mm",
+    "aperture": "f/4",
+    "shutter": "1/320s",
+    "iso": 200,
+    "date": "2025-10-26",
+    "title": "Autumn lane"
+   },
+   {
+    "id": "landscape6",
+    "file": "landscape6.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "18mm",
+    "aperture": "f/3.5",
+    "shutter": "1/30s",
+    "iso": 200,
+    "date": "2025-10-27",
+    "title": "Lake at dusk"
+   },
+   {
+    "id": "landscape7",
+    "file": "landscape7.jpg",
+    "w": 5758,
+    "h": 3432,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "29mm",
+    "aperture": "f/4.5",
+    "shutter": "1/200s",
+    "iso": 400,
+    "date": "2025-10-30",
+    "title": "Last light on the road"
+   },
+   {
+    "id": "landscape8",
+    "file": "landscape8.jpg",
+    "w": 2641,
+    "h": 3519,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "iPhone 16 Pro",
+    "lens": "iPhone 16 Pro back triple camera 6.765mm f/1.78",
+    "focal": "7mm",
+    "aperture": "f/1.8",
+    "shutter": "1/1400s",
+    "iso": 100,
+    "date": "2025-07-02",
+    "title": "Canyon river"
+   },
+   {
+    "id": "landscape9",
+    "file": "landscape9.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#686868",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "45mm",
+    "aperture": "f/5",
+    "shutter": "1/800s",
+    "iso": 200,
+    "date": "2025-12-23",
+    "title": "Joshua tree under clouds"
+   },
+   {
+    "id": "landscape10",
+    "file": "landscape10.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/125s",
+    "iso": 250,
+    "date": "2025-12-29",
+    "title": "Mountains at first light"
+   },
+   {
+    "id": "landscape11",
+    "file": "landscape11.jpg",
+    "w": 5328,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "50mm",
+    "aperture": "f/5.6",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2026-02-15",
+    "title": "Seattle skyline"
+   },
+   {
+    "id": "landscape12",
+    "file": "landscape12.jpg",
+    "w": 4784,
+    "h": 3592,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "115mm",
+    "aperture": "f/6.3",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2026-05-24",
+    "title": "Kayak under Mount Rainier"
+   },
+   {
+    "id": "landscape13",
+    "file": "landscape13.jpg",
+    "w": 5328,
+    "h": 4000,
+    "color": "#e8e8e8",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "100mm",
+    "aperture": "f/10",
+    "shutter": "1/320s",
+    "iso": 200,
+    "date": "2026-05-24",
+    "title": "Road to Rainier"
+   },
+   {
+    "id": "landscape14",
+    "file": "landscape14.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#c8c8c8",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "24mm",
+    "aperture": "f/6.3",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2026-08-04",
+    "title": "Red cabin in the valley"
+   }
+  ],
+  "animals": [
+   {
+    "id": "animal-9",
+    "file": "animal_9.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/250s",
+    "iso": 400,
+    "date": "2026-01-14",
+    "title": "Mallard hen"
+   },
+   {
+    "id": "animal1",
+    "file": "animal1.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2025-08-28",
+    "title": "Bee on a zinnia"
+   },
+   {
+    "id": "animal2",
+    "file": "animal2.jpg",
+    "w": 2710,
+    "h": 2035,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/800s",
+    "iso": 200,
+    "date": "2026-03-20",
+    "title": "Finch in the berries"
+   },
+   {
+    "id": "animal3",
+    "file": "animal3.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2025-08-28",
+    "title": "Bee on a peony"
+   },
+   {
+    "id": "animal4",
+    "file": "animal4.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "154mm",
+    "aperture": "f/5.6",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2025-09-09",
+    "title": "Duck on golden water"
+   },
+   {
+    "id": "animal5",
+    "file": "animal5.png",
+    "w": 1524,
+    "h": 2048,
+    "color": "#283818",
+    "sizes": [
+     480,
+     960,
+     1524
+    ],
+    "title": "Cottontail in the grass"
+   },
+   {
+    "id": "animal6",
+    "file": "animal6.jpg",
+    "w": 1916,
+    "h": 2436,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/60s",
+    "iso": 200,
+    "date": "2025-10-26",
+    "title": "Doe in the shade"
+   },
+   {
+    "id": "animal7",
+    "file": "animal7.jpg",
+    "w": 5258,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "250mm",
+    "aperture": "f/5.6",
+    "shutter": "1/200s",
+    "iso": 500,
+    "date": "2025-12-24",
+    "title": "Flamingos"
+   },
+   {
+    "id": "animal8",
+    "file": "animal8.jpg",
+    "w": 3486,
+    "h": 4995,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/100s",
+    "iso": 400,
+    "date": "2026-01-14",
+    "title": "Fawn in the clearing"
+   },
+   {
+    "id": "animal10",
+    "file": "animal10.jpg",
+    "w": 2170,
+    "h": 2894,
+    "color": "#586808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/1250s",
+    "iso": 200,
+    "date": "2026-02-04",
+    "title": "Robin on the lawn"
+   },
+   {
+    "id": "animal11",
+    "file": "animal11.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#181808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2026-04-17",
+    "title": "Peacock in full display"
+   },
+   {
+    "id": "animal12",
+    "file": "animal12.jpg",
+    "w": 2669,
+    "h": 3559,
+    "color": "#282818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2026-04-17",
+    "title": "Peacock profile"
+   },
+   {
+    "id": "animal13",
+    "file": "animal13.jpg",
+    "w": 1828,
+    "h": 2438,
+    "color": "#182808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 400,
+    "date": "2026-04-18",
+    "title": "Honeybee on white blossoms"
+   },
+   {
+    "id": "animal14",
+    "file": "animal14.jpg",
+    "w": 1553,
+    "h": 2071,
+    "color": "#181808",
+    "sizes": [
+     480,
+     960,
+     1553
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/400s",
+    "iso": 800,
+    "date": "2026-04-18",
+    "title": "Junco on a branch"
+   },
+   {
+    "id": "animal15",
+    "file": "animal15.jpg",
+    "w": 3066,
+    "h": 4084,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2026-05-23",
+    "title": "Mallard drake"
+   },
+   {
+    "id": "animal16",
+    "file": "animal16.jpg",
+    "w": 4000,
+    "h": 5333,
+    "color": "#384848",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2026-08-04",
+    "title": "Sheep grazing"
+   },
+   {
+    "id": "animal17",
+    "file": "animal17.jpg",
+    "w": 3764,
+    "h": 5019,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/100s",
+    "iso": 1600,
+    "date": "2026-08-03",
+    "title": "Grey cat"
+   }
+  ],
+  "shoots": [
+   {
+    "id": "shoot-1",
+    "file": "shoot_1.jpg",
+    "w": 3730,
+    "h": 4969,
+    "color": "#382808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/1000s",
+    "iso": 200,
+    "date": "2026-05-27",
+    "title": "Silhouette on the dock"
+   },
+   {
+    "id": "shoot-2",
+    "file": "shoot_2.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "153mm",
+    "aperture": "f/2.8",
+    "shutter": "1/125s",
+    "iso": 200,
+    "date": "2026-01-11",
+    "title": "Under the umbrella"
+   },
+   {
+    "id": "shoot-3",
+    "file": "shoot_3.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "81mm",
+    "aperture": "f/6.3",
+    "shutter": "1/4000s",
+    "iso": 200,
+    "date": "2025-12-30",
+    "title": "Shadow at sunset"
+   },
+   {
+    "id": "shoot-4",
+    "file": "shoot_4.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "200mm",
+    "aperture": "f/2.8",
+    "shutter": "1/125s",
+    "iso": 200,
+    "date": "2026-01-11",
+    "title": "Lakeside portrait"
+   },
+   {
+    "id": "shoot-5",
+    "file": "shoot_5.jpg",
+    "w": 5328,
+    "h": 4000,
+    "color": "#f8f8f8",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/80s",
+    "iso": 3200,
+    "date": "2026-10-28",
+    "title": "Festive group portrait"
+   },
+   {
+    "id": "shoot-6",
+    "file": "shoot_6.jpg",
+    "w": 5328,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/125s",
+    "iso": 3200,
+    "date": "2026-10-28",
+    "title": "Festival lights"
+   }
+  ],
+  "misc": [
+   {
+    "id": "misc1",
+    "file": "misc1.jpg",
+    "w": 1876,
+    "h": 1226,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "250mm",
+    "aperture": "f/5.6",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2025-12-30",
+    "title": "Waxing moon"
+   },
+   {
+    "id": "misc2",
+    "file": "misc2.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/320s",
+    "date": "2025-08-21",
+    "title": "Hydrangea blooms"
+   },
+   {
+    "id": "misc3",
+    "file": "misc3.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#586828",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/320s",
+    "date": "2025-08-21",
+    "title": "Panicle hydrangea"
+   },
+   {
+    "id": "misc4",
+    "file": "misc4.jpg",
+    "w": 5617,
+    "h": 3748,
+    "color": "#081808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/200s",
+    "iso": 200,
+    "date": "2025-08-25",
+    "title": "Red roses"
+   },
+   {
+    "id": "misc5",
+    "file": "misc5.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2025-08-28",
+    "title": "Sunflower patch"
+   },
+   {
+    "id": "misc6",
+    "file": "misc6.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 200,
+    "date": "2025-08-28",
+    "title": "Sunflower"
+   },
+   {
+    "id": "misc7",
+    "file": "misc7.jpg",
+    "w": 3834,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "55mm",
+    "aperture": "f/4",
+    "shutter": "1/2500s",
+    "iso": 200,
+    "date": "2025-09-09",
+    "title": "Sunset through the leaves"
+   },
+   {
+    "id": "misc8",
+    "file": "misc8.jpg",
+    "w": 4445,
+    "h": 2812,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/200s",
+    "iso": 200,
+    "date": "2025-10-04",
+    "title": "Raindrops on a leaf"
+   },
+   {
+    "id": "misc9",
+    "file": "misc9.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/1.8",
+    "shutter": "1/200s",
+    "iso": 200,
+    "date": "2025-10-04",
+    "title": "Faded hydrangea"
+   },
+   {
+    "id": "misc10",
+    "file": "misc10.jpg",
+    "w": 4467,
+    "h": 3092,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "250mm",
+    "aperture": "f/5.6",
+    "shutter": "1/125s",
+    "iso": 200,
+    "date": "2025-10-05",
+    "title": "Full moon over the pines"
+   },
+   {
+    "id": "misc11",
+    "file": "misc11.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "115mm",
+    "aperture": "f/6.3",
+    "shutter": "1/80s",
+    "iso": 400,
+    "date": "2025-10-26",
+    "title": "Two umbrellas in autumn"
+   },
+   {
+    "id": "misc12",
+    "file": "misc12.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "56mm",
+    "aperture": "f/5.6",
+    "shutter": "1/125s",
+    "iso": 1250,
+    "date": "2025-12-12",
+    "title": "Forest trail"
+   },
+   {
+    "id": "misc13",
+    "file": "misc13.jpg",
+    "w": 3113,
+    "h": 4669,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "29mm",
+    "aperture": "f/5.6",
+    "shutter": "1/100s",
+    "iso": 200,
+    "date": "2025-12-12",
+    "title": "Fog on the lake"
+   },
+   {
+    "id": "misc14",
+    "file": "misc14.jpg",
+    "w": 3879,
+    "h": 5818,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/100s",
+    "iso": 200,
+    "date": "2025-12-12",
+    "title": "Droplet on a thorn"
+   },
+   {
+    "id": "misc15",
+    "file": "misc15.jpg",
+    "w": 3635,
+    "h": 5452,
+    "color": "#889898",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF-S55-250mm f/4-5.6 IS II",
+    "focal": "100mm",
+    "aperture": "f/5",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2025-12-22",
+    "title": "Quiet water"
+   },
+   {
+    "id": "misc16",
+    "file": "misc16.jpg",
+    "w": 3025,
+    "h": 4537,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "35mm",
+    "aperture": "f/4.5",
+    "shutter": "1/400s",
+    "iso": 400,
+    "date": "2025-12-23",
+    "title": "Joshua tree at blue hour"
+   },
+   {
+    "id": "misc17",
+    "file": "misc17.jpg",
+    "w": 3451,
+    "h": 5177,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "30mm",
+    "aperture": "f/4.5",
+    "shutter": "1/80s",
+    "iso": 400,
+    "date": "2025-12-23",
+    "title": "Joshua tree at sunset"
+   },
+   {
+    "id": "misc18",
+    "file": "misc18.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF50mm f/1.8 STM",
+    "focal": "50mm",
+    "aperture": "f/4",
+    "shutter": "1/125s",
+    "iso": 250,
+    "date": "2025-12-25",
+    "title": "Joshua tree at golden hour"
+   },
+   {
+    "id": "misc19",
+    "file": "misc19.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/400s",
+    "iso": 200,
+    "date": "2025-12-30",
+    "title": "Moon through the trees"
+   },
+   {
+    "id": "misc20",
+    "file": "misc20.jpg",
+    "w": 6000,
+    "h": 4000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/160s",
+    "iso": 200,
+    "date": "2025-12-31",
+    "title": "Leaves after dark"
+   },
+   {
+    "id": "misc21",
+    "file": "misc21.jpg",
+    "w": 4000,
+    "h": 6000,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "18mm",
+    "aperture": "f/5.6",
+    "shutter": "1/15s",
+    "iso": 200,
+    "date": "2026-01-02",
+    "title": "Storm over the lake"
+   },
+   {
+    "id": "misc22",
+    "file": "misc22.jpg",
+    "w": 3479,
+    "h": 4634,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "145mm",
+    "aperture": "f/2.8",
+    "shutter": "1/1600s",
+    "iso": 200,
+    "date": "2026-02-15",
+    "title": "Space Needle through branches"
+   },
+   {
+    "id": "misc23",
+    "file": "misc23.jpg",
+    "w": 3517,
+    "h": 4685,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "122mm",
+    "aperture": "f/6.3",
+    "shutter": "1/640s",
+    "iso": 400,
+    "date": "2026-04-18",
+    "title": "Rhododendrons"
+   },
+   {
+    "id": "misc24",
+    "file": "misc24.jpg",
+    "w": 3971,
+    "h": 5290,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "18mm",
+    "aperture": "f/4",
+    "shutter": "1/1600s",
+    "iso": 200,
+    "date": "2026-05-27",
+    "title": "Sunset off the pier"
+   },
+   {
+    "id": "misc25",
+    "file": "misc25.jpg",
+    "w": 2921,
+    "h": 3895,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "150mm",
+    "aperture": "f/6.3",
+    "shutter": "1/500s",
+    "iso": 200,
+    "date": "2026-05-27",
+    "title": "Moon at blue hour"
+   },
+   {
+    "id": "misc26",
+    "file": "misc26.jpg",
+    "w": 4000,
+    "h": 5328,
+    "color": "#080808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "RF-S18-150mm F3.5-6.3 IS STM",
+    "focal": "24mm",
+    "aperture": "f/4",
+    "shutter": "1/100s",
+    "iso": 2000,
+    "date": "2026-08-02",
+    "title": "Eiffel Tower at night"
+   }
+  ],
+  "awards": [
+   {
+    "id": "award1",
+    "file": "award1.jpg",
+    "w": 835,
+    "h": 892,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960
+    ]
+   },
+   {
+    "id": "award2",
+    "file": "award2.jpg",
+    "w": 1650,
+    "h": 1275,
+    "color": "#383838",
+    "sizes": [
+     480,
+     960,
+     1650
+    ]
+   },
+   {
+    "id": "award3",
+    "file": "award3.png",
+    "w": 906,
+    "h": 933,
+    "color": "#282828",
+    "sizes": [
+     480,
+     960
+    ]
+   },
+   {
+    "id": "award4",
+    "file": "award4.png",
+    "w": 1909,
+    "h": 996,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award5",
+    "file": "award5.png",
+    "w": 1919,
+    "h": 997,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award6",
+    "file": "award6.png",
+    "w": 1889,
+    "h": 1006,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award7",
+    "file": "award7.png",
+    "w": 1500,
+    "h": 923,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1500
+    ]
+   },
+   {
+    "id": "award8",
+    "file": "award8.jpg",
+    "w": 2551,
+    "h": 3295,
+    "color": "#281818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award9",
+    "file": "award9.jpg",
+    "w": 3295,
+    "h": 2551,
+    "color": "#281818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "iPhone 16 Pro",
+    "lens": "iPhone 16 Pro back triple camera 15.66mm f/2.8",
+    "focal": "16mm",
+    "aperture": "f/2.8",
+    "shutter": "1/120s",
+    "iso": 500,
+    "date": "2025-05-24"
+   },
+   {
+    "id": "award10",
+    "file": "award10.jpg",
+    "w": 3295,
+    "h": 2551,
+    "color": "#383838",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award11",
+    "file": "award11.png",
+    "w": 1867,
+    "h": 906,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award12",
+    "file": "award12.png",
+    "w": 1745,
+    "h": 901,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award13",
+    "file": "award13.png",
+    "w": 1348,
+    "h": 1209,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1348
+    ]
+   },
+   {
+    "id": "award14",
+    "file": "award14.png",
+    "w": 2940,
+    "h": 1612,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award15",
+    "file": "award15.jpg",
+    "w": 2551,
+    "h": 3295,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1920
+    ],
+    "camera": "Canon EOS R10",
+    "lens": "EF70-200mm f/2.8L IS USM",
+    "focal": "145mm",
+    "aperture": "f/2.8",
+    "shutter": "1/1600s",
+    "iso": 200,
+    "date": "2026-02-15"
+   },
+   {
+    "id": "award15-png",
+    "file": "award15.png",
+    "w": 1200,
+    "h": 1177,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1200
+    ]
+   },
+   {
+    "id": "award16",
+    "file": "award16.jpg",
+    "w": 3295,
+    "h": 2551,
+    "color": "#383838",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   },
+   {
+    "id": "award16-png",
+    "file": "award16.png",
+    "w": 1121,
+    "h": 1018,
+    "color": "#181818",
+    "sizes": [
+     480,
+     960,
+     1121
+    ]
+   },
+   {
+    "id": "award17",
+    "file": "award17.png",
+    "w": 2160,
+    "h": 3086,
+    "color": "#181808",
+    "sizes": [
+     480,
+     960,
+     1920
+    ]
+   }
+  ]
+ },
+ "portrait": {
+  "id": "portrait",
+  "file": "pfpfp.jpg",
+  "w": 2947,
+  "h": 3930,
+  "color": "#f8f8f8",
+  "sizes": [
+   480,
+   960,
+   1920
+  ],
+  "camera": "Canon EOS R10",
+  "lens": "EF70-200mm f/2.8L IS USM",
+  "focal": "100mm",
+  "aperture": "f/10",
+  "shutter": "1/400s",
+  "iso": 200,
+  "date": "2026-05-24"
+ }
+}
