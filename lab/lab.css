@@ -1,0 +1,35 @@
+/* Shared styles for the Lab experiments. */
+@font-face { font-family: "Newsreader"; src: url("../assets/fonts/newsreader.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: #000; color: #f4f2ee; font-family: "Geist", system-ui, sans-serif; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: inherit; }
+
+.lab-back {
+  position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); left: 14px; z-index: 50;
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 12px; border-radius: 999px;
+  background: rgba(16,16,16,0.6); border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  text-decoration: none; font-size: 0.875rem; font-weight: 500;
+}
+.lab-back svg { width: 18px; height: 18px; }
+
+.hud {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; pointer-events: none;
+  padding: 20px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+}
+.hud > * { pointer-events: auto; }
+.hud__title { font-family: "Newsreader", Georgia, serif; font-size: 1.375rem; line-height: 1.2; }
+.hud__sub { font-size: 0.8125rem; color: rgba(255,255,255,0.68); margin-top: 2px; }
+.hud__hint { font-size: 0.8125rem; color: rgba(255,255,255,0.6); margin-top: 10px; }
+.hud__btns { display: flex; gap: 8px; }
+.round {
+  width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(16,16,16,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  display: inline-flex; align-items: center; justify-content: center; color: #fff;
+}
+.round svg { width: 22px; height: 22px; }
+.loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: rgba(255,255,255,0.6); }
+@media (min-width: 800px) { .hud { padding: 32px 40px 36px; } .hud__title { font-size: 1.75rem; } }

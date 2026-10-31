@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Liquid | Lab</title>
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" href="lab.css">
+<style>
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
+</style>
+</head>
+<body>
+<a class="lab-back" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Lab</a>
+<canvas id="c" aria-label="Photograph you can ripple like water"></canvas>
+<div class="loading" id="loading">Loading</div>
+<div class="hud">
+  <div>
+    <p class="hud__title" id="title">&nbsp;</p>
+    <p class="hud__sub" id="sub">&nbsp;</p>
+    <p class="hud__hint">Drag across the photo like it&rsquo;s water.</p>
+  </div>
+  <div class="hud__btns">
+    <button class="round" id="prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="round" id="next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</div>
+<script src="lab.js"></script>
+<script>
+// A full-screen shader. Every pointer movement drops a ripple; ripples expand as rings that refract
+// the photo, with a little chromatic split on the wave fronts. Changing photo melts one into the
+// next along a moving noise field.
+(async function () {
+  "use strict";
+  const PICKS = ["landscapes/landscape6", "landscapes/landscape12", "cars/car10", "misc/misc24", "animals/animal4", "misc/misc11", "landscapes/landscape7", "cars/car13", "misc/misc8", "animals/animal3"];
+  const MAX = 24;
+  const canvas = document.getElementById("c");
+  const gl = canvas.getContext("webgl", { antialias: false, alpha: false });
+  const $ = (id) => document.getElementById(id);
+  if (!gl) { $("loading").textContent = "This experiment needs WebGL."; return; }
+
+  const VS = `attribute vec2 p; varying vec2 vUv; void main(){ vUv = p * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }`;
+  const FS = `
+  precision highp float;
+  varying vec2 vUv;
+  uniform sampler2D uT0, uT1;
+  uniform float uA0, uA1, uProgress, uTime;
+  uniform vec2 uRes;
+  uniform vec3 uRip[${MAX}];
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+    return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
+  float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 5; i++){ v += a * noise(p); p *= 2.02; a *= 0.5; } return v; }
+  vec2 cover(vec2 uv, float a){ float s = uRes.x / uRes.y; vec2 k = s > a ? vec2(1.0, a / s) : vec2(s / a, 1.0); return (uv - 0.5) * k + 0.5; }
+  void main(){
+    vec2 uv = vUv;
+    vec2 asp = vec2(uRes.x / uRes.y, 1.0);
+    vec2 disp = vec2(0.0);
+    float glint = 0.0;
+    for (int i = 0; i < ${MAX}; i++){
+      vec3 r = uRip[i];
+      if (r.z < 0.0) continue;
+      vec2 d = (uv - r.xy) * asp;
+      float dist = length(d);
+      float radius = r.z * 0.42;
+      float x = (dist - radius) * 26.0;
+      float wave = sin(x * 2.2) * exp(-x * x * 0.12) * exp(-r.z * 1.15);
+      disp += (d / (dist + 0.0001)) * wave * 0.022 / asp;
+      glint += abs(wave);
+    }
+    float m = sin(uProgress * 3.14159);
+    float n = fbm(uv * 2.6 + vec2(uTime * 0.04, -uTime * 0.03));
+    vec2 warp = (vec2(fbm(uv * 3.1 + 7.0), fbm(uv * 3.1 - 3.0)) - 0.5) * 0.35 * m;
+    float edge = smoothstep(n - 0.12, n + 0.12, uProgress * 1.35 - 0.18);
+    float split = 0.004 * glint + 0.012 * m;
+    vec2 u0 = cover(uv + disp + warp * (1.0 - edge), uA0);
+    vec2 u1 = cover(uv + disp - warp * edge, uA1);
+    vec3 c0 = vec3(texture2D(uT0, u0 + vec2(split, 0.0)).r, texture2D(uT0, u0).g, texture2D(uT0, u0 - vec2(split, 0.0)).b);
+    vec3 c1 = vec3(texture2D(uT1, u1 + vec2(split, 0.0)).r, texture2D(uT1, u1).g, texture2D(uT1, u1 - vec2(split, 0.0)).b);
+    vec3 col = mix(c0, c1, edge);
+    col += glint * 0.06;
+    float vig = smoothstep(1.25, 0.35, length((uv - 0.5) * asp));
+    gl_FragColor = vec4(col * mix(0.72, 1.0, vig), 1.0);
+  }`;
+
+  function shader(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+  const U = {}; ["uT0", "uT1", "uA0", "uA1", "uProgress", "uTime", "uRes", "uRip"].forEach((k) => (U[k] = gl.getUniformLocation(prog, k)));
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+  function texture(unit, img) {
+    const t = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0 + unit);
+    gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    return t;
+  }
+
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(U.uRes, innerWidth, innerHeight);
+  }
+  resize();
+  addEventListener("resize", resize);
+
+  const photos = await Lab.photos();
+  const list = PICKS.map(photos.find).filter(Boolean);
+  const want = Math.min(1920, Math.max(innerWidth, innerHeight) * Math.min(devicePixelRatio || 1, 2));
+  const cache = new Map();
+  const getImg = (p) => { if (!cache.has(p.ref)) cache.set(p.ref, Lab.load(p.src(want))); return cache.get(p.ref); };
+
+  let index = 0;
+  let img0 = await getImg(list[0]);
+  let tex0 = texture(0, img0), tex1 = texture(1, img0);
+  gl.uniform1i(U.uT0, 0); gl.uniform1i(U.uT1, 1);
+  gl.uniform1f(U.uA0, img0.width / img0.height); gl.uniform1f(U.uA1, img0.width / img0.height);
+  $("loading").remove();
+  const caption = (p) => { $("title").textContent = p.title || p.label; $("sub").textContent = p.sub; };
+  caption(list[0]);
+  getImg(list[1]);
+
+  // Ripples: [x, y, age]; age < 0 means unused.
+  const rip = new Float32Array(MAX * 3).fill(-1);
+  let ripI = 0, lastDrop = 0, last = null;
+  function drop(x, y, strength) {
+    rip[ripI * 3] = x / innerWidth; rip[ripI * 3 + 1] = 1 - y / innerHeight; rip[ripI * 3 + 2] = strength ? 0 : 0.25;
+    ripI = (ripI + 1) % MAX;
+  }
+  canvas.addEventListener("pointerdown", (e) => { drop(e.clientX, e.clientY, true); last = { x: e.clientX, y: e.clientY }; });
+  canvas.addEventListener("pointermove", (e) => {
+    const now = performance.now();
+    const moved = last ? Math.hypot(e.clientX - last.x, e.clientY - last.y) : 999;
+    if ((e.buttons || e.pointerType === "mouse") && now - lastDrop > 45 && moved > 14) {
+      drop(e.clientX, e.clientY, e.buttons > 0);
+      lastDrop = now; last = { x: e.clientX, y: e.clientY };
+    }
+  });
+
+  let progress = 0, busy = false;
+  async function go(step) {
+    if (busy) return;
+    busy = true;
+    index = (index + step + list.length) % list.length;
+    const img = await getImg(list[index]);
+    getImg(list[(index + 1) % list.length]);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tex1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    gl.uniform1f(U.uA1, img.width / img.height);
+    caption(list[index]);
+    drop(innerWidth / 2, innerHeight / 2, true);
+    const start = performance.now(), dur = 1900;
+    (function step2(now) {
+      progress = Math.min(1, (now - start) / dur);
+      if (progress < 1) return requestAnimationFrame(step2);
+      // Swap: the new photo becomes texture 0.
+      [tex0, tex1] = [tex1, tex0];
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex0);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tex1);
+      gl.uniform1f(U.uA0, img.width / img.height);
+      progress = 0; busy = false;
+    })(start);
+  }
+  $("next").addEventListener("click", () => go(1));
+  $("prev").addEventListener("click", () => go(-1));
+  addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); });
+
+  // A slow drip on first load so it's obvious the photo is liquid.
+  [[0.5, 0.45, 300], [0.3, 0.6, 1200], [0.7, 0.35, 2100]].forEach(([x, y, t]) => setTimeout(() => drop(x * innerWidth, y * innerHeight, true), t));
+
+  let prevT = performance.now();
+  const t0 = prevT;
+  (function frame(now) {
+    const dt = Math.min(0.05, (now - prevT) / 1000); prevT = now;
+    for (let i = 0; i < MAX; i++) if (rip[i * 3 + 2] >= 0) { rip[i * 3 + 2] += dt; if (rip[i * 3 + 2] > 4) rip[i * 3 + 2] = -1; }
+    gl.uniform3fv(U.uRip, rip);
+    gl.uniform1f(U.uTime, (now - t0) / 1000);
+    gl.uniform1f(U.uProgress, progress);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(frame);
+  })(prevT);
+})().catch((e) => { document.getElementById("loading").textContent = "Couldn't start: " + e.message; });
+</script>
+</body>
+</html>
