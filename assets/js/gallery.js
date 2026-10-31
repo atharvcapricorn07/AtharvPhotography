@@ -1,192 +1,141 @@
-// Gallery: shuffled archive (awards excluded), subject filters, batches of 12, masonry, lightbox.
+// Work: subject chips, grid or feed view, newest first, deep links.
+//   gallery.html?subject=cars           opens a subject
+//   gallery.html?subject=cars#car10     also opens that photo
 (function () {
-  const { photos, lightbox, reveal } = window.Site;
+  "use strict";
+  const S = window.Site;
+  const root = document.querySelector("[data-work]");
+  const chips = document.querySelector("[data-chips]");
+  const viewBtns = document.querySelectorAll("[data-view]");
+  const countEl = document.querySelector("[data-count]");
+  const errorState = document.querySelector("[data-error]");
 
-  const BATCH = 12;
-  const CATEGORIES = ["all", "cars", "landscapes", "animals", "shoots", "misc"];
-  const ALIASES = { fauna: "animals", portraits: "shoots" };
-  const DEFAULT_RATIO = 3 / 2;
-  const GAP = 16;
+  let d = null, subject = "all", list = [], slides = [];
+  let view = "grid";
+  try { view = localStorage.getItem("work-view") || "grid"; } catch (e) {}
 
-  const grid = document.querySelector("[data-masonry]");
-  const footer = document.querySelector("[data-gallery-footer]");
-  const loadMore = document.querySelector("[data-load-more]");
-  const progress = document.querySelector("[data-progress]");
-  const emptyState = document.querySelector('[data-state="empty"]');
-  const errorState = document.querySelector('[data-state="error"]');
-  const buttons = Array.from(document.querySelectorAll(".segmented__btn"));
+  const byDate = (a, b) => (b.date || "").localeCompare(a.date || "");
+  const columnsFor = () => (innerWidth >= 1200 ? 4 : innerWidth >= 760 ? 3 : 2);
 
-  let all = [];
-  let current = [];
-  let category = "all";
-  let shown = 0;
-  let entries = []; // { el, ratio, col }
-  let columns = 0;
-  let frame = 0;
+  function syncUrl(photo) {
+    const url = new URL(location.href);
+    if (subject === "all") url.searchParams.delete("subject"); else url.searchParams.set("subject", subject);
+    url.searchParams.delete("category");
+    url.hash = photo ? photo.ref : "";
+    history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }
+  const onChange = (s) => syncUrl(s ? s.photo : null);
 
-  function columnCount() {
-    const w = grid.clientWidth;
-    return w < 560 ? 1 : w < 1024 ? 2 : w < 1600 ? 3 : 4;
+  function tile(p, i, sizes) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "tap";
+    b.dataset.index = i;
+    b.setAttribute("aria-label", "View " + p.alt);
+    b.appendChild(S.picture(p, { alt: "", sizes }));
+    b.addEventListener("click", () => S.viewer.open(slides, i, b, onChange));
+    return b;
   }
 
-  // Items stay in DOM order (the shuffled order, which is also tab and lightbox order) and are
-  // absolutely positioned. Each item keeps the column it was first given, so loading photos
-  // only pushes items down their own column instead of reshuffling the layout.
-  function assign(list) {
-    const units = new Array(columns).fill(0);
-    entries.forEach((e) => {
-      if (e.col !== undefined && list.indexOf(e) === -1) units[e.col] += 1 / e.ratio + 0.05;
+  function renderGrid() {
+    const n = columnsFor();
+    const wrap = document.createElement("div");
+    wrap.className = "masonry";
+    const cols = Array.from({ length: n }, () => { const c = document.createElement("div"); c.className = "masonry__col"; wrap.appendChild(c); return c; });
+    const heights = new Array(n).fill(0);
+    const sizes = "(max-width: 760px) 50vw, (max-width: 1200px) 33vw, 25vw";
+    list.forEach((p, i) => {
+      const k = heights.indexOf(Math.min(...heights)); // shortest column next, so order reads left to right
+      cols[k].appendChild(tile(p, i, sizes));
+      heights[k] += 1 / p.r;
     });
-    list.forEach((e) => {
-      let target = 0;
-      for (let i = 1; i < columns; i++) if (units[i] < units[target] - 0.01) target = i;
-      e.col = target;
-      units[target] += 1 / e.ratio + 0.05;
+    root.replaceChildren(wrap);
+    root.dataset.cols = n;
+  }
+
+  function renderFeed() {
+    const feed = document.createElement("div");
+    feed.className = "feed";
+    list.forEach((p, i) => {
+      const fig = document.createElement("figure");
+      fig.appendChild(tile(p, i, "(max-width: 980px) 100vw, 980px"));
+      const fc = document.createElement("figcaption");
+      fc.innerHTML = '<span class="plate__title"></span><span class="meta"></span>';
+      fc.firstChild.textContent = p.title || S.LABEL[p.category];
+      fc.lastChild.textContent = [S.subline(p), S.settings(p)].filter(Boolean).join(", ");
+      fig.appendChild(fc);
+      feed.appendChild(fig);
     });
+    root.replaceChildren(feed);
+    delete root.dataset.cols;
   }
 
-  function layout() {
-    frame = 0;
-    const width = grid.clientWidth;
-    const colWidth = (width - GAP * (columns - 1)) / columns;
-    const tops = new Array(columns).fill(0);
-    entries.forEach((e) => {
-      e.el.style.width = colWidth + "px";
-      e.el.style.left = e.col * (colWidth + GAP) + "px";
-      e.el.style.top = tops[e.col] + "px";
-      tops[e.col] += colWidth / e.ratio + GAP;
-    });
-    grid.style.height = entries.length ? Math.max.apply(null, tops) - GAP + "px" : "";
+  function render() {
+    viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+    if (view === "feed") renderFeed(); else renderGrid();
+    root.setAttribute("aria-busy", "false");
   }
 
-  function scheduleLayout() {
-    if (!frame) frame = requestAnimationFrame(layout);
-  }
-
-  function showSkeleton() {
-    grid.classList.add("is-loading");
-    grid.style.height = "";
-    grid.innerHTML = "";
-    for (let i = 0; i < 6; i++) {
-      const s = document.createElement("div");
-      s.className = "skeleton";
-      grid.appendChild(s);
+  function show(key, keepScroll) {
+    subject = d.byCat[key] ? key : "all";
+    chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
+    list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
+    slides = list.map((p) => S.slide(p));
+    countEl.textContent = list.length + (subject === "all" ? " photographs" : " " + S.LABEL[subject].toLowerCase() + " photographs") + ", newest first.";
+    render();
+    syncUrl(null);
+    const active = chips.querySelector('[aria-pressed="true"]');
+    if (active) active.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    if (!keepScroll) {
+      const top = document.querySelector(".toolbar").offsetTop - 56;
+      if (scrollY > top) scrollTo({ top });
     }
   }
 
-  function makeEntry(photo, index) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "photo lift";
-    btn.style.aspectRatio = String(DEFAULT_RATIO);
-    btn.setAttribute("aria-label", "Open " + photo.alt);
-    btn.setAttribute("data-reveal", "");
-    const entry = { el: btn, ratio: DEFAULT_RATIO };
-    btn.appendChild(
-      photos.image(photo, {
-        frame: btn,
-        onRatio: (r) => {
-          entry.ratio = r;
-          scheduleLayout();
-        },
-        onError: () => {
-          btn.remove();
-          entries = entries.filter((e) => e !== entry);
-          scheduleLayout();
-        },
-      })
-    );
-    btn.addEventListener("click", () => lightbox.open(current, index, btn));
-    return entry;
+  function buildChips() {
+    const items = [{ key: "all", label: "All", n: d.all.length }].concat(S.CATEGORIES.map((c) => ({ key: c.key, label: c.label, n: (d.byCat[c.key] || []).length })));
+    chips.replaceChildren(...items.map((it) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.dataset.key = it.key;
+      b.innerHTML = "<b></b><span></span>";
+      b.firstChild.textContent = it.label;
+      b.firstChild.style.fontWeight = "inherit";
+      b.lastChild.textContent = it.n;
+      b.setAttribute("aria-label", it.label + ", " + it.n + " photos");
+      b.addEventListener("click", () => show(it.key));
+      return b;
+    }));
   }
 
-  function showMore(focusFirst) {
-    const batch = current.slice(shown, shown + BATCH).map((photo, i) => makeEntry(photo, shown + i));
-    batch.forEach((e) => {
-      entries.push(e);
-      grid.appendChild(e.el);
-    });
-    assign(batch);
-    layout();
-    shown += batch.length;
-    reveal(grid);
+  viewBtns.forEach((b) => b.addEventListener("click", () => {
+    view = b.dataset.view;
+    try { localStorage.setItem("work-view", view); } catch (e) {}
+    if (d) render();
+  }));
 
-    footer.hidden = current.length === 0;
-    loadMore.hidden = shown >= current.length;
-    progress.textContent = "Showing " + shown + " of " + current.length + " photos";
-    if (focusFirst && batch[0]) batch[0].el.focus();
-  }
-
-  function setCategory(next, opts) {
-    category = next;
-    current = next === "all" ? all : all.filter((p) => p.category === next);
-    shown = 0;
-    entries = [];
-    grid.classList.remove("is-loading");
-    grid.innerHTML = "";
-    columns = columnCount();
-
-    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.category === next)));
-    emptyState.hidden = current.length > 0;
-
-    if (!(opts && opts.initial)) {
-      const url = new URL(window.location.href);
-      if (next === "all") url.searchParams.delete("category");
-      else url.searchParams.set("category", next);
-      history.replaceState(null, "", url);
-
-      const top = grid.getBoundingClientRect().top + window.scrollY - 140;
-      if (window.scrollY > top) window.scrollTo({ top, behavior: "auto" });
-    }
-
-    showMore(false);
-  }
-
-  function categoryFromURL() {
-    const raw = (new URLSearchParams(window.location.search).get("category") || "").toLowerCase();
-    const key = ALIASES[raw] || raw;
-    return CATEGORIES.indexOf(key) !== -1 ? key : "all";
-  }
+  let lastCols = columnsFor();
+  addEventListener("resize", () => {
+    if (!d || view !== "grid") return;
+    const n = columnsFor();
+    if (n !== lastCols) { lastCols = n; render(); }
+  });
 
   function init() {
     errorState.hidden = true;
-    grid.setAttribute("aria-busy", "true");
-    showSkeleton();
-    photos
-      .load()
-      .then((data) => {
-        all = photos.shuffle(photos.flatten(data, ["awards"]));
-        grid.setAttribute("aria-busy", "false");
-        setCategory(categoryFromURL(), { initial: true });
-      })
-      .catch((err) => {
-        console.warn("Could not load photos.json:", err);
-        grid.classList.remove("is-loading");
-        grid.innerHTML = "";
-        grid.setAttribute("aria-busy", "false");
-        errorState.hidden = false;
-      });
+    const params = new URLSearchParams(location.search);
+    const hash = decodeURIComponent(location.hash.slice(1));
+    S.data().then((res) => {
+      d = res;
+      buildChips();
+      show(params.get("subject") || params.get("category") || "all", true);
+      if (hash) {
+        const i = list.findIndex((p) => p.ref === hash || p.id === hash);
+        if (i >= 0) S.viewer.open(slides, i, root.querySelector('[data-index="' + i + '"]'), onChange);
+      }
+    }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; });
   }
-
-  buttons.forEach((b) =>
-    b.addEventListener("click", () => {
-      if (b.dataset.category !== category) setCategory(b.dataset.category);
-    })
-  );
-  loadMore.addEventListener("click", () => showMore(true));
-  document.querySelector("[data-show-all]").addEventListener("click", () => setCategory("all"));
-  errorState.querySelector("[data-retry]").addEventListener("click", init);
-
-  new ResizeObserver(() => {
-    if (!entries.length) return;
-    const n = columnCount();
-    if (n !== columns) {
-      columns = n;
-      entries.forEach((e) => (e.col = undefined));
-      assign(entries);
-    }
-    scheduleLayout();
-  }).observe(grid);
-
+  errorState.querySelector("button").addEventListener("click", init);
   init();
 })();

@@ -1,0 +1,29 @@
+{
+  "_readme": "Hand-maintained. 'photo' points at a gallery photo (category/id) when the winning image is in the gallery; 'proof' is the certificate or result screenshot id in media/awards. Dates and entry counts come from the certificates; leave them null when unknown.",
+  "organizers": {
+    "tpa": { "name": "Top Photo Awards", "note": "International Photo Contests, judged by a panel of experts.", "url": "https://www.topphotoawards.com/" },
+    "viewbug": { "name": "ViewBug", "note": "Global photography community and contests.", "url": "https://www.viewbug.com/" },
+    "photocrowd": { "name": "Photocrowd", "note": "Contests ranked by community votes, with separate expert and judge picks.", "url": "https://www.photocrowd.com/" }
+  },
+  "awards": [
+    { "organizer": "viewbug", "contest": "ViewBug Photography Contest", "result": "Shortlisted, official winner", "tier": "honor", "date": "2026-08-26", "photo": "animals/animal12", "proof": "award17" },
+    { "organizer": "tpa", "contest": "Urban Architecture Photography Contest", "result": "Expert Choice", "tier": "honor", "date": "2026-05-15", "entries": 1924, "photo": "misc/misc22", "proof": "award15" },
+    { "organizer": "tpa", "contest": "Urban Architecture Photography Contest", "result": "Expert Choice", "tier": "honor", "date": "2026-05-15", "entries": 1924, "photo": "landscapes/landscape11", "proof": "award16" },
+    { "organizer": "tpa", "contest": "Skyline Stories: Cityline Photo Contest", "result": "Expert Choice", "tier": "honor", "date": "2026-03-27", "entries": 1212, "photo": "landscapes/landscape11", "proof": "award10" },
+    { "organizer": "tpa", "contest": "Faces of Heritage: Ethnic Folk Portrait Photo Contest", "result": "Expert Choice", "tier": "honor", "date": "2026-02-06", "entries": 1250, "photo": null, "proof": "award9" },
+    { "organizer": "tpa", "contest": "Hidden Gems of Earth: Nature Photo Contest", "result": "Top 50", "tier": "honor", "date": "2026-01-16", "entries": 2032, "photo": null, "proof": "award8" },
+    { "organizer": "tpa", "contest": "Wonder Landscapes 2025", "result": "Top 20", "tier": "honor", "date": "2025-07-01", "entries": 3512, "photo": null, "proof": "award2" },
+    { "organizer": "photocrowd", "contest": "Big Landscapes", "result": "Commended by the expert", "tier": "expert", "date": null, "photo": "landscapes/landscape12", "proof": "award11" },
+    { "organizer": "photocrowd", "contest": "Pollinators on Flowers (in Colour)", "result": "Judge merit, top 10% crowd favourite", "tier": "expert", "date": null, "rank": 208, "photo": "animals/animal1", "proof": "award5" },
+    { "organizer": "photocrowd", "contest": "Astrophotography", "result": "Expert merit, top 50% crowd favourite", "tier": "expert", "date": null, "photo": null, "proof": "award1" },
+    { "organizer": "photocrowd", "contest": "Pets that Squeak", "result": "Top 10% crowd favourite", "tier": "crowd", "date": null, "rank": 25, "photo": "animals/animal5", "proof": "award16-png" },
+    { "organizer": "photocrowd", "contest": "The Moon", "result": "Top 10% crowd favourite", "tier": "crowd", "date": null, "rank": 143, "photo": "misc/misc10", "proof": "award7" },
+    { "organizer": "photocrowd", "contest": "Street Photography at Night", "result": "Top 10% crowd favourite", "tier": "crowd", "date": null, "rank": 149, "photo": null, "proof": "award4" },
+    { "organizer": "photocrowd", "contest": "Begins with the Letter “C”", "result": "Top 10% crowd favourite", "tier": "crowd", "date": null, "rank": 378, "photo": "animals/animal17", "proof": "award15-png" },
+    { "organizer": "photocrowd", "contest": "Bees in Nature", "result": "Top 25% crowd favourite", "tier": "crowd", "date": null, "rank": 335, "photo": "animals/animal13", "proof": "award13" },
+    { "organizer": "photocrowd", "contest": "Rivers and Streams", "result": "Top 25% crowd favourite", "tier": "crowd", "date": null, "rank": 442, "photo": "landscapes/landscape8", "proof": "award6" },
+    { "organizer": "photocrowd", "contest": "Wildlife entry", "result": "Top 25% crowd favourite", "tier": "crowd", "date": null, "rank": 659, "photo": "animals/animal5", "proof": "award3" },
+    { "organizer": "photocrowd", "contest": "Triptychs in Black and White", "result": "Top 50% crowd favourite", "tier": "crowd", "date": null, "rank": 349, "photo": null, "proof": "award12" },
+    { "organizer": "photocrowd", "contest": "Nature entry", "result": "Top 50% crowd favourite", "tier": "crowd", "date": null, "rank": 849, "photo": "animals/animal13", "proof": "award14" }
+  ]
+}

@@ -1,173 +1,186 @@
-// Home: hero crossfade, featured shelf, and subject tiles, from a fixed set of horizontal photos.
+// Home: the reel, collections, a paced selection of work, recognition.
 (function () {
-  const { photos, lightbox, reducedMotion } = window.Site;
+  "use strict";
+  const S = window.Site;
 
-  // Real pixel sizes, so every frame can take the photo's own ratio before it loads.
-  // `position` keeps the subject in view where the full-bleed hero crops a photo.
-  const PHOTOS = {
-    landscape13: { src: "photos/landscapes/landscape13.jpg", width: 5328, height: 4000, position: "50% 22%", alt: "Snow-covered Mount Rainier rising at the end of a road with double yellow center lines, lined with evergreens and street lamps" },
-    misc10: { src: "photos/misc/misc10.jpg", width: 4467, height: 3092, position: "40% 30%", alt: "A full moon glowing amber in a dark sky above the silhouetted tops of evergreen trees" },
-    landscape11: { src: "photos/landscapes/landscape11.jpg", width: 5328, height: 4000, position: "50% 70%", alt: "Black-and-white view of the Seattle skyline, with the Space Needle standing in front of the downtown towers" },
-    animal1: { src: "photos/animals/animal1.jpg", width: 6000, height: 4000, position: "50% 45%", alt: "A honeybee feeding at the center of a deep red zinnia against dark green foliage" },
-    landscape12: { src: "photos/landscapes/landscape12.jpg", width: 4784, height: 3592, position: "50% 42%", alt: "Mount Rainier towering over a tree-lined lakeshore of homes, with a person paddling on the lake in the foreground" },
-    misc20: { src: "photos/misc/misc20.jpg", width: 6000, height: 4000, position: "50% 50%", alt: "Sunlit blackberry leaves in green and gold standing out against deep shadow" },
-    misc1: { src: "photos/misc/misc1.jpg", width: 1876, height: 1226, position: "50% 50%", alt: "A waxing gibbous moon with its craters and dark maria in sharp detail against a black sky" },
-    car10: { src: "photos/cars/car10.jpg", width: 6000, height: 4000, position: "50% 50%", alt: "A black Porsche 911 parked on gravel at sunset, with an orange sky and a lakeside terrace behind it" },
-    shoot4: { src: "photos/shoots/shoot_4.jpg", width: 4000, height: 5328, position: "50% 50%", alt: "Portrait of a person in a knit beanie and navy hoodie glancing back at the camera on a grey lakeside dock" },
-  };
+  // Curated by hand. Phones get tall photos, wide screens get wide ones, so nothing is cropped badly.
+  const REEL_TALL = ["animals/animal11", "shoots/shoot-1", "cars/car16", "landscapes/landscape8", "misc/misc26", "cars/car17"];
+  const REEL_WIDE = ["cars/car10", "landscapes/landscape12", "misc/misc11", "cars/car13", "landscapes/landscape7", "landscapes/landscape6"];
+  const COVERS = { cars: "cars/car4", landscapes: "landscapes/landscape12", animals: "animals/animal12", shoots: "shoots/shoot-3", misc: "misc/misc17" };
+  // Selected work, laid out like spreads in a photo book.
+  const BOOK = [
+    { kind: "full", refs: ["landscapes/landscape13"] },
+    { kind: "pair", refs: ["animals/animal17", "cars/car12"] },
+    { kind: "inset", refs: ["shoots/shoot-2"] },
+    { kind: "inset right", refs: ["animals/animal14"] },
+    { kind: "full", refs: ["animals/animal3"] },
+    { kind: "pair", refs: ["misc/misc14", "misc/misc18"] },
+    { kind: "narrow", refs: ["animals/animal12"] },
+    { kind: "full", refs: ["misc/misc8"] },
+    { kind: "pair", refs: ["cars/car14", "shoots/shoot-4"] },
+    { kind: "inset right", refs: ["landscapes/landscape14"] },
+  ];
 
-  // Hero alternates subjects and opens on Rainier. misc1 is too small to run full-bleed.
-  const HERO = ["landscape13", "misc10", "landscape11", "animal1", "landscape12", "misc20"].map((k) => PHOTOS[k]);
-  const SHELF = ["misc20", "landscape12", "misc10", "animal1", "landscape11", "misc1", "landscape13"].map((k) => PHOTOS[k]);
-  // No horizontal portrait exists yet, so that tile shows the whole vertical photo in a 3:2 frame.
-  const TILES = { cars: PHOTOS.car10, landscapes: PHOTOS.landscape12, animals: PHOTOS.animal1, shoots: PHOTOS.shoot4 };
-  const TILE_FRAME = 3 / 2;
+  const reel = document.querySelector("[data-reel]");
+  const track = reel.querySelector(".reel__track");
+  const dots = reel.querySelector(".reel__dots");
+  const caption = { title: reel.querySelector(".reel__title"), sub: reel.querySelector(".reel__sub") };
+  const prev = reel.querySelector("[data-prev]");
+  const next = reel.querySelector("[data-next]");
 
-  const HERO_INTERVAL = 7000;
+  let reelPhotos = [], current = -1;
 
-  function sized(img, photo) {
-    img.width = photo.width;
-    img.height = photo.height;
-    return img;
-  }
-
-  function initHero(set) {
-    const media = document.querySelector("[data-hero-media]");
-    const pause = document.querySelector(".hero__pause");
-    if (!media || !set.length) return;
-
-    const layers = set.map((photo, i) => {
-      const img = sized(document.createElement("img"), photo);
-      img.alt = photo.alt;
-      img.decoding = "async";
-      img.style.objectPosition = photo.position;
-      if (i === 0) {
-        img.fetchPriority = "high";
-        img.addEventListener("load", () => img.classList.add("is-active"), { once: true });
-        img.src = photo.src;
-      } else {
-        img.setAttribute("aria-hidden", "true");
-      }
-      media.appendChild(img);
-      return img;
-    });
-
-    if (layers.length < 2 || reducedMotion.matches) return;
-
-    let current = 0;
-    let timer = null;
-    let paused = false;
-
-    // Load the next layer ahead of time so the crossfade never shows a half-loaded photo.
-    function prepare(i) {
-      const img = layers[i];
-      if (!img.getAttribute("src")) img.src = set[i].src;
-      return img.complete && img.naturalWidth
-        ? Promise.resolve()
-        : new Promise((resolve, reject) => {
-            img.addEventListener("load", resolve, { once: true });
-            img.addEventListener("error", reject, { once: true });
-          });
-    }
-
-    function advance() {
-      const next = (current + 1) % layers.length;
-      prepare(next).then(() => {
-        if (paused) return;
-        layers[current].classList.remove("is-active");
-        layers[current].setAttribute("aria-hidden", "true");
-        layers[next].classList.add("is-active");
-        layers[next].removeAttribute("aria-hidden");
-        current = next;
-        prepare((next + 1) % layers.length).catch(() => {});
-        schedule();
-      }, schedule);
-    }
-
-    function schedule() {
-      clearTimeout(timer);
-      if (!paused && !document.hidden) timer = setTimeout(advance, HERO_INTERVAL);
-    }
-
-    pause.hidden = false;
-    pause.addEventListener("click", () => {
-      paused = !paused;
-      pause.setAttribute("aria-pressed", String(paused));
-      layers.forEach((img) => (img.style.animationPlayState = paused ? "paused" : ""));
-      schedule();
-    });
-    document.addEventListener("visibilitychange", schedule);
-    prepare(1).catch(() => {});
-    schedule();
-  }
-
-  function initShelf(set) {
-    const shelf = document.querySelector("[data-shelf]");
-    const prev = document.querySelector("[data-shelf-prev]");
-    const next = document.querySelector("[data-shelf-next]");
-    if (!shelf) return;
-
-    shelf.innerHTML = "";
-    set.forEach((photo, i) => {
+  function buildReel(d) {
+    const tall = matchMedia("(max-aspect-ratio: 1/1)").matches;
+    reelPhotos = (tall ? REEL_TALL : REEL_WIDE).map(d.find).filter(Boolean);
+    const slides = reelPhotos.map((p) => S.slide(p));
+    track.replaceChildren(...reelPhotos.map((p, i) => {
       const li = document.createElement("li");
-      li.className = "shelf__item";
-      li.style.aspectRatio = photo.width + " / " + photo.height;
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "photo lift";
-      btn.setAttribute("aria-label", "Open " + photo.alt);
-      btn.appendChild(sized(photos.image(photo, { onError: () => li.remove() }), photo));
-      btn.addEventListener("click", () => lightbox.open(set, i, btn));
-      li.appendChild(btn);
-      shelf.appendChild(li);
-    });
-
-    function update() {
-      const max = shelf.scrollWidth - shelf.clientWidth - 2;
-      prev.disabled = shelf.scrollLeft <= 2;
-      next.disabled = shelf.scrollLeft >= max;
-    }
-    const by = (dir) => shelf.scrollBy({ left: dir * shelf.clientWidth * 0.8, behavior: reducedMotion.matches ? "auto" : "smooth" });
-    prev.addEventListener("click", () => by(-1));
-    next.addEventListener("click", () => by(1));
-    shelf.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
+      li.className = "reel__slide";
+      li.setAttribute("aria-roledescription", "slide");
+      li.setAttribute("aria-label", i + 1 + " of " + reelPhotos.length);
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "View " + p.alt);
+      b.appendChild(S.picture(p, { alt: "", eager: i === 0, sizes: "100vw" }));
+      b.addEventListener("click", () => S.viewer.open(slides, i, b, null));
+      li.appendChild(b);
+      return li;
+    }));
+    dots.replaceChildren(...reelPhotos.map((p, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Show photo " + (i + 1));
+      b.addEventListener("click", () => goTo(i));
+      return b;
+    }));
+    current = -1;
+    track.scrollLeft = 0;
+    setCurrent(0);
   }
 
-  // Horizontal photos set their tile's ratio; a vertical one sits whole in a 3:2 frame over a blurred copy.
-  function initTiles() {
-    document.querySelectorAll("[data-tile]").forEach((tile) => {
-      const photo = TILES[tile.dataset.tile];
-      if (!photo) return;
-      const frame = tile.querySelector("[data-frame]");
-      const horizontal = photo.width > photo.height;
-      tile.parentElement.style.setProperty("--r", horizontal ? photo.width / photo.height : TILE_FRAME);
-      if (!horizontal) {
-        const fill = sized(photos.image({ src: photo.src, alt: "" }), photo);
-        fill.classList.add("photo__fill");
-        fill.setAttribute("aria-hidden", "true");
-        frame.appendChild(fill);
-        frame.classList.add("photo--whole");
+  function setCurrent(i) {
+    if (i === current || !reelPhotos[i]) return;
+    current = i;
+    const p = reelPhotos[i];
+    caption.title.textContent = p.title || S.LABEL[p.category];
+    caption.sub.textContent = S.subline(p);
+    [...dots.children].forEach((b, j) => b.setAttribute("aria-current", String(j === i)));
+    prev.disabled = i === 0;
+    next.disabled = i === reelPhotos.length - 1;
+    if (scrollY < innerHeight * 0.6) S.tint(p);
+  }
+
+  function goTo(i) {
+    track.scrollTo({ left: i * track.clientWidth, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+
+  let raf = 0;
+  track.addEventListener("scroll", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => setCurrent(Math.round(track.scrollLeft / track.clientWidth)));
+  }, { passive: true });
+  prev.addEventListener("click", () => goTo(current - 1));
+  next.addEventListener("click", () => goTo(current + 1));
+  reel.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); goTo(Math.min(current + 1, reelPhotos.length - 1)); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); goTo(Math.max(current - 1, 0)); }
+  });
+
+  function buildCollections(d) {
+    const shelf = document.querySelector("[data-collections]");
+    shelf.replaceChildren(...S.CATEGORIES.map((c) => {
+      const list = d.byCat[c.key] || [];
+      const a = document.createElement("a");
+      a.className = "collection";
+      a.href = "gallery.html?subject=" + c.key;
+      const cover = d.find(COVERS[c.key]) || list[0];
+      if (cover) a.appendChild(S.picture(cover, { alt: "", sizes: "(max-width: 600px) 68vw, (max-width: 1000px) 40vw, 260px" }));
+      const label = document.createElement("span");
+      label.className = "collection__label";
+      label.innerHTML = '<span class="collection__name"></span><span class="collection__count"></span>';
+      label.firstChild.textContent = c.label;
+      label.lastChild.textContent = list.length + " photos";
+      a.appendChild(label);
+      return a;
+    }));
+  }
+
+  function caption2(p) {
+    const fc = document.createElement("figcaption");
+    fc.innerHTML = '<span class="plate__title"></span><span class="meta"></span>';
+    fc.firstChild.textContent = p.title || S.LABEL[p.category];
+    fc.lastChild.textContent = S.subline(p);
+    return fc;
+  }
+
+  function buildBook(d) {
+    const book = document.querySelector("[data-book]");
+    const all = BOOK.flatMap((b) => b.refs).map(d.find).filter(Boolean);
+    const slides = all.map((p) => S.slide(p));
+    let n = 0;
+    book.replaceChildren(...BOOK.map((block) => {
+      const photos = block.refs.map(d.find).filter(Boolean);
+      const fig = document.createElement("figure");
+      fig.className = "plate " + block.kind.split(" ").map((k) => "plate--" + k).join(" ");
+      fig.style.setProperty("--r", photos[0].r.toFixed(4));
+      if (block.kind === "pair") {
+        fig.style.setProperty("--sum", photos.reduce((t, p) => t + p.r, 0).toFixed(4));
+        const pair = document.createElement("div");
+        pair.className = "pair";
+        photos.forEach((p) => {
+          const t = S.tappable(p, slides, n++, { sizes: "(max-width: 800px) 50vw, 40vw" });
+          t.style.setProperty("--r", p.r.toFixed(4));
+          pair.appendChild(t);
+        });
+        fig.appendChild(pair);
+        const fc = document.createElement("figcaption");
+        fc.innerHTML = '<span class="plate__title"></span>';
+        fc.firstChild.textContent = photos.map((p) => p.title).join(" and ");
+        fig.appendChild(fc);
+      } else {
+        const p = photos[0];
+        fig.appendChild(S.tappable(p, slides, n++, { sizes: block.kind === "full" ? "100vw" : "(max-width: 800px) 82vw, 60vw" }));
+        fig.appendChild(caption2(p));
       }
-      frame.appendChild(sized(photos.image(photo), photo));
-    });
+      return fig;
+    }));
   }
 
-  function initCounts(data) {
-    document.querySelectorAll("[data-tile]").forEach((tile) => {
-      const count = tile.querySelector("[data-count]");
-      const n = photos.list(data, tile.dataset.tile).length;
-      if (count) count.textContent = n + (n === 1 ? " photo" : " photos");
-    });
+  function buildHonors(d) {
+    fetch("data/awards.json").then((r) => r.json()).then((a) => {
+      const list = document.querySelector("[data-honors]");
+      const expert = a.awards.filter((x) => /Expert Choice/.test(x.result)).length;
+      document.querySelector("[data-honors-summary]").textContent =
+        a.awards.length + " results in international photo contests, including " + expert + " Expert Choice awards from Top Photo Awards.";
+      list.replaceChildren(...a.awards.filter((x) => x.tier === "honor").slice(0, 4).map((x) => {
+        const li = document.createElement("li");
+        li.className = "honor";
+        const p = (x.photo && d.find(x.photo)) || d.find("awards/" + x.proof);
+        li.appendChild(p ? S.picture(p, { alt: "", sizes: "80px" }) : document.createElement("span"));
+        const t = document.createElement("div");
+        t.innerHTML = '<p class="honor__contest"></p><p class="honor__result"></p>';
+        t.firstChild.textContent = x.contest;
+        t.lastChild.textContent = x.result + ", " + a.organizers[x.organizer].name + (x.date ? ", " + S.month(x.date) : "");
+        li.appendChild(t);
+        return li;
+      }));
+    }).catch(() => {});
   }
 
-  initHero(HERO);
-  initShelf(SHELF);
-  initTiles();
+  S.data().then((d) => {
+    buildReel(d);
+    buildCollections(d);
+    buildBook(d);
+    buildHonors(d);
+    const teaser = document.querySelector("[data-portrait]");
+    if (d.portrait) teaser.replaceChildren(S.picture(d.portrait, { alt: "Atharv Kale", sizes: "180px", position: "50% 30%" }));
+    // Rotating a phone swaps between the tall and wide reel.
+    matchMedia("(max-aspect-ratio: 1/1)").addEventListener("change", () => buildReel(d));
+  }).catch(() => {
+    reel.querySelector(".reel__caption").innerHTML = '<p class="reel__title">Photos couldn’t load.</p><p class="reel__sub">Refresh the page to try again.</p>';
+  });
 
-  photos
-    .load()
-    .then(initCounts)
-    .catch((err) => console.warn("Could not load photos.json:", err));
+  // Return the browser bar to black once the reel scrolls away.
+  addEventListener("scroll", () => { if (scrollY > innerHeight * 0.6) S.resetTint(); else if (reelPhotos[current]) S.tint(reelPhotos[current]); }, { passive: true });
 })();
