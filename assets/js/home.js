@@ -7,19 +7,6 @@
   const REEL_TALL = ["animals/animal11", "shoots/shoot-1", "cars/car16", "landscapes/landscape8", "misc/misc26", "cars/car17"];
   const REEL_WIDE = ["cars/car10", "landscapes/landscape12", "misc/misc11", "cars/car13", "landscapes/landscape7", "landscapes/landscape6"];
   const COVERS = { cars: "cars/car4", landscapes: "landscapes/landscape12", animals: "animals/animal12", shoots: "shoots/shoot-3", misc: "misc/misc17" };
-  // Selected work, laid out like spreads in a photo book.
-  const BOOK = [
-    { kind: "full", refs: ["landscapes/landscape13"] },
-    { kind: "pair", refs: ["animals/animal17", "cars/car12"] },
-    { kind: "inset", refs: ["shoots/shoot-2"] },
-    { kind: "inset right", refs: ["animals/animal14"] },
-    { kind: "full", refs: ["animals/animal3"] },
-    { kind: "pair", refs: ["misc/misc14", "misc/misc18"] },
-    { kind: "narrow", refs: ["animals/animal12"] },
-    { kind: "full", refs: ["misc/misc8"] },
-    { kind: "pair", refs: ["cars/car14", "shoots/shoot-4"] },
-    { kind: "inset right", refs: ["landscapes/landscape14"] },
-  ];
 
   const reel = document.querySelector("[data-reel]");
   const track = reel.querySelector(".reel__track");
@@ -106,47 +93,6 @@
     }));
   }
 
-  function caption2(p) {
-    const fc = document.createElement("figcaption");
-    fc.innerHTML = '<span class="plate__title"></span><span class="meta"></span>';
-    fc.firstChild.textContent = p.title || S.LABEL[p.category];
-    fc.lastChild.textContent = S.subline(p);
-    return fc;
-  }
-
-  function buildBook(d) {
-    const book = document.querySelector("[data-book]");
-    const all = BOOK.flatMap((b) => b.refs).map(d.find).filter(Boolean);
-    const slides = all.map((p) => S.slide(p));
-    let n = 0;
-    book.replaceChildren(...BOOK.map((block) => {
-      const photos = block.refs.map(d.find).filter(Boolean);
-      const fig = document.createElement("figure");
-      fig.className = "plate " + block.kind.split(" ").map((k) => "plate--" + k).join(" ");
-      fig.style.setProperty("--r", photos[0].r.toFixed(4));
-      if (block.kind === "pair") {
-        fig.style.setProperty("--sum", photos.reduce((t, p) => t + p.r, 0).toFixed(4));
-        const pair = document.createElement("div");
-        pair.className = "pair";
-        photos.forEach((p) => {
-          const t = S.tappable(p, slides, n++, { sizes: "(max-width: 800px) 50vw, 40vw" });
-          t.style.setProperty("--r", p.r.toFixed(4));
-          pair.appendChild(t);
-        });
-        fig.appendChild(pair);
-        const fc = document.createElement("figcaption");
-        fc.innerHTML = '<span class="plate__title"></span>';
-        fc.firstChild.textContent = photos.map((p) => p.title).join(" and ");
-        fig.appendChild(fc);
-      } else {
-        const p = photos[0];
-        fig.appendChild(S.tappable(p, slides, n++, { sizes: block.kind === "full" ? "100vw" : "(max-width: 800px) 82vw, 60vw" }));
-        fig.appendChild(caption2(p));
-      }
-      return fig;
-    }));
-  }
-
   function buildHonors(d) {
     fetch("data/awards.json").then((r) => r.json()).then((a) => {
       const list = document.querySelector("[data-honors]");
@@ -171,7 +117,6 @@
   S.data().then((d) => {
     buildReel(d);
     buildCollections(d);
-    buildBook(d);
     buildHonors(d);
     const teaser = document.querySelector("[data-portrait]");
     if (d.portrait) teaser.replaceChildren(S.picture(d.portrait, { alt: "Atharv Kale", sizes: "180px", position: "50% 30%" }));

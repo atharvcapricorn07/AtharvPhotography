@@ -118,17 +118,24 @@ ul, ol { list-style: none; padding: 0; }
 .topbar .icon-btn { margin-right: -10px; }
 .topbar.is-solid { background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border-bottom-color: var(--line); }
 /* Over a photo the bar sits on a soft shade so the wordmark stays legible. */
-.topbar--over:not(.is-solid) { background: linear-gradient(rgba(0,0,0,0.45), transparent); }
+.topbar--over:not(.is-solid) { background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.2) 70%, transparent); }
+.topbar--over:not(.is-solid) .wordmark { text-shadow: 0 1px 12px rgba(0,0,0,0.5); }
+.topbar--over:not(.is-solid) .wordmark span { color: rgba(255,255,255,0.75); }
 main { padding-top: calc(56px + env(safe-area-inset-top, 0px)); }
 .page-home main { padding-top: 0; }
 
 @media (min-width: 800px) {
   .topbar__inner { height: 64px; }
   main { padding-top: 64px; }
-  .topnav { display: flex; align-items: center; gap: 4px; }
-  .topnav a { text-decoration: none; font-size: 0.9375rem; color: var(--ink-2); padding: 8px 14px; border-radius: 999px; transition: color 0.2s, background 0.2s; }
-  .topnav a:hover { color: var(--ink); }
-  .topnav a[aria-current="page"] { color: var(--ink); background: rgba(255,255,255,0.1); }
+  /* Nav sits on its own frosted pill, so it stays readable over any photo. */
+  .topnav {
+    display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px;
+    background: rgba(12, 12, 12, 0.62); border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  }
+  .topnav a { text-decoration: none; font-size: 0.9375rem; font-weight: 500; color: rgba(255,255,255,0.86); padding: 8px 16px; border-radius: 999px; transition: color 0.2s, background 0.2s; }
+  .topnav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .topnav a[aria-current="page"] { color: #000; background: var(--ink); }
   .topbar .icon-btn.ig-top { display: none; }
 }
 
@@ -201,9 +208,25 @@ main { padding-top: calc(56px + env(safe-area-inset-top, 0px)); }
   .reel__arrows { display: flex; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .js .reel__slide:first-child img.is-loaded { animation: settle 1.6s var(--ease) both; }
+  .js:not(.iris-on) .reel__slide:first-child img.is-loaded { animation: settle 1.6s var(--ease) both; }
 }
 @keyframes settle { from { transform: scale(1.06); } }
+
+/* ---------- Iris: the opening moment ---------- */
+.iris { position: fixed; inset: 0; z-index: 100; cursor: pointer; transition: opacity 0.5s var(--ease); }
+.iris canvas { display: block; }
+.iris.is-done { opacity: 0; pointer-events: none; }
+.iris__f {
+  position: absolute; left: 50%; bottom: calc(32px + var(--safe-b)); transform: translateX(-50%);
+  font-size: 0.875rem; font-weight: 500; letter-spacing: 0.02em; color: rgba(255,255,255,0.7);
+  font-variant-numeric: tabular-nums; transition: opacity 0.3s;
+}
+.iris.is-done .iris__f { opacity: 0; }
+/* The photo behind the iris starts slightly enlarged and settles as the blades open. */
+.iris-on .reel__slide:first-child img { transform: scale(1.16); }
+.iris-opening .reel__slide:first-child img { transform: scale(1); transition: transform 1.9s var(--ease), opacity 0.6s; }
+.iris-on .reel__ui, .iris-on .topbar, .iris-on .tabbar { opacity: 0; }
+.iris-opening .reel__ui, .iris-opening .topbar, .iris-opening .tabbar { opacity: 1; transition: opacity 0.6s 0.9s; }
 
 /* ---------- Home: intro ---------- */
 .intro { padding-top: 48px; display: grid; gap: 28px; }
