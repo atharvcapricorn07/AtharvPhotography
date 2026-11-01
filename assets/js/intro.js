@@ -6,8 +6,12 @@
   const fly = document.querySelector("[data-fly]");
   if (!fly) return;
 
-  // Atharv's six favourites. The last one becomes the full-screen landing photo.
-  const PICKS = ["animals/animal13", "cars/car9", "landscapes/landscape14", "misc/misc22", "animals/animal17", "landscapes/landscape11"];
+  // Atharv's favourites. The flight is the same everywhere; the landing photo depends on the screen:
+  // tall phone screens land on a vertical photo, wide screens on the horizontal skyline.
+  const FLIGHT = ["animals/animal13", "cars/car9", "landscapes/landscape14", "misc/misc22", "animals/animal17"];
+  const FINAL_TALL = "landscapes/landscape8";
+  const FINAL_WIDE = "landscapes/landscape11";
+  let PICKS = FLIGHT.concat(FINAL_WIDE);
   const PERSPECTIVE = 1000;
 
   const stage = fly.querySelector(".fly__stage");
@@ -24,6 +28,7 @@
   function homeTop() { return fly.offsetTop + fly.offsetHeight - stage.clientHeight; }
 
   function build(d) {
+    PICKS = FLIGHT.concat(stage.clientWidth / stage.clientHeight < 0.9 ? FINAL_TALL : FINAL_WIDE);
     const photos = PICKS.map(d.find).filter(Boolean);
     const final = photos[photos.length - 1];
     const flight = photos.slice(0, -1);
@@ -59,10 +64,10 @@
         rot: -side * (7 + rnd() * 8),
       }));
     });
-    // The final photo arrives at its natural shape: it covers the screen when the screen is about
-    // as wide as the photo, and spans the full width on tall phone screens so nothing is cropped.
+    // The final photo covers the screen when its shape is close to the screen's; otherwise it spans
+    // the full width so nothing important is cropped.
     const zFinal = -1500 - flight.length * spacing - 300;
-    const tall = W / H < final.r * 0.8;
+    const tall = W / H < final.r * 0.55;
     const fw = W, fh = tall ? W / final.r : H;
     items.push(card(final, { w: fw, h: fh, z: zFinal, x: 0, y: tall ? -H * 0.06 : 0, rot: 0, final: true }));
     camEnd = -zFinal;

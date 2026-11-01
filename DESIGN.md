@@ -30,7 +30,7 @@ a phone. Clean and minimal, but not generic.
 ## Structure
 
 - **Intro (home):** scroll flies the camera through Atharv's six favourite photos in CSS 3D. The
-  last one (the Seattle skyline) arrives at full screen with his name, then the home page scrolls up.
+  last one arrives at full screen (a canyon river on phones, the Seattle skyline on wide screens) with his name, then the home page scrolls up.
   Skip button; returning in the same visit lands on the home content; reduced motion shows a still.
 - **Home:** one centered statement → collections as a bento grid → four facts → recognition panel →
   about card → closing call to action. Sections fade up once as they enter.
