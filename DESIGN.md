@@ -22,16 +22,18 @@ a phone. Clean and minimal, but not generic.
 - **The photo picks the color.** Each photo's most vivid hue is computed at build time (`tint` in
   `data/photos.json`). It colors the reel's progress marks, the viewer's ambient glow and the
   booking card, so the site changes with the work instead of having a brand color.
-- **Type:** Newsreader (a reading serif with optical sizes) for titles and the intro; Geist for
-  everything you tap. Both self-hosted under the SIL Open Font License.
+- **Type:** Geist throughout, self-hosted. Headlines are semibold with tight tracking, body text is
+  regular, so hierarchy comes from size and weight rather than a second typeface.
 - **Shape:** rounded photos where they act as buttons (collections, thumbnails), square edges where
   a photo is the work itself (reel, selected work, viewer).
 
 ## Structure
 
-- **Home:** reel (tall photos on phones, wide on desktop) → one-sentence intro → collections shelf
-  (swipe on phones, row of five on desktop) → selected work laid out like spreads in a photo book →
-  recognition → about → booking.
+- **Intro (home):** scroll flies the camera through Atharv's six favourite photos in CSS 3D. The
+  last one (the Eiffel Tower) arrives at full screen with his name, then the home page scrolls up.
+  Skip button; returning in the same visit lands on the home content; reduced motion shows a still.
+- **Home:** one centered statement → collections as a bento grid → four facts → recognition panel →
+  about card → closing call to action. Sections fade up once as they enter.
 - **Work:** chips for subjects, grid or feed, newest first. The grid fills shortest column first so
   it reads left to right, matching the viewer's order.
 - **Viewer:** swipe between photos, swipe down to close, details panel with camera, lens, settings

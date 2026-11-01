@@ -12,7 +12,7 @@
   function onScroll() {
     const y = scrollY;
     // Over the home reel the bar stays clear until the photos scroll away.
-    const threshold = document.body.classList.contains("page-home") ? innerHeight - 80 : 8;
+    const threshold = 8;
     if (topbar) topbar.classList.toggle("is-solid", y > threshold);
     // The tab bar steps aside while you scroll down through photos and returns when you scroll up.
     if (tabbar) {

@@ -18,16 +18,15 @@
   <link rel="canonical" href="https://atharvphotography.studio/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=3">
+  <link rel="stylesheet" href="assets/css/site.css?v=4">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="assets/js/site.js?v=3" defer></script>
-  <script src="assets/js/iris.js?v=3" defer></script>
-  <script src="assets/js/home.js?v=3" defer></script>
+  <script src="assets/js/site.js?v=4" defer></script>
+  <script src="assets/js/intro.js?v=4" defer></script>
+  <script src="assets/js/home.js?v=4" defer></script>
 </head>
 <body class="page-home">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="topbar topbar--over">
+  <header class="topbar">
     <div class="container topbar__inner">
       <a class="wordmark" href="index.html" aria-current="page">Atharv Kale <span>Photography</span></a>
       <nav class="topnav" aria-label="Main">
@@ -48,66 +47,66 @@
   </nav>
 
   <main id="main">
-    <div class="iris" data-iris aria-hidden="true"><canvas></canvas><p class="iris__f">&fnof;/22</p></div>
-    <section class="reel" data-reel aria-roledescription="carousel" aria-label="Featured photographs" tabindex="-1">
-      <ul class="reel__track"></ul>
-      <div class="reel__shade"></div>
-      <div class="container reel__ui">
-        <div class="reel__caption" aria-live="polite">
-          <p class="reel__title">&nbsp;</p>
-          <p class="reel__sub">&nbsp;</p>
-          <div class="reel__dots"></div>
-        </div>
-        <div class="reel__arrows">
-          <button class="icon-btn" type="button" data-prev aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-          <button class="icon-btn" type="button" data-next aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        </div>
+    <section class="fly" data-fly aria-label="Intro: six favourite photographs">
+      <div class="fly__stage">
+        <div class="fly__world" data-world></div>
+        <div class="fly__vignette"></div>
+        <div class="fly__caption" data-caption aria-live="polite" style="opacity:0"><p class="fly__title"></p><p class="fly__sub"></p></div>
+        <p class="fly__cue" data-cue>Scroll<i></i></p>
+        <div class="fly__end"><p>Atharv Kale</p><p>Cars, landscapes, wildlife and portraits.</p></div>
+        <a class="fly__skip" href="#home" data-skip>Skip intro</a>
       </div>
     </section>
 
-    <section class="container intro" aria-label="Introduction">
-      <p class="lede">Cars, landscapes, wildlife and portraits, <span>photographed by Atharv Kale, a high school student who has spent eight years learning to wait for the right light.</span></p>
-      <div class="actions">
-        <a class="btn" href="gallery.html">See all work</a>
-        <a class="btn btn--quiet" href="contact.html">Book a shoot</a>
-      </div>
-    </section>
-
-    <section class="container section" aria-labelledby="col-title">
-      <div class="section-head"><h2 class="heading" id="col-title">Collections</h2><a href="gallery.html">All photos</a></div>
-      <div class="shelf" data-collections></div>
-    </section>
-
-
-    <section class="container section split" aria-labelledby="rec-title">
-      <div>
-        <h2 class="heading" id="rec-title">Recognition</h2>
-        <p class="muted" data-honors-summary>Results in international photo contests.</p>
-        <p><a class="link" href="awards.html">All awards and certificates</a></p>
-      </div>
-      <ul class="honors" data-honors></ul>
-    </section>
-
-    <section class="container section" aria-labelledby="about-title">
-      <div class="teaser">
-        <span data-portrait></span>
-        <div>
-          <h2 class="heading" id="about-title">About</h2>
-          <p>I shoot on a Canon EOS R10, mostly close to home and wherever travel takes me. I like quiet moments: low sun, still water, an animal that stops to look back.</p>
-          <a class="link" href="about.html">More about me</a>
+    <div id="home">
+      <section class="container statement reveal">
+        <h1>Photographs of light, patience and the moments worth stopping for.</h1>
+        <p>I&rsquo;m Atharv Kale, a high school photographer with eight years behind the camera. I shoot cars, landscapes, wildlife and people.</p>
+        <div class="actions">
+          <a class="btn" href="gallery.html">See the work</a>
+          <a class="btn btn--quiet" href="contact.html">Book a shoot</a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="container section">
-      <div class="cta">
-        <div>
-          <h2 class="heading">Have a shoot in mind?</h2>
-          <p>Portraits, cars, events and prints. Tell me what you&rsquo;re planning and I&rsquo;ll reply by email.</p>
+      <section class="container section" aria-labelledby="col-title">
+        <div class="section-title reveal"><h2 id="col-title">Collections</h2><p>Five subjects, one way of seeing.</p></div>
+        <div class="bento reveal" data-collections></div>
+      </section>
+
+      <section class="container section reveal" aria-label="At a glance">
+        <div class="figures">
+          <div class="figure"><strong>8+</strong><span>years shooting</span></div>
+          <div class="figure"><strong data-figure="photos">79</strong><span>photos in the gallery</span></div>
+          <div class="figure"><strong data-figure="awards">19</strong><span>contest results</span></div>
+          <div class="figure"><strong data-figure="expert">4</strong><span>Expert Choice awards</span></div>
         </div>
+      </section>
+
+      <section class="container section" aria-labelledby="rec-title">
+        <div class="section-title reveal"><h2 id="rec-title">Recognition</h2><p>Selected results from international photo contests.</p></div>
+        <div class="panel reveal">
+          <ul class="honors" data-honors></ul>
+          <div class="panel__foot"><a class="btn btn--quiet" href="awards.html">All awards and certificates</a></div>
+        </div>
+      </section>
+
+      <section class="container section" aria-labelledby="about-title">
+        <div class="panel about-card reveal">
+          <span class="ph" data-portrait></span>
+          <div>
+            <h2 id="about-title">The person behind the camera.</h2>
+            <p>I shoot on a Canon EOS R10, mostly close to home and wherever travel takes me. Away from the camera you&rsquo;ll find me playing chess, tennis or basketball. Behind it, I&rsquo;m waiting for the light.</p>
+            <div class="actions"><a class="btn btn--quiet" href="about.html">More about me</a></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container section closing reveal" aria-labelledby="cta-title">
+        <h2 id="cta-title">Let&rsquo;s make something.</h2>
+        <p>Portraits, car shoots, events and prints. Tell me what you have in mind.</p>
         <div class="actions"><a class="btn" href="contact.html">Get in touch</a></div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">
