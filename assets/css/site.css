@@ -177,7 +177,7 @@ main { padding-top: calc(56px + env(safe-area-inset-top, 0px)); }
 .fly__card { position: absolute; left: 0; top: 0; margin: 0; padding: 0; border: 0; cursor: zoom-in; overflow: hidden; border-radius: 6px; background: var(--raised); will-change: transform, opacity; box-shadow: 0 60px 120px rgba(0,0,0,0.7); visibility: hidden; }
 .fly__card img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .fly__card--final { border-radius: 0; box-shadow: none; }
-.fly__card--final img { object-position: 50% 32%; }
+.fly__card--final img { object-position: 50% 55%; }
 .fly__word { position: absolute; left: 0; top: 0; white-space: nowrap; font-weight: 600; letter-spacing: -0.045em; line-height: 1; color: var(--ink); will-change: transform, opacity; }
 .fly__word--small { font-weight: 400; letter-spacing: -0.01em; color: var(--ink-2); }
 .fly__vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(75% 70% at 50% 50%, transparent 45%, rgba(0,0,0,0.8)); opacity: calc(1 - var(--end, 0)); }
@@ -194,11 +194,12 @@ main { padding-top: calc(56px + env(safe-area-inset-top, 0px)); }
 .fly__end {
   position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px;
   padding: 0 var(--gutter) calc(112px + var(--safe-b)); text-align: center; pointer-events: none;
-  background: linear-gradient(transparent 45%, rgba(0,0,0,0.72));
+  background: linear-gradient(transparent 40%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.88));
   opacity: var(--end, 0); transform: translateY(calc((1 - var(--end, 0)) * 16px));
 }
 .fly__end p:first-child { font-size: clamp(2.25rem, 1.4rem + 4vw, 4.5rem); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
 .fly__end p:last-child { font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem); color: rgba(255,255,255,0.78); }
+@media (min-width: 800px) { .fly__end { padding-bottom: 64px; } }
 .fly__skip {
   position: absolute; right: 14px; top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 5;
   height: 38px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; text-decoration: none;

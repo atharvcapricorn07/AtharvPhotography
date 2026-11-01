@@ -7,7 +7,7 @@
   if (!fly) return;
 
   // Atharv's six favourites. The last one becomes the full-screen landing photo.
-  const PICKS = ["animals/animal13", "cars/car9", "landscapes/landscape14", "misc/misc22", "animals/animal17", "misc/misc26"];
+  const PICKS = ["animals/animal13", "cars/car9", "landscapes/landscape14", "misc/misc22", "animals/animal17", "landscapes/landscape11"];
   const PERSPECTIVE = 1000;
 
   const stage = fly.querySelector(".fly__stage");
@@ -59,9 +59,12 @@
         rot: -side * (7 + rnd() * 8),
       }));
     });
-    // The final photo is sized to exactly cover the screen when the camera reaches it.
+    // The final photo arrives at its natural shape: it covers the screen when the screen is about
+    // as wide as the photo, and spans the full width on tall phone screens so nothing is cropped.
     const zFinal = -1500 - flight.length * spacing - 300;
-    items.push(card(final, { w: W, h: H, z: zFinal, x: 0, y: 0, rot: 0, final: true }));
+    const tall = W / H < final.r * 0.8;
+    const fw = W, fh = tall ? W / final.r : H;
+    items.push(card(final, { w: fw, h: fh, z: zFinal, x: 0, y: tall ? -H * 0.06 : 0, rot: 0, final: true }));
     camEnd = -zFinal;
     fly.style.setProperty("--fly-len", m ? 7 : 6.5);
     built = true;
