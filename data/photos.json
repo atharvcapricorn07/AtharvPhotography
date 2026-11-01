@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31T23:14:03.708Z",
+ "generated": "2026-11-01T00:08:22.207Z",
  "categories": {
   "cars": [
    {
@@ -1847,21 +1847,21 @@
  "portrait": {
   "id": "portrait",
   "file": "pfpfp.jpg",
-  "w": 2947,
-  "h": 3930,
-  "color": "#f8f8f8",
-  "tint": "#dfe278",
+  "w": 3673,
+  "h": 4893,
+  "color": "#383838",
+  "tint": "#e29778",
   "sizes": [
    480,
    960,
    1920
   ],
   "camera": "Canon EOS R10",
-  "lens": "EF70-200mm f/2.8L IS USM",
-  "focal": "100mm",
-  "aperture": "f/10",
-  "shutter": "1/400s",
+  "lens": "EF50mm f/1.8 STM",
+  "focal": "50mm",
+  "aperture": "f/1.8",
+  "shutter": "1/80s",
   "iso": 200,
-  "date": "2026-05-24"
+  "date": "2026-10-24"
  }
 }
