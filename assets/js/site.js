@@ -352,7 +352,9 @@
       track.addEventListener("pointermove", onMove);
       track.addEventListener("pointerup", onUp);
       track.addEventListener("pointercancel", cancelGesture);
-      track.addEventListener("lostpointercapture", (e) => { if (g && e.pointerId === g.id) cancelGesture(); });
+      // Touch starts captured to the element under the finger; handing that to the track bubbles a
+      // lostpointercapture up from that element, which is not the gesture ending.
+      track.addEventListener("lostpointercapture", (e) => { if (g && e.target === track && e.pointerId === g.id) cancelGesture(); });
       dlg.addEventListener("wheel", onWheel, { passive: false });
       addEventListener("blur", cancelGesture);
       addEventListener("resize", () => { if (dlg.open && !closing) { if (stopSpring) stopSpring(); setX(-index * width()); } });
