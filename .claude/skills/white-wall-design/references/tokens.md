@@ -30,16 +30,14 @@ Values match `design-model.yaml` and the `:root` block of `assets/css/site.css`.
 | `--ink-2` | #2F3440 | Secondary text |
 | `--ink-3` | #5C616D | Meta, input lines, 5.7:1 on the wall |
 | `--ink-4` | #8B8F98 | Disabled only |
-| `--night` | #000000 | Intro stage only |
-| `--on-night` | #F7F6F2 | Text on the intro |
-| `--on-night-2` | #C4C3BD | Secondary text on the intro |
-| `--shade` | rgb(0 0 0 / 0.55) | Under text that crosses a photograph |
 | `--mark` | #C92A1D | Chosen or hovered, never a field |
 | `--mark-ink` | #F7F6F2 | Text on a marked button |
 | `--error` | #B42318 | Form errors |
 | `--success` | #17663A | Form success |
 
-There is no dark theme. Night is one room on one page, not a mode.
+There is no dark theme.
+
+**Ambient wall:** on Home and Work, the page and its bars ease over 1.4s toward `--wall` mixed with the `tint` of the photo nearest the centre of the screen, at 7% or less. Each tone is checked before use, keeping `--ink-3` at 4.6:1 or better. Off under reduced motion.
 
 ## Spacing
 
@@ -70,7 +68,12 @@ Radius is 0 on everything. Elevation is flat: no shadows. A surface sits above a
 | `--dur-short` | 220ms | Colour, hover, captions |
 | `--dur-long` | 420ms | Bars sliding, images fading in |
 
-Authored moments, all in GSAP: the intro flight, scrubbed over 620lvh; the black to wall lighting, scrubbed from the home content entering until it reaches 35% of the screen; the viewer photo growing from its tile in 0.5s `expo.out`, returning in 0.34s `power3.inOut`.
+Authored moments:
+
+- **Hero reveal:** clip from inset(12% 9%) to none in 2s `power3.inOut`, scale 1.1 to 1 in 2.6s `power3.out`.
+- **Shared element:** GSAP Flip. Open in 0.52s `expo.out`, close in 0.38s `power3.inOut`. A cropped thumbnail's clip animates with it.
+- **Swipe:** follows the finger, then a spring with stiffness 220 and damping ratio 0.82, starting at the release velocity. Past the first or last photo the drag moves at 30%.
+- **Pages:** cross-document view transitions, 260ms crossfade. A collection photo morphs to the Work header in 560ms.
 
 ## Icons
 

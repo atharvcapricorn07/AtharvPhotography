@@ -15,17 +15,17 @@ The design language of atharvphotography.studio. When this skill is active, ever
 
 ## 1. Design philosophy
 
-A gallery with the lights off, then on. Photographs fly through the dark, the room lights up to a painted wall, and from then on the interface is only a label beside the print. The lineage is Swiss museum graphics and Apple's product pages: one confident grotesque, flat tone, no ornament. The tension that gives it character is a loud photograph against a silent page, with a heavy headline used once per screen so the quiet reads as a choice.
+A painted gallery wall, with the interface only a label beside the print. Photographs grow out of their place and return to it, and the wall warms very slightly toward whatever you are looking at. The lineage is Swiss museum graphics and Apple's product pages: one confident grotesque, flat tone, no ornament. The tension that gives it character is a loud photograph against a silent page, with a heavy headline used once per screen so the quiet reads as a choice.
 
 Principles:
 
-1. **The photograph is the only colour.** If a colour on screen did not come from a photo, it is red marking a choice, or an error.
+1. **The photograph is the only colour.** If a colour on screen did not come from a photo, it is red marking a choice, or an error. The ambient wall takes its tint from the photo at centre, at 7% or less.
 2. **The name stays small.** "Atharv Kale" is never larger than body text outside the About page's own sentence.
 3. **Every edge is square.** Radius is 0 everywhere, so a photo's edge and a button's edge belong to one system.
 4. **Depth is tone, never shadow.** Wall, then a step darker. No shadow, no glass, no border around a box.
 5. **Hang unevenly.** Photos on a page differ in width and offset; identical tiles are for the Work grid only.
-6. **One authored moment per page.** The home page has the flight and the lighting. Other pages have none.
-7. **Black belongs to the intro.** Nothing else uses `--night`. The viewer is on the wall too.
+6. **Motion answers something.** A photo moves because you tapped it, a page changes because you navigated. The hero reveal on load is the only motion nobody asked for.
+7. **Never take the scroll.** No pinned sections, no scrubbed intros, no scroll-jacking. The page scrolls the moment it loads.
 
 ---
 
@@ -57,7 +57,7 @@ Red `--mark` marks only what is chosen or hovered: a current nav word's underlin
 
 ### Motion
 
-Scrubbed motion uses GSAP ScrollTrigger on `transform` and `opacity` only. UI transitions use `--ease-out` at 120, 220 or 420ms and name their exact properties. No scroll reveals on sections, no parallax, no bounce. Every motion has a `prefers-reduced-motion` state that keeps the content.
+GSAP drives the moments: Flip for the shared-element viewer, a damped spring on the ticker for swipes, a clip for the hero reveal. Pages change with cross-document view transitions, which fall back to a normal page load. UI transitions use `--ease-out` at 120, 220 or 420ms and name their exact properties. No scroll reveals on sections, no parallax, no bounce. Every motion has a `prefers-reduced-motion` state that keeps the content.
 
 ---
 
@@ -65,13 +65,13 @@ Scrubbed motion uses GSAP ScrollTrigger on `transform` and `opacity` only. UI tr
 
 - No border-radius above 0.
 - No box-shadow on any element.
-- No colour taken from a photo and used in the interface, including glows and tints behind the viewer.
+- No colour taken from a photo and used in the interface, apart from the ambient wall. No glows behind the viewer, and no ambient tone that takes `--ink-3` below 4.5:1.
 - No floating pill navigation over photographs.
 - No stat tiles or hero-metric rows; real numbers go in a sentence.
 - No section fade-up on scroll.
 - No card around a photograph, and no card inside a card.
 - No capitals with tracking, no eyebrows, no middle-dot strings, no arrow glued to link text.
-- No black ground outside the home intro.
+- No scroll-driven intro or pinned section.
 - No tap target under 44px.
 - No hard-coded colour or size past the token block in `assets/css/site.css`.
 - No invented figures, quotes or awards; numbers come from `data/`.

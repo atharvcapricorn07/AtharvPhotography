@@ -26,4 +26,4 @@ Template portfolios, SaaS card layouts, stat tiles, floating pill navigation ove
 
 ## Constraints
 
-Static site on GitHub Pages: plain HTML, CSS and vanilla JS, no build step for pages, self-hosted assets. The photo pipeline (`node generate-photos.js`) and the Formspree contact form stay as they are. Keep the scroll fly-through intro. Fast, no layout shift, respects reduced motion, keyboard and screen-reader accessible. Never add claims or numbers that aren't in `data/`.
+Static site on GitHub Pages: plain HTML, CSS and vanilla JS, no build step for pages, self-hosted assets. The photo pipeline (`node generate-photos.js`) and the Formspree contact form stay as they are. No scroll-jacking or scroll-driven intro. Fast, no layout shift, respects reduced motion, keyboard and screen-reader accessible. Never add claims or numbers that aren't in `data/`.

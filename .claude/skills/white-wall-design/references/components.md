@@ -21,6 +21,8 @@ One filled button per screen. A second action is a text link.
 ## Photographs
 
 - `.plate`: a hung photo with its caption, title in weight 500 and the meta line `.plate__sub`. Width and offset vary by page (`.wall__a`, `.wall__b`, `.wall__c`).
+- `.hero`: one large photo at the top of Home, opening the viewer on tap.
+- `.col`: a collection tile linking to its Work subject. Its photo morphs into `.work-cover`, the header image Work shows for a subject.
 - `.tap` holding `.ph`: a tile that opens the viewer. Hover dims to 88% opacity, the photo never scales. Placeholder is `--wall-2`.
 
 ## Filters
@@ -40,16 +42,17 @@ One filled button per screen. A second action is a text link.
 - `.topbar`: wordmark at small size, links on desktop, Instagram icon on phones. Wall ground.
 - `.tabbar`: four equal text links at the bottom of phones, with the safe area included.
 - The current page gets a 2px `--mark` underline. Both bars slide away on scroll down and return on scroll up.
-- Over the intro the top bar is transparent on a soft shade, with `--on-night` text.
 
 ## Viewer
 
 Native `<dialog>` on the wall. Photos are centred and sized from their ratio, so nothing shifts when they load. Count at top, title and meta at bottom, details and close by the thumb on phones; close at top right and arrows at the sides on desktop.
 
-Input: swipe sideways, swipe down, arrows, Escape, `i` for details, and the back gesture closes it. Focus returns to the tile.
+The photo grows from its exact place on the page and returns to the tile of whichever photo is showing. Pass `tileAt(i)` to `Site.viewer.open` so it can find that tile.
+
+Input: swipe or drag sideways, horizontal trackpad scroll, swipe down, arrows, Escape, `i` for details, and the back gesture closes it. Pinch-zoom stays available. Focus returns to the tile.
 
 ## States
 
 - Loading: `--wall-2` placeholders at the photo's exact ratio, images fade in.
 - Error: `.state`, a heading naming what failed, the fix, and a Try again button.
-- Focus: 2px ink ring, offset 2px, appearing instantly; `--on-night` on the intro.
+- Focus: 2px ink ring, offset 2px, appearing instantly.

@@ -1,5 +1,5 @@
 name: "White Wall"
-philosophy: "A gallery with the lights off, then on. Photographs fly through the dark, the room lights up to a painted wall, and from then on the interface is only a label beside the print."
+philosophy: "A painted gallery wall, with the interface only a label beside the print. Photographs grow out of their place and return to it, and the wall warms very slightly toward whatever you are looking at."
 primary_mode: "light"
 brand_domain: "photography portfolio for Atharv Kale, cars, landscapes, wildlife, portraits"
 brand_type: "content-rich"
@@ -19,7 +19,6 @@ primitives:
       700: "#2F3440"
       800: "#1E222B"
       900: "#12161F"
-      950: "#000000"
     brand:
       500: "#C92A1D"
       700: "#B42318"
@@ -41,13 +40,14 @@ tokens:
       text4: "#8B8F98"
       accent: "#C92A1D"
     dark:
-      background: "#000000"
+      background: "#12161F"
       text1: "#F7F6F2"
-      text2: "#C4C3BD"
-      accent: "#F7F6F2"
+      text2: "#DDDCD5"
+      note: "Not a theme. Only the fill of a primary button and the skip link."
     success: "#17663A"
     error: "#B42318"
-    shade: "rgb(0 0 0 / 0.55)"
+    ambient_strength: 0.07
+    ambient_min_contrast: 4.6
   spacing: { 2xs: 4, xs: 8, sm: 12, md: 16, lg: 24, xl: 40, 2xl: 64, 3xl: 96, 4xl: 144 }
   radii: { all: 0 }
   typography:
@@ -65,18 +65,19 @@ tokens:
     micro: "120ms"
     short: "220ms"
     long: "420ms"
-    authored_moments: ["intro flight, scrubbed", "black to wall lighting, scrubbed", "viewer grows out of the tile"]
+    authored_moments: ["home hero reveal on load", "shared-element viewer with GSAP Flip", "spring swipes between photos", "cross-document view transitions with a collection morph", "ambient wall colour"]
+    spring: { stiffness: 220, damping_ratio: 0.82 }
   hero_stage:
     preset: "editorial-photo"
     observed_style:
-      description: "The user's own photographs on true black, straight on, one at a time, landing full bleed."
-      where_used: ["home intro"]
+      description: "One large photograph, full bleed under the bar, opened by a slow clip on load. landscape8 on phones, landscape11 on wide screens."
+      where_used: ["home hero"]
     background: { medium: "photo", color_mode: "monochrome", saturation: "flat", light_source: "none", falloff: "hard", vignette: "off", texture: "clean", motion: "static", intensity: "subtle", safe_zone: "full-bleed" }
     hero: { subject: "none" }
     relation: { type: "flat", bleed: 0 }
   iconography:
     observed_style:
-      description: "Six hand-drawn line icons at 1.6px with butt caps and square joins, used only for viewer controls and Instagram."
+      description: "Six line icons at 1.6px with butt caps and square joins, used only for viewer controls and Instagram."
       stroke_weight: "regular"
       corner_treatment: "sharp"
       fill_style: "outline"

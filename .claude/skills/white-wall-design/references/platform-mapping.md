@@ -8,10 +8,11 @@ The site is plain HTML, CSS and JavaScript on GitHub Pages, with no build step f
 <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css?v=N">
 <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
+<script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
 <script src="assets/js/site.js?v=N" defer></script>
 ```
 
-The home page also loads `assets/vendor/ScrollTrigger.min.js`, `intro.js` and `home.js`, and sets `fly-mode` on `<html>` from an inline script when motion is allowed, so the page height is right before first paint.
+The home page also loads `home.js`, and an inline script sets `hero-pending` on `<html>` before first paint when motion is allowed. A delayed CSS animation shows the hero if the scripts never run. On Work, an inline script sets `data-subject` the same way, so the header photo exists when the view transition captures the page.
 
 Bump `?v=N` on every link whose file changed.
 
@@ -19,9 +20,8 @@ Bump `?v=N` on every link whose file changed.
 
 ```css
 :root {
-  --wall: #f7f6f2; --wall-2: #eeede8; --wall-3: #e3e2db; --night: #000; --line: #dddcd5;
+  --wall: #f7f6f2; --wall-2: #eeede8; --wall-3: #e3e2db; --line: #dddcd5;
   --ink: #12161f; --ink-2: #2f3440; --ink-3: #5c616d; --ink-4: #8b8f98;
-  --on-night: #f7f6f2; --on-night-2: #c4c3bd; --shade: rgb(0 0 0 / 0.55);
   --mark: #c92a1d; --mark-ink: var(--wall); --error: #b42318; --success: #17663a;
 
   --font: "Radio Canada Big", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;

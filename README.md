@@ -31,8 +31,8 @@ order they appear in the file.
 
 ## Curating the home page
 
-The photos in the intro are the `FLIGHT` list and `FINAL_TALL`/`FINAL_WIDE` at the top of
-`assets/js/intro.js`. The three photos hung on the home page are plain markup in `index.html`.
+The hero, the hung photos and the collection covers are plain markup in `index.html`. A collection's
+header photo on the Work page is the matching `data-cover` image in `gallery.html`.
 
 ## Running locally
 
@@ -50,7 +50,7 @@ index.html gallery.html awards.html about.html contact.html 404.html
 assets/css/site.css     every style, with tokens at the top
 assets/js/site.js       shared: bars, photo data, image helpers, photo viewer
 assets/js/*.js          one script per page
-assets/vendor/          GSAP and ScrollTrigger, self-hosted
+assets/vendor/          GSAP and Flip, self-hosted
 assets/fonts/           Radio Canada Big (SIL Open Font License)
 data/                   photos.json (generated), titles.json, awards.json
 media/                  generated web images (do not edit by hand)
