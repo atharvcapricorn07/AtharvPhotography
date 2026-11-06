@@ -9,10 +9,10 @@ mono_for_metrics: false
 primitives:
   colors:
     neutral:
-      50: "#F7F6F2"
-      100: "#EEEDE8"
-      200: "#E3E2DB"
-      300: "#DDDCD5"
+      50: "#F7F7F5"
+      100: "#EEEEEB"
+      200: "#E3E3DF"
+      300: "#DDDDDB"
       400: "#C4C3BD"
       500: "#8B8F98"
       600: "#5C616D"
@@ -30,10 +30,10 @@ primitives:
 tokens:
   colors:
     light:
-      background: "#F7F6F2"
-      surface1: "#EEEDE8"
-      surface2: "#E3E2DB"
-      border: "#DDDCD5"
+      background: "#F7F7F5"
+      surface1: "#EEEEEB"
+      surface2: "#E3E3DF"
+      border: "#DDDDDB"
       text1: "#12161F"
       text2: "#2F3440"
       text3: "#5C616D"
@@ -41,12 +41,13 @@ tokens:
       accent: "#C92A1D"
     dark:
       background: "#12161F"
-      text1: "#F7F6F2"
-      text2: "#DDDCD5"
+      text1: "#F7F7F5"
+      text2: "#DDDDDB"
       note: "Not a theme. Only the fill of a primary button and the skip link."
     success: "#17663A"
     error: "#B42318"
-    ambient_strength: 0.07
+    ambient_strength: 0.035
+    ambient_max_warmth: 4
     ambient_min_contrast: 4.6
   spacing: { 2xs: 4, xs: 8, sm: 12, md: 16, lg: 24, xl: 40, 2xl: 64, 3xl: 96, 4xl: 144 }
   radii: { all: 0 }

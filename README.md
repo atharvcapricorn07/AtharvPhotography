@@ -29,6 +29,11 @@ entry count and rank. `photo` points to the winning photo in the gallery (`categ
 to the certificate or screenshot in `photos/awards` (by id). Rows are grouped by organizer in the
 order they appear in the file.
 
+## Curating Work
+
+The photos pinned to the top of Work are the `PINNED` list in `assets/js/gallery.js`. The `misc` folder
+shows on the site as Moments; `?subject=moments` and the older `?subject=misc` both open it.
+
 ## Curating the home page
 
 The hero, the hung photos and the collection covers are plain markup in `index.html`. A collection's

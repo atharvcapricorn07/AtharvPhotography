@@ -23,22 +23,22 @@ Values match `design-model.yaml` and the `:root` block of `assets/css/site.css`.
 
 | Token | Hex | Role |
 |---|---|---|
-| `--wall` | #F7F6F2 | Page ground |
-| `--wall-2` | #EEEDE8 | Wells, image placeholders, footer |
-| `--wall-3` | #E3E2DB | Pressed wells, disabled buttons |
-| `--line` | #DDDCD5 | Hairlines between rows |
+| `--wall` | #F7F7F5 | Page ground |
+| `--wall-2` | #EEEEEB | Wells, image placeholders, footer |
+| `--wall-3` | #E3E3DF | Pressed wells, disabled buttons |
+| `--line` | #DDDDDB | Hairlines between rows |
 | `--ink` | #12161F | Text, primary button |
 | `--ink-2` | #2F3440 | Secondary text |
 | `--ink-3` | #5C616D | Meta, input lines, 5.7:1 on the wall |
 | `--ink-4` | #8B8F98 | Disabled only |
 | `--mark` | #C92A1D | Chosen or hovered, never a field |
-| `--mark-ink` | #F7F6F2 | Text on a marked button |
+| `--mark-ink` | #F7F7F5 | Text on a marked button |
 | `--error` | #B42318 | Form errors |
 | `--success` | #17663A | Form success |
 
 There is no dark theme.
 
-**Ambient wall:** on Home and Work, the page and its bars ease over 1.4s toward `--wall` mixed with the `tint` of the photo nearest the centre of the screen, at 7% or less. Each tone is checked before use, keeping `--ink-3` at 4.6:1 or better. Off under reduced motion.
+**Ambient wall:** on Home and Work, the page and its bars ease over 1.4s toward `--wall` mixed with the `tint` of the photo nearest the centre of the screen, at 3.5% or less. Each tone is checked before use: `--ink-3` stays at 4.6:1 or better, and red may exceed blue by no more than 4 of 255, so the wall never reads as cream. Off under reduced motion.
 
 ## Spacing
 

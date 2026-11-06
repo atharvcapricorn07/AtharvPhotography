@@ -19,7 +19,7 @@ A painted gallery wall, with the interface only a label beside the print. Photog
 
 Principles:
 
-1. **The photograph is the only colour.** If a colour on screen did not come from a photo, it is red marking a choice, or an error. The ambient wall takes its tint from the photo at centre, at 7% or less.
+1. **The photograph is the only colour.** If a colour on screen did not come from a photo, it is red marking a choice, or an error. The ambient wall takes its tint from the photo at centre, at 3.5% or less, and it may never turn the wall cream.
 2. **The name stays small.** "Atharv Kale" is never larger than body text outside the About page's own sentence.
 3. **Every edge is square.** Radius is 0 everywhere, so a photo's edge and a button's edge belong to one system.
 4. **Depth is tone, never shadow.** Wall, then a step darker. No shadow, no glass, no border around a box.
@@ -78,6 +78,7 @@ GSAP drives the moments: Flip for the shared-element viewer, a damped spring on 
 - No `tabular-nums` on figures that never change; in this face it reads like a different typeface.
 - No CSS `clipPath` tween in GSAP; use `Site.clip`, which keeps all four sides.
 - No hard-coded colour or size past the token block in `assets/css/site.css`.
+- No notes from design tools in public CSS or code comments.
 - No invented figures, quotes or awards; numbers come from `data/`.
 
 ---

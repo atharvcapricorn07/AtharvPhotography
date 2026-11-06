@@ -34,9 +34,9 @@
 
   /* ---------- Ambient colour ---------- */
   // The wall eases very slightly toward the tint of the photo nearest the centre of the screen.
-  // Every tone is checked against the lightest text before it's used, so contrast always passes.
+  // Every tone is checked before use: the lightest text keeps its contrast, and the wall never turns cream.
   Site.ambient = (function () {
-    const WALL = "#f7f6f2", LIGHTEST_TEXT = "#5c616d", STRENGTH = 0.07, MIN_CONTRAST = 4.6;
+    const WALL = "#f7f7f5", LIGHTEST_TEXT = "#5c616d", STRENGTH = 0.035, MIN_CONTRAST = 4.6, MAX_WARMTH = 4;
     const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
     const lum = (h) => {
       const [r, g, b] = rgb(h).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
@@ -46,9 +46,9 @@
     const mix = (a, b, t) => "#" + rgb(a).map((v, i) => Math.round(v + (rgb(b)[i] - v) * t).toString(16).padStart(2, "0")).join("");
     function tone(tint) {
       if (!/^#[0-9a-f]{6}$/i.test(tint || "")) return WALL;
-      for (let t = STRENGTH; t > 0; t -= 0.01) {
-        const c = mix(WALL, tint, t);
-        if (contrast(c, LIGHTEST_TEXT) >= MIN_CONTRAST) return c;
+      for (let t = STRENGTH; t > 0; t -= 0.005) {
+        const c = mix(WALL, tint, t), [r, , b] = rgb(c);
+        if (contrast(c, LIGHTEST_TEXT) >= MIN_CONTRAST && r - b <= MAX_WARMTH) return c; // warmer reads as cream
       }
       return WALL;
     }
@@ -92,11 +92,14 @@
     { key: "landscapes", label: "Landscapes" },
     { key: "animals", label: "Wildlife" },
     { key: "shoots", label: "Portraits" },
-    { key: "misc", label: "Misc" },
+    { key: "misc", label: "Moments", slug: "moments" },
   ];
   const LABEL = Object.fromEntries(CATEGORIES.map((c) => [c.key, c.label]));
   LABEL.awards = "Contest result";
   Site.CATEGORIES = CATEGORIES;
+  // The address a subject shows, and the subject an address means. Old ?subject=misc links still work.
+  Site.subjectSlug = (key) => (CATEGORIES.find((c) => c.key === key) || {}).slug || key;
+  Site.subjectFrom = (slug) => (CATEGORIES.find((c) => c.slug === slug) || {}).key || slug;
   Site.LABEL = LABEL;
 
   function enrich(p, cat) {

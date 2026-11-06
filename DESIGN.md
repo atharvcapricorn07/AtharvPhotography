@@ -20,7 +20,10 @@ at the centre of the screen.
 | Hero on `landscape8` for phones, `landscape11` for wide screens | The owner's picks; `landscape8` crops from the right so the watermark stays whole |
 | Shared-element viewer with GSAP Flip | Keeps your place, and it's the transition that explains itself |
 | Swipes on a damped spring, not scroll snapping | Carries the finger's momentum and settles with about 2px of overshoot |
-| Ambient wall at 7% or less, checked for contrast | Felt rather than seen; `--ink-3` stays at 4.6:1 or better |
+| Ambient wall at 3.5% or less, checked for contrast and warmth | Felt rather than seen; `--ink-3` stays at 4.6:1 or better and the wall never reads as cream |
+| Work pins six favourites first | The owner's order; everything else follows newest-first. The list is `PINNED` in `gallery.js` |
+| Awards leads with top-tier results | Crowd rankings sit behind "Show all results" |
+| The `misc` folder shows as Moments | Labels and new links say Moments; `?subject=misc` still works, and photo files keep their names |
 | View transitions, with a normal page load as the fallback | Crossfades where supported, and nothing breaks elsewhere |
 | Photos in a row share one height, uncropped | Each width follows the photo's aspect ratio; uneven tops and bottoms read as a mistake, and photographers notice crops |
 | Collections on Home | They give the morph into the Work header somewhere to start |

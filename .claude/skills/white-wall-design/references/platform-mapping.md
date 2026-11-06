@@ -20,7 +20,7 @@ Bump `?v=N` on every link whose file changed.
 
 ```css
 :root {
-  --wall: #f7f6f2; --wall-2: #eeede8; --wall-3: #e3e2db; --line: #dddcd5;
+  --wall: #f7f7f5; --wall-2: #eeeeeb; --wall-3: #e3e3df; --line: #dddddb;
   --ink: #12161f; --ink-2: #2f3440; --ink-3: #5c616d; --ink-4: #8b8f98;
   --mark: #c92a1d; --mark-ink: var(--wall); --error: #b42318; --success: #17663a;
 

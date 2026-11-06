@@ -36,7 +36,7 @@ One filled button per screen. A second action is a text link.
 
 ## Lists
 
-`.award` and `.fact`: rows parted by 1px `--line` hairlines. No boxes.
+`.award` and `.fact`: rows parted by 1px `--line` hairlines. No boxes. Awards shows top-tier results first; `.awards-more` holds the "Show all results" toggle for the rest.
 
 ## Navigation
 

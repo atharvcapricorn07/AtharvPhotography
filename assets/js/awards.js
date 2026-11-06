@@ -6,6 +6,8 @@
   const stats = document.querySelector("[data-stats]");
   const errorState = document.querySelector("[data-error]");
   const ORDER = ["tpa", "viewbug", "photocrowd"];
+  // Expert Choice and other top-tier results lead; crowd rankings wait behind the toggle.
+  const isLead = (a) => a.tier !== "crowd";
   const ordinal = (n) => { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
 
   function slidesFor(a, org, photo, proof) {
@@ -22,6 +24,7 @@
     const slides = slidesFor(a, org, photo, proof);
     const li = document.createElement("li");
     li.className = "award";
+    if (!isLead(a)) { li.dataset.more = ""; li.hidden = true; }
     const cover = photo || proof;
     if (cover) {
       const t = S.tappable(cover, slides, 0, { sizes: "(min-width: 800px) 120px, 88px" });
@@ -63,7 +66,7 @@
     if (dated.length) line += ", since " + dated[0].slice(0, 4);
     stats.textContent = line + ".";
 
-    root.replaceChildren(...ORDER.map((key) => {
+    const sections = ORDER.map((key) => {
       const org = json.organizers[key];
       const items = list.filter((a) => a.organizer === key);
       const sec = document.createElement("section");
@@ -74,7 +77,22 @@
       sec.querySelector("p").textContent = org.note + " " + (items.length === 1 ? "1 result." : items.length + " results.");
       sec.querySelector("ol").append(...items.map((a) => row(a, org, d)));
       return sec;
-    }));
+    });
+    const more = document.createElement("div");
+    more.className = "awards-more";
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "tlink";
+    toggle.textContent = "Show all results";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Show fewer results" : "Show all results";
+      root.querySelectorAll("[data-more]").forEach((row) => { row.hidden = !open; });
+    });
+    more.appendChild(toggle);
+    root.replaceChildren(...sections, more);
     root.setAttribute("aria-busy", "false");
   }
 

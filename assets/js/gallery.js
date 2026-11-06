@@ -1,4 +1,4 @@
-// Work: subject chips, grid or feed view, newest first, deep links.
+// Work: subject chips, grid or feed view, favourites then newest first, deep links.
 //   gallery.html?subject=cars           opens a subject
 //   gallery.html?subject=cars#car10     also opens that photo
 (function () {
@@ -15,13 +15,15 @@
   let view = "grid";
   try { view = localStorage.getItem("work-view") || "grid"; } catch (e) {}
 
+  // Shown first, in this order, when viewing everything.
+  const PINNED = ["animals/animal13", "landscapes/landscape14", "misc/misc22", "animals/animal17", "landscapes/landscape11", "landscapes/landscape8"];
   const byDate = (a, b) => (b.date || "").localeCompare(a.date || "");
   // How wide each row aims to be, in summed aspect ratios, and the most photos it may hold.
   const layoutFor = () => (innerWidth >= 1200 ? { key: 3, target: 3.4, most: 5 } : innerWidth >= 760 ? { key: 2, target: 2.4, most: 3 } : { key: 1, target: 1.35, most: 2 });
 
   function syncUrl(photo) {
     const url = new URL(location.href);
-    if (subject === "all") url.searchParams.delete("subject"); else url.searchParams.set("subject", subject);
+    if (subject === "all") url.searchParams.delete("subject"); else url.searchParams.set("subject", S.subjectSlug(subject));
     url.searchParams.delete("category");
     url.hash = photo ? photo.ref : "";
     history.replaceState(null, "", url.pathname + url.search + url.hash);
@@ -109,9 +111,11 @@
     const book = document.querySelector("[data-book]");
     if (book) book.href = "contact.html" + (BOOK[subject] ? "?type=" + encodeURIComponent(BOOK[subject]) : "");
     chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
-    list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
+    list = subject === "all"
+      ? PINNED.map(d.find).filter(Boolean).concat(d.all.filter((p) => !PINNED.includes(p.ref)).sort(byDate))
+      : d.byCat[subject].slice().sort(byDate);
     slides = list.map((p) => S.slide(p));
-    countEl.textContent = list.length + " photographs" + (subject === "all" ? "" : " in " + S.LABEL[subject]) + ", newest first.";
+    countEl.textContent = list.length + " photographs" + (subject === "all" ? "." : " in " + S.LABEL[subject] + ", newest first.");
     render();
     if (!keepScroll && window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) gsap.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power1.out", clearProps: "opacity" });
     syncUrl(null);
@@ -163,7 +167,7 @@
     S.data().then((res) => {
       d = res;
       buildChips();
-      show(params.get("subject") || params.get("category") || "all", true);
+      show(S.subjectFrom(params.get("subject") || params.get("category") || "all"), true);
       if (hash) {
         const i = list.findIndex((p) => p.ref === hash || p.id === hash);
         // The grid keeps the plain URL, so Back from a shared link lands on the work.

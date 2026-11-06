@@ -1,9 +1,4 @@
-/* Hallmark · shape: Photographic · genre: editorial · theme: Grid (deal 2/3, seed white-wall-gallery-museum-quiet-9d28·f80f05c4·2026-11-06·r0) · redesign: full
- * hero: Stage (one large photograph, revealed once) · nav: a text bar in thumb reach on phones, edge-aligned above · footer: plain row · imagery: photographs · signature: photographs that grow out of their place and return to it, on a wall that warms toward the work · grid: no ultramarine fields, the photographs carry all colour, true colour by the owner's brief
- * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V3 · weakest: V, shares its Grid bones with many Swiss pages; the shared-element viewer and the ambient wall are what make it this site's own */
-/* Hallmark · dropped #home, assets/js/intro.js, about-title, rec-title · the owner removed the intro and the old home sections */
-/* Atharv Kale Photography. White Wall design language: see .claude/skills/white-wall-design.
+/* Atharv Kale Photography.
    Mobile first: base styles are phones, min-width queries add the larger layouts.
    Order: font, tokens, base, type, controls, chrome, home, work, viewer, awards, about, contact. */
 
@@ -17,10 +12,10 @@
 /* ---------- Tokens ---------- */
 :root {
   /* The room */
-  --wall: #f7f6f2;          /* the page: a painted gallery wall */
-  --wall-2: #eeede8;        /* wells, image placeholders */
-  --wall-3: #e3e2db;        /* pressed wells */
-  --line: #dddcd5;          /* hairlines between rows */
+  --wall: #f7f7f5;          /* the page: a painted gallery wall */
+  --wall-2: #eeeeeb;        /* wells, image placeholders */
+  --wall-3: #e3e3df;        /* pressed wells */
+  --line: #dddddb;          /* hairlines between rows */
   --ink: #12161f;
   --ink-2: #2f3440;
   --ink-3: #5c616d;         /* captions and meta, 5.7:1 on the wall */
@@ -401,6 +396,8 @@ html:has(.toolbar) { scroll-padding-top: calc(var(--bar-h) + var(--safe-t) + var
 .org__head h2 { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
 .org__head p { max-width: var(--measure); font-size: var(--text-sm); color: var(--ink-3); }
 .org__list { border-top: 1px solid var(--line); }
+.awards-more { display: flex; justify-content: flex-start; padding-block: var(--space-md) var(--space-3xl); }
+.org:has(+ .awards-more) { padding-bottom: 0; }
 .award { cursor: zoom-in; display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: var(--space-md); padding-block: var(--space-md) var(--space-xs); border-bottom: 1px solid var(--line); }
 .award > .tap .ph { aspect-ratio: 1; }
 .award__contest { font-weight: 500; font-size: var(--text-body); line-height: 1.25; letter-spacing: -0.005em; text-wrap: pretty; }
@@ -434,6 +431,7 @@ html:has(.toolbar) { scroll-padding-top: calc(var(--bar-h) + var(--safe-t) + var
 
 /* ---------- Contact ---------- */
 .contact { gap: var(--space-xl); padding-bottom: var(--space-3xl); }
+.contact__note { max-width: 38ch; color: var(--ink-2); }
 .contact__intro { display: grid; gap: var(--space-md); align-content: start; justify-items: start; }
 .way { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: 52px; text-decoration: none; transition: color var(--dur-short) var(--ease-out); }
 .way span { display: grid; font-weight: 500; line-height: 1.3; }
