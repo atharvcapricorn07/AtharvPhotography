@@ -12,7 +12,7 @@ The site is plain HTML, CSS and JavaScript on GitHub Pages, with no build step f
 <script src="assets/js/site.js?v=N" defer></script>
 ```
 
-The home page also loads `home.js`, and an inline script sets `hero-pending` on `<html>` before first paint when motion is allowed. A delayed CSS animation shows the hero if the scripts never run. On Work, an inline script sets `data-subject` the same way, so the header photo exists when the view transition captures the page.
+The home page also loads `home.js`, and an inline script sets `hero-pending` on `<html>` before first paint when motion is allowed. A delayed CSS animation shows the hero if the scripts never run. On Work, an inline script sets `data-subject` the same way, and a second one after the cover markup loads only the active cover, so the header photo exists when the view transition captures the page without downloading the other four.
 
 Bump `?v=N` on every link whose file changed.
 
@@ -26,6 +26,7 @@ Bump `?v=N` on every link whose file changed.
 
   --font: "Radio Canada Big", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --text-caption: 0.875rem; --text-sm: 0.9375rem; --text-body: 1.0625rem; --text-title: 1.25rem;
+  --text-lede: clamp(1.25rem, 0.8vw + 1rem, 1.75rem);
   --text-statement: clamp(1.75rem, 2.5vw + 1rem, 3.5rem);
   --text-page: clamp(2.5rem, 4vw + 1.25rem, 5rem);
   --text-display: clamp(2.75rem, 6vw + 1rem, 6.5rem);

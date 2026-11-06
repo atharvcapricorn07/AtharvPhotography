@@ -46,7 +46,7 @@ One filled button per screen. A second action is a text link.
 
 ## Viewer
 
-Native `<dialog>` on the wall. Photos are centred and sized from their ratio, so nothing shifts when they load. Count at top, title and meta at bottom, details and close by the thumb on phones; close at top right and arrows at the sides on desktop.
+Native `<dialog>` on the wall. Photos are centred and sized from their ratio, so nothing shifts when they load. Count at top. On phones, title and meta sit above a control row: previous and next on the left, details and close on the right. On desktop, close is top right and arrows are at the sides. A phone on its side moves the caption to the wall beside the photo.
 
 The photo grows from its exact place on the page and returns to the tile of whichever photo is showing. Pass `tileAt(i)` to `Site.viewer.open` so it can find that tile.
 

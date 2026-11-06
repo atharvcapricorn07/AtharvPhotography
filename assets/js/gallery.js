@@ -10,6 +10,7 @@
   const countEl = document.querySelector("[data-count]");
   const errorState = document.querySelector("[data-error]");
 
+  const BOOK = { cars: "Car shoot", shoots: "Portrait session" }; // preselects the contact form
   let d = null, subject = "all", list = [], slides = [];
   let view = "grid";
   try { view = localStorage.getItem("work-view") || "grid"; } catch (e) {}
@@ -103,6 +104,10 @@
     subject = d.byCat[key] && key !== "awards" ? key : "all";
     // The header photo for a subject; set before first paint for arrivals, in gallery.html.
     if (subject === "all") delete document.documentElement.dataset.subject; else document.documentElement.dataset.subject = subject;
+    const cover = document.querySelector('[data-cover="' + subject + '"]');
+    if (cover && !cover.srcset) { cover.srcset = cover.dataset.srcset; cover.src = cover.dataset.src; }
+    const book = document.querySelector("[data-book]");
+    if (book) book.href = "contact.html" + (BOOK[subject] ? "?type=" + encodeURIComponent(BOOK[subject]) : "");
     chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
     list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
     slides = list.map((p) => S.slide(p));
@@ -150,6 +155,9 @@
 
   function init() {
     errorState.hidden = true;
+    root.setAttribute("aria-busy", "true");
+    document.querySelector(".work-end").hidden = false;
+    document.querySelector(".toolbar").hidden = false;
     const params = new URLSearchParams(location.search);
     const hash = decodeURIComponent(location.hash.slice(1));
     S.data().then((res) => {
@@ -161,7 +169,7 @@
         // The grid keeps the plain URL, so Back from a shared link lands on the work.
         if (i >= 0) { syncUrl(null); S.viewer.open(slides, i, tileAt(i), onChange, tileAt); }
       }
-    }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; });
+    }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; document.querySelector(".work-end").hidden = true; document.querySelector(".toolbar").hidden = true; });
   }
   errorState.querySelector("button").addEventListener("click", init);
   init();

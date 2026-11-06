@@ -74,6 +74,9 @@ GSAP drives the moments: Flip for the shared-element viewer, a damped spring on 
 - No capitals with tracking, no eyebrows, no middle-dot strings, no arrow glued to link text.
 - No scroll-driven intro or pinned section.
 - No tap target under 44px.
+- No `:hover` rule outside `@media (hover: hover)`: on touch screens it sticks after a tap.
+- No `tabular-nums` on figures that never change; in this face it reads like a different typeface.
+- No CSS `clipPath` tween in GSAP; use `Site.clip`, which keeps all four sides.
 - No hard-coded colour or size past the token block in `assets/css/site.css`.
 - No invented figures, quotes or awards; numbers come from `data/`.
 

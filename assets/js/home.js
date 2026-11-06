@@ -11,15 +11,16 @@
 
   hero.dataset.photo = tall ? hero.dataset.tall : hero.dataset.wide;
   hero.dataset.tint = tall ? hero.dataset.tintTall : hero.dataset.tintWide;
+  if (tall) { heroImg.alt = hero.dataset.altTall; hero.href = hero.dataset.hrefTall; }
 
   /* The reveal: a slow opening of the frame, with the photo settling inside it. */
   function reveal() {
     if (!html.classList.contains("hero-pending")) return;
     if (!window.gsap) return html.classList.remove("hero-pending");
-    gsap.set(heroImg, { clipPath: "inset(12% 9% 12% 9%)", scale: 1.1, opacity: 0, transformOrigin: "50% 55%" });
+    gsap.set(heroImg, { scale: 1.1, opacity: 0, transformOrigin: "50% 55%" });
     html.classList.remove("hero-pending");
     gsap.to(heroImg, { opacity: 1, duration: 0.7, ease: "power1.out", clearProps: "opacity" });
-    gsap.to(heroImg, { clipPath: "inset(0% 0% 0% 0%)", duration: 2, ease: "power3.inOut", clearProps: "clipPath" });
+    S.clip(heroImg, [12, 9, 12, 9], [0, 0, 0, 0], { duration: 2, ease: "power3.inOut", onComplete: () => { heroImg.style.clipPath = ""; } });
     gsap.to(heroImg, { scale: 1, duration: 2.6, ease: "power3.out", clearProps: "transform,transformOrigin" });
   }
   const ready = heroImg.decode ? heroImg.decode().catch(() => {}) : Promise.resolve();

@@ -17,12 +17,12 @@
   <link rel="canonical" href="https://atharvphotography.studio/gallery.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=28">
+  <link rel="stylesheet" href="assets/css/site.css?v=32">
   <script>(function(){var h=document.documentElement,q=new URLSearchParams(location.search),s=q.get("subject")||q.get("category");h.classList.add("js");if(["cars","landscapes","animals","shoots","misc"].indexOf(s)>-1)h.dataset.subject=s})();</script>
   <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
   <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
-  <script src="assets/js/site.js?v=27" defer></script>
-  <script src="assets/js/gallery.js?v=29" defer></script>
+  <script src="assets/js/site.js?v=31" defer></script>
+  <script src="assets/js/gallery.js?v=31" defer></script>
 </head>
 <body class="page-work">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -48,12 +48,13 @@
 
   <main id="main">
     <div class="work-cover" aria-hidden="true">
-      <img data-cover="landscapes" src="media/landscapes/landscape13-960.webp" srcset="media/landscapes/landscape13-480.webp 480w, media/landscapes/landscape13-960.webp 960w, media/landscapes/landscape13-1920.webp 1920w" sizes="100vw" width="5328" height="4000" alt="">
-      <img data-cover="cars" src="media/cars/car16-960.webp" srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="100vw" width="3582" height="4771" alt="">
-      <img data-cover="animals" src="media/animals/animal11-960.webp" srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
-      <img data-cover="shoots" src="media/shoots/shoot-3-960.webp" srcset="media/shoots/shoot-3-480.webp 480w, media/shoots/shoot-3-960.webp 960w, media/shoots/shoot-3-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
-      <img data-cover="misc" src="media/misc/misc18-960.webp" srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
+      <img data-cover="landscapes" data-src="media/landscapes/landscape6-960.webp" data-srcset="media/landscapes/landscape6-480.webp 480w, media/landscapes/landscape6-960.webp 960w, media/landscapes/landscape6-1920.webp 1920w" sizes="100vw" width="6000" height="4000" alt="">
+      <img data-cover="cars" data-src="media/cars/car16-960.webp" data-srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="100vw" width="3582" height="4771" alt="">
+      <img data-cover="animals" data-src="media/animals/animal11-960.webp" data-srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
+      <img data-cover="shoots" data-src="media/shoots/shoot-4-960.webp" data-srcset="media/shoots/shoot-4-480.webp 480w, media/shoots/shoot-4-960.webp 960w, media/shoots/shoot-4-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
+      <img data-cover="misc" data-src="media/misc/misc18-960.webp" data-srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
     </div>
+    <script>(function(){var s=document.documentElement.dataset.subject,i=s&&document.querySelector('[data-cover="'+s+'"]');if(i){i.srcset=i.dataset.srcset;i.src=i.dataset.src}})();</script>
     <header class="container page-head">
       <h1 class="title">Work</h1>
       <p class="meta" data-count>&nbsp;</p>
@@ -69,12 +70,18 @@
     </div>
     <div class="container">
       <div data-work aria-busy="true" aria-label="Photographs"></div>
-      <div class="state" data-error hidden>
+      <noscript><p class="state">Photos need JavaScript to load. You can also see them on <a class="link" href="https://www.instagram.com/atharvphotography07/">Instagram</a>.</p></noscript>
+      <div class="state" data-error role="alert" hidden>
         <h2 class="heading">Photos couldn&rsquo;t load.</h2>
         <p>Check your connection, then try again.</p>
         <button class="btn" type="button">Try again</button>
       </div>
     </div>
+    <section class="container closing work-end" aria-labelledby="work-end-title">
+      <h2 id="work-end-title">Let&rsquo;s make something.</h2>
+      <p>Portraits, car shoots, events and prints. Tell me what you have in mind.</p>
+      <a class="btn" href="contact.html" data-book>Get in touch</a>
+    </section>
   </main>
 
   <footer class="footer">

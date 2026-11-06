@@ -24,7 +24,9 @@ at the centre of the screen.
 | View transitions, with a normal page load as the fallback | Crossfades where supported, and nothing breaks elsewhere |
 | Photos in a row share one height, uncropped | Each width follows the photo's aspect ratio; uneven tops and bottoms read as a mistake, and photographers notice crops |
 | Collections on Home | They give the morph into the Work header somewhere to start |
-| Bars slide away on scroll down | Phones from Instagram get the whole screen for photos |
+| Bars slide away on scroll down | Phones from Instagram get the whole screen for photos; they return at the end of a page and when focus lands in them |
+| Hero leaves one whole headline line above the fold | A deliberate cue to scroll, rather than a line cut through its letters |
+| Work ends with an invitation | After 79 photos, the most-used page had no ending; it preselects the matching shoot type |
 | Plain text tab bar instead of a floating pill | The pill sat on top of the work |
 | Back gesture closes the viewer | On phones, back otherwise left the gallery |
 | Numbers go in sentences | A row of stat tiles read as a SaaS template |

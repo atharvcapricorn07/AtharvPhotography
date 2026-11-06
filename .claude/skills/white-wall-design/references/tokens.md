@@ -13,8 +13,9 @@ Values match `design-model.yaml` and the `:root` block of `assets/css/site.css`.
 | `--text-display` | clamp(2.75rem, 6vw + 1rem, 6.5rem) | 1 | -0.035em | 700 | Home statement, closing line |
 | `--text-page` | clamp(2.5rem, 4vw + 1.25rem, 5rem) | 1 | -0.035em | 700 | Page titles |
 | `--text-statement` | clamp(1.75rem, 2.5vw + 1rem, 3.5rem) | 1.1 | -0.02em | 400 | One sentence set large |
+| `--text-lede` | clamp(1.25rem, 0.8vw + 1rem, 1.75rem) | 1.35 | -0.012em | 400 | Opening sentence on About and Contact |
 | `--text-title` | 1.25rem | 1.2 | -0.015em | 700 | Photo title in the intro, group names |
-| `--text-body` | 1.0625rem | 1.5 | 0 | 400 | Prose, measure 62ch |
+| `--text-body` | 1.0625rem | 1.5 | 0 | 400 | Prose, measure 54ch (about 73 characters in this face) |
 | `--text-sm` | 0.9375rem | 1.4 | 0 | 500 or 400 | Labels, nav, captions |
 | `--text-caption` | 0.875rem | 1.4 | 0 | 400 | Footer, counts |
 

@@ -44,6 +44,11 @@
     if (photo) add("Photo", 0);
     if (proof) add(a.organizer === "tpa" ? "Certificate" : "Result", slides.length - 1);
     li.appendChild(body);
+    // The whole row opens the entry, as the page says. Thumbnail and links stay the keyboard's way in.
+    li.addEventListener("click", (e) => {
+      if (e.target.closest("button, a") || !slides.length || String(getSelection())) return;
+      S.viewer.open(slides, 0, li.querySelector(".tap"), null, (n) => (n === 0 ? li.querySelector(".tap") : null));
+    });
     return li;
   }
 

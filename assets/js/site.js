@@ -13,7 +13,8 @@
   let lastY = scrollY;
   function onScroll() {
     const y = scrollY;
-    if (y < 120) root.classList.remove("chrome-hidden");
+    const atEnd = y + innerHeight > document.documentElement.scrollHeight - 80;
+    if (y < 120 || atEnd) root.classList.remove("chrome-hidden");
     else if (y > lastY + 6) root.classList.add("chrome-hidden");
     else if (y < lastY - 6) root.classList.remove("chrome-hidden");
     lastY = y;
@@ -21,6 +22,15 @@
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
   Site.barHeight = () => (topbar ? topbar.offsetHeight : 0);
+
+  // Tweens inset() as four numbers. A browser reports equal sides in shorthand ("12% 9%"), and GSAP
+  // would then match the wrong values, so a clip tweened from that opens on two sides only.
+  Site.clip = function (el, from, to, vars) {
+    const v = { top: from[0], right: from[1], bottom: from[2], left: from[3] };
+    const paint = () => { el.style.clipPath = "inset(" + v.top.toFixed(3) + "% " + v.right.toFixed(3) + "% " + v.bottom.toFixed(3) + "% " + v.left.toFixed(3) + "%)"; };
+    paint();
+    return gsap.to(v, Object.assign({ top: to[0], right: to[1], bottom: to[2], left: to[3], onUpdate: paint }, vars));
+  };
 
   /* ---------- Ambient colour ---------- */
   // The wall eases very slightly toward the tint of the photo nearest the centre of the screen.
@@ -174,7 +184,7 @@
   Site.slide = function (p, extra) {
     const info = [
       ["Camera", p.camera],
-      ["Lens", p.lens && (Site.LENS[p.lens] || p.lens)],
+      ["Lens", p.lens && !/^iPhone/.test(p.lens) && (Site.LENS[p.lens] || p.lens)], // a phone's camera row already says it
       ["Settings", Site.settings(p)],
       ["Taken", Site.day(p.date)],
     ].filter((x) => x[1]);
@@ -199,7 +209,7 @@
 
   Site.viewer = (function () {
     const STIFFNESS = 220, DAMPING_RATIO = 0.82, MAX_VELOCITY = 4000;
-    let dlg, ground, track, count, title, sub, info, infoBtn, prevBtn, nextBtn, chrome;
+    let dlg, ground, track, count, announce, clipTween, title, sub, info, infoBtn, prevBtn, nextBtn, chrome;
     let slides = [], index = 0, startIndex = 0, opener = null, onChange = null, tileAt = null, infoOpen = false;
     let pushed = false, ownBacks = 0, closing = false, hiddenThumb = null, x = 0, stopSpring = null, g = null, zoomed = false;
     const animate = () => window.gsap && window.Flip && !reduceMotion;
@@ -315,9 +325,10 @@
       dlg.setAttribute("aria-label", "Photo viewer");
       dlg.tabIndex = -1;
       dlg.innerHTML =
+        '<p class="visually-hidden" aria-live="polite" data-announce></p>' +
         '<div class="viewer__ground" aria-hidden="true"></div>' +
         '<div class="viewer__track"></div>' +
-        '<div class="viewer__top" data-chrome><p class="viewer__count" aria-live="polite"></p>' +
+        '<div class="viewer__top" data-chrome><p class="viewer__count"></p>' +
         '<button class="icon-btn" type="button" data-close aria-label="Close">' + ICON.close + "</button></div>" +
         '<button class="icon-btn viewer__nav viewer__nav--prev" type="button" data-chrome aria-label="Previous photo">' + ICON.prev + "</button>" +
         '<button class="icon-btn viewer__nav viewer__nav--next" type="button" data-chrome aria-label="Next photo">' + ICON.next + "</button>" +
@@ -329,6 +340,7 @@
       ground = dlg.querySelector(".viewer__ground");
       track = dlg.querySelector(".viewer__track");
       count = dlg.querySelector(".viewer__count");
+      announce = dlg.querySelector("[data-announce]");
       title = dlg.querySelector(".viewer__title");
       sub = dlg.querySelector(".viewer__sub");
       info = dlg.querySelector(".viewer__info");
@@ -415,6 +427,7 @@
       title.textContent = s.title;
       sub.textContent = s.sub || "";
       count.textContent = slides.length > 1 ? index + 1 + " / " + slides.length : "";
+      announce.textContent = s.title + (slides.length > 1 ? ", photo " + (index + 1) + " of " + slides.length : "");
       prevBtn.hidden = nextBtn.hidden = slides.length < 2;
       prevBtn.disabled = index === 0;
       nextBtn.disabled = index === slides.length - 1;
@@ -437,10 +450,10 @@
       const pos = getComputedStyle(thumb).objectPosition.split(" ").map((v) => parseFloat(v) / 100);
       const left = box.left + (box.width - w) * (isNaN(pos[0]) ? 0.5 : pos[0]);
       const top = box.top + (box.height - h) * (isNaN(pos[1]) ? 0.5 : pos[1]);
-      const pct = (v) => (Math.max(0, v) * 100).toFixed(3) + "%";
+      const pct = (v) => Math.max(0, v) * 100;
       return {
         left, top, width: w, height: h,
-        clip: "inset(" + pct((box.top - top) / h) + " " + pct((left + w - box.right) / w) + " " + pct((top + h - box.bottom) / h) + " " + pct((box.left - left) / w) + ")",
+        clip: [pct((box.top - top) / h), pct((left + w - box.right) / w), pct((top + h - box.bottom) / h), pct((box.left - left) / w)],
       };
     }
     function probeAt(rect) {
@@ -486,9 +499,9 @@
         const probe = probeAt(rect);
         Flip.fit(img, probe, { scale: true });
         probe.remove();
-        gsap.set(img, { clipPath: rect.clip });
+        if (clipTween) clipTween.kill();
+        clipTween = Site.clip(img, rect.clip, [0, 0, 0, 0], { duration: 0.42, ease: "power3.out", onComplete: () => { img.style.clipPath = ""; } });
         Flip.to(rest, { targets: img, scale: true, duration: 0.52, ease: "expo.out", onComplete: () => gsap.set(img, { clearProps: "transform" }) });
-        gsap.to(img, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.out", clearProps: "clipPath" });
       } else {
         gsap.from(img, { opacity: 0, scale: 0.98, duration: 0.3, ease: "power2.out", clearProps: "opacity,transform" });
       }
@@ -515,6 +528,8 @@
       const thumb = returnTile();
       const done = () => {
         closing = false;
+        if (clipTween) clipTween.kill();
+        img.style.clipPath = "";
         gsap.set([img, ground], { clearProps: "all" });
         gsap.set(chrome, { clearProps: "opacity" });
         img.style.setProperty("--r", slides[index].photo.w / slides[index].photo.h);
@@ -527,7 +542,8 @@
         hideThumb(thumb);
         const rect = uncropped(thumb);
         const probe = probeAt(rect);
-        gsap.to(img, { clipPath: rect.clip, duration: 0.3, delay: 0.06, ease: "power2.in" });
+        if (clipTween) clipTween.kill();
+        clipTween = Site.clip(img, [0, 0, 0, 0], rect.clip, { duration: 0.3, delay: 0.06, ease: "power2.in" });
         Flip.fit(img, probe, { scale: true, duration: 0.38, ease: "power3.inOut", onComplete: () => { probe.remove(); done(); } });
       } else {
         gsap.to(img, { opacity: 0, duration: 0.2, ease: "power1.in", onComplete: done });

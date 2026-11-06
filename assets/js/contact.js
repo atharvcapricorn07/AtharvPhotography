@@ -51,6 +51,7 @@
         form.reset();
         fields.forEach((el) => { el.removeAttribute("aria-invalid"); delete el.dataset.touched; });
         success.hidden = false;
+        form.hidden = true; // done; an empty live form here would invite a second send
         success.focus();
       })
       .catch(() => { failure.hidden = false; failure.focus(); })
