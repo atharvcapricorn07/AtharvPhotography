@@ -41,9 +41,10 @@
   }
 
   // Justified rows, in date order. A row's height comes from the ratios it holds, so every photo in
-  // it has the same height and none is cropped. A short last row keeps a normal height.
+  // it has the same height and none is cropped. On phones a lone last photo fills the width like any
+  // other single-photo row; on larger screens a short last row keeps a normal height.
   function renderGrid() {
-    const { target, most } = layoutFor();
+    const { key, target, most } = layoutFor();
     const rows = [];
     let row = [], sum = 0;
     list.forEach((p, i) => {
@@ -58,7 +59,7 @@
     rows.forEach(({ row: items, sum: total, last }) => {
       const el = document.createElement("div");
       el.className = "row";
-      const width = Math.max(total, last ? target : 0);
+      const width = last && key > 1 ? Math.max(total, target) : total;
       items.forEach(([p, i]) => {
         const t = tile(p, i, Math.ceil((p.r / width) * 100) + "vw");
         t.style.setProperty("--r", p.r);
