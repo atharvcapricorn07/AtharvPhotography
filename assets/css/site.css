@@ -228,7 +228,7 @@ main { padding-top: calc(var(--bar-h) + var(--safe-t)); }
 .wall { display: grid; gap: var(--space-3xl) 0; grid-template-columns: minmax(0, 1fr); }
 .plate { min-width: 0; }
 .plate a { display: block; }
-.plate img { width: 100%; height: auto; background: var(--wall-2); transition: opacity var(--dur-short) var(--ease-out); }
+.plate img { width: 100%; height: auto; aspect-ratio: var(--r, auto); background: var(--wall-2); transition: opacity var(--dur-short) var(--ease-out); }
 .plate a:hover img { opacity: 0.88; }
 .plate figcaption { padding-top: var(--space-sm); font-size: var(--text-sm); font-weight: 500; }
 .plate__sub { display: block; font-weight: 400; color: var(--ink-3); }
@@ -236,25 +236,25 @@ main { padding-top: calc(var(--bar-h) + var(--safe-t)); }
 .wall__a figcaption { padding-right: var(--gutter); }
 .wall__b { width: 66%; margin-left: auto; margin-right: var(--gutter); }
 @media (min-width: 800px) {
-  .wall { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-4xl) var(--space-lg); padding-inline: var(--gutter); max-width: var(--container); margin-inline: auto; }
-  .wall__a { grid-column: 1 / 9; margin: 0; }
-  .wall__b { grid-column: 9 / 13; width: auto; margin: 0; align-self: end; }
+  /* Width in proportion to aspect ratio: the row fills the width and heights match, uncropped. */
+  .wall { display: flex; align-items: flex-start; gap: var(--space-lg); padding-inline: var(--gutter); max-width: var(--container); margin-inline: auto; }
+  .wall .plate { flex: var(--r) 1 0; width: auto; margin: 0; }
+  .wall__a figcaption { padding-right: 0; }
 }
 .collections { display: grid; gap: var(--space-md); padding-block: var(--space-3xl) 0; }
 .collections h2 { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
-.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--tile-gap); }
-.col { display: block; text-decoration: none; font-size: var(--text-sm); font-weight: 500; }
-.col:first-child { grid-column: 1 / -1; }
-.col__ph { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--wall-2); margin-bottom: var(--space-xs); }
-.col:first-child .col__ph { aspect-ratio: 3 / 2; }
+.cols { display: grid; gap: var(--space-lg); }
+.cols__row { display: flex; align-items: flex-start; gap: var(--tile-gap); }
+.col { flex: var(--r) 1 0; min-width: 0; display: block; text-decoration: none; font-size: var(--text-sm); font-weight: 500; }
+.col__ph { display: block; aspect-ratio: var(--r); background: var(--wall-2); margin-bottom: var(--space-xs); }
 .col img { width: 100%; height: 100%; object-fit: cover; transition: opacity var(--dur-short) var(--ease-out); }
 .col:hover img { opacity: 0.88; }
 .col__n { font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 @media (min-width: 800px) {
   .collections { padding-block: var(--space-4xl) 0; }
-  .cols { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .col:first-child { grid-column: auto; }
-  .col:first-child .col__ph { aspect-ratio: 4 / 5; }
+  /* One row on larger screens: the phone's row wrappers step aside. */
+  .cols { display: flex; align-items: flex-start; gap: var(--tile-gap); }
+  .cols__row { display: contents; }
 }
 .record { display: grid; gap: var(--space-xs); justify-items: start; padding-block: var(--space-3xl) 0; }
 .record p { font-size: var(--text-statement); letter-spacing: -0.02em; line-height: 1.1; max-width: 28ch; text-wrap: balance; }
@@ -311,8 +311,11 @@ main { padding-top: calc(var(--bar-h) + var(--safe-t)); }
 .views button:focus-visible { outline-offset: -2px; }
 
 [data-work] { padding-block: var(--space-xs) var(--space-2xl); min-height: 100vh; }
-.masonry { display: flex; gap: var(--tile-gap); align-items: flex-start; }
-.masonry__col { flex: 1 1 0; min-width: 0; display: grid; gap: var(--tile-gap); }
+/* Justified rows: each tile's width follows its aspect ratio, so a row shares one height, uncropped. */
+.rows { display: grid; gap: var(--tile-gap); }
+.row { display: flex; align-items: flex-start; gap: var(--tile-gap); }
+.row .tap { flex: var(--r) 1 0; width: auto; min-width: 0; }
+.row__rest { flex: var(--r) 1 0; }
 .feed { display: grid; gap: var(--space-2xl); max-width: 980px; margin-inline: auto; }
 .feed figcaption { padding-top: var(--space-sm); display: grid; gap: 2px; }
 .plate__title { font-weight: 500; }

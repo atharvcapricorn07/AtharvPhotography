@@ -15,7 +15,8 @@
   try { view = localStorage.getItem("work-view") || "grid"; } catch (e) {}
 
   const byDate = (a, b) => (b.date || "").localeCompare(a.date || "");
-  const columnsFor = () => (innerWidth >= 1200 ? 4 : innerWidth >= 760 ? 3 : 2);
+  // How wide each row aims to be, in summed aspect ratios, and the most photos it may hold.
+  const layoutFor = () => (innerWidth >= 1200 ? { key: 3, target: 3.4, most: 5 } : innerWidth >= 760 ? { key: 2, target: 2.4, most: 3 } : { key: 1, target: 1.35, most: 2 });
 
   function syncUrl(photo) {
     const url = new URL(location.href);
@@ -39,20 +40,39 @@
     return b;
   }
 
+  // Justified rows, in date order. A row's height comes from the ratios it holds, so every photo in
+  // it has the same height and none is cropped. A short last row keeps a normal height.
   function renderGrid() {
-    const n = columnsFor();
-    const wrap = document.createElement("div");
-    wrap.className = "masonry";
-    const cols = Array.from({ length: n }, () => { const c = document.createElement("div"); c.className = "masonry__col"; wrap.appendChild(c); return c; });
-    const heights = new Array(n).fill(0);
-    const sizes = "(max-width: 760px) 50vw, (max-width: 1200px) 33vw, 25vw";
+    const { target, most } = layoutFor();
+    const rows = [];
+    let row = [], sum = 0;
     list.forEach((p, i) => {
-      const k = heights.indexOf(Math.min(...heights)); // shortest column next, so order reads left to right
-      cols[k].appendChild(tile(p, i, sizes));
-      heights[k] += 1 / p.r;
+      row.push([p, i]);
+      sum += p.r;
+      if (sum >= target || row.length === most) { rows.push({ row, sum }); row = []; sum = 0; }
+    });
+    if (row.length) rows.push({ row, sum, last: true });
+
+    const wrap = document.createElement("div");
+    wrap.className = "rows";
+    rows.forEach(({ row: items, sum: total, last }) => {
+      const el = document.createElement("div");
+      el.className = "row";
+      const width = Math.max(total, last ? target : 0);
+      items.forEach(([p, i]) => {
+        const t = tile(p, i, Math.ceil((p.r / width) * 100) + "vw");
+        t.style.setProperty("--r", p.r);
+        el.appendChild(t);
+      });
+      if (width > total) {
+        const rest = document.createElement("span");
+        rest.className = "row__rest";
+        rest.style.setProperty("--r", width - total);
+        el.appendChild(rest);
+      }
+      wrap.appendChild(el);
     });
     root.replaceChildren(wrap);
-    root.dataset.cols = n;
   }
 
   function renderFeed() {
@@ -69,7 +89,6 @@
       feed.appendChild(fig);
     });
     root.replaceChildren(feed);
-    delete root.dataset.cols;
   }
 
   function render() {
@@ -121,11 +140,11 @@
     if (d) render();
   }));
 
-  let lastCols = columnsFor();
+  let lastLayout = layoutFor().key;
   addEventListener("resize", () => {
     if (!d || view !== "grid") return;
-    const n = columnsFor();
-    if (n !== lastCols) { lastCols = n; render(); }
+    const n = layoutFor().key;
+    if (n !== lastLayout) { lastLayout = n; render(); }
   });
 
   function init() {

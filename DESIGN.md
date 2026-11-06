@@ -22,6 +22,7 @@ at the centre of the screen.
 | Swipes on a damped spring, not scroll snapping | Carries the finger's momentum and settles with about 2px of overshoot |
 | Ambient wall at 7% or less, checked for contrast | Felt rather than seen; `--ink-3` stays at 4.6:1 or better |
 | View transitions, with a normal page load as the fallback | Crossfades where supported, and nothing breaks elsewhere |
+| Photos in a row share one height, uncropped | Each width follows the photo's aspect ratio; uneven tops and bottoms read as a mistake, and photographers notice crops |
 | Collections on Home | They give the morph into the Work header somewhere to start |
 | Bars slide away on scroll down | Phones from Instagram get the whole screen for photos |
 | Plain text tab bar instead of a floating pill | The pill sat on top of the work |

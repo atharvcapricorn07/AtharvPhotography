@@ -23,7 +23,7 @@ Principles:
 2. **The name stays small.** "Atharv Kale" is never larger than body text outside the About page's own sentence.
 3. **Every edge is square.** Radius is 0 everywhere, so a photo's edge and a button's edge belong to one system.
 4. **Depth is tone, never shadow.** Wall, then a step darker. No shadow, no glass, no border around a box.
-5. **Hang unevenly.** Photos on a page differ in width and offset; identical tiles are for the Work grid only.
+5. **A row shares one height.** Photos side by side are never cropped and never uneven: each one's width follows its aspect ratio (`flex: <ratio> 1 0`), so the row fills the width and tops and bottoms line up. Stacked photos on phones may differ in width and offset.
 6. **Motion answers something.** A photo moves because you tapped it, a page changes because you navigated. The hero reveal on load is the only motion nobody asked for.
 7. **Never take the scroll.** No pinned sections, no scrubbed intros, no scroll-jacking. The page scrolls the moment it loads.
 
@@ -70,6 +70,7 @@ GSAP drives the moments: Flip for the shared-element viewer, a damped spring on 
 - No stat tiles or hero-metric rows; real numbers go in a sentence.
 - No section fade-up on scroll.
 - No card around a photograph, and no card inside a card.
+- No masonry and no cropped tiles: photos in a row have equal heights and their full frames.
 - No capitals with tracking, no eyebrows, no middle-dot strings, no arrow glued to link text.
 - No scroll-driven intro or pinned section.
 - No tap target under 44px.
