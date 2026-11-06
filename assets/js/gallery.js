@@ -25,15 +25,17 @@
     history.replaceState(null, "", url.pathname + url.search + url.hash);
   }
   const onChange = (s) => syncUrl(s ? s.photo : null);
+  const tileAt = (i) => root.querySelector('.tap[data-index="' + i + '"]');
 
   function tile(p, i, sizes) {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "tap";
     b.dataset.index = i;
+    b.dataset.tint = p.tint || "";
     b.setAttribute("aria-label", "View " + p.alt);
     b.appendChild(S.picture(p, { alt: "", sizes }));
-    b.addEventListener("click", () => S.viewer.open(slides, i, b, onChange));
+    b.addEventListener("click", () => S.viewer.open(slides, i, b, onChange, tileAt));
     return b;
   }
 
@@ -74,10 +76,13 @@
     viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
     if (view === "feed") renderFeed(); else renderGrid();
     root.setAttribute("aria-busy", "false");
+    S.ambient.watch(root.querySelectorAll(".tap"));
   }
 
   function show(key, keepScroll) {
-    subject = d.byCat[key] ? key : "all";
+    subject = d.byCat[key] && key !== "awards" ? key : "all";
+    // The header photo for a subject; set before first paint for arrivals, in gallery.html.
+    if (subject === "all") delete document.documentElement.dataset.subject; else document.documentElement.dataset.subject = subject;
     chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
     list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
     slides = list.map((p) => S.slide(p));
@@ -134,7 +139,7 @@
       if (hash) {
         const i = list.findIndex((p) => p.ref === hash || p.id === hash);
         // The grid keeps the plain URL, so Back from a shared link lands on the work.
-        if (i >= 0) { syncUrl(null); S.viewer.open(slides, i, root.querySelector('[data-index="' + i + '"]'), onChange); }
+        if (i >= 0) { syncUrl(null); S.viewer.open(slides, i, tileAt(i), onChange, tileAt); }
       }
     }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; });
   }

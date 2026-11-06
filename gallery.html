@@ -17,11 +17,12 @@
   <link rel="canonical" href="https://atharvphotography.studio/gallery.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=13">
-  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="assets/css/site.css?v=24">
+  <script>(function(){var h=document.documentElement,q=new URLSearchParams(location.search),s=q.get("subject")||q.get("category");h.classList.add("js");if(["cars","landscapes","animals","shoots","misc"].indexOf(s)>-1)h.dataset.subject=s})();</script>
   <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
-  <script src="assets/js/site.js?v=11" defer></script>
-  <script src="assets/js/gallery.js?v=11" defer></script>
+  <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
+  <script src="assets/js/site.js?v=24" defer></script>
+  <script src="assets/js/gallery.js?v=24" defer></script>
 </head>
 <body class="page-work">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,6 +47,13 @@
   </nav>
 
   <main id="main">
+    <div class="work-cover" aria-hidden="true">
+      <img data-cover="landscapes" src="media/landscapes/landscape13-960.webp" srcset="media/landscapes/landscape13-480.webp 480w, media/landscapes/landscape13-960.webp 960w, media/landscapes/landscape13-1920.webp 1920w" sizes="100vw" width="5328" height="4000" alt="">
+      <img data-cover="cars" src="media/cars/car16-960.webp" srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="100vw" width="3582" height="4771" alt="">
+      <img data-cover="animals" src="media/animals/animal11-960.webp" srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
+      <img data-cover="shoots" src="media/shoots/shoot-3-960.webp" srcset="media/shoots/shoot-3-480.webp 480w, media/shoots/shoot-3-960.webp 960w, media/shoots/shoot-3-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
+      <img data-cover="misc" src="media/misc/misc18-960.webp" srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
+    </div>
     <header class="container page-head">
       <h1 class="title">Work</h1>
       <p class="meta" data-count>&nbsp;</p>

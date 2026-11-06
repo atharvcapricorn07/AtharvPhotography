@@ -1,11 +1,10 @@
 /* Hallmark · shape: Photographic · genre: editorial · theme: Grid (deal 2/3, seed white-wall-gallery-museum-quiet-9d28·f80f05c4·2026-11-06·r0) · redesign: full
- * hero: Stage (the flight, on black) · nav: a text bar in thumb reach on phones, edge-aligned above · footer: plain row · imagery: photographs · signature: a straight-on dolly through prints in the dark, then the room lights up to a white wall · grid: no ultramarine fields, the photographs carry all colour, true colour by the owner's brief
- * axes: light/grotesk-sans/cool · surface: absolute · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V3 · weakest: V, shares its Grid bones with many Swiss pages; the black-to-wall lighting move and the prints-first hanging are what make it this site's own */
-/* Hallmark · waive 7b · --night is used only for the intro stage and the page behind it · the owner asked for a black intro, and OLED phones go fully dark around the photographs */
+ * hero: Stage (one large photograph, revealed once) · nav: a text bar in thumb reach on phones, edge-aligned above · footer: plain row · imagery: photographs · signature: photographs that grow out of their place and return to it, on a wall that warms toward the work · grid: no ultramarine fields, the photographs carry all colour, true colour by the owner's brief
+ * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V3 · weakest: V, shares its Grid bones with many Swiss pages; the shared-element viewer and the ambient wall are what make it this site's own */
 /* Atharv Kale Photography. White Wall design language: see .claude/skills/white-wall-design.
    Mobile first: base styles are phones, min-width queries add the larger layouts.
-   Order: font, tokens, base, type, controls, chrome, intro, home, work, viewer, awards, about, contact. */
+   Order: font, tokens, base, type, controls, chrome, home, work, viewer, awards, about, contact. */
 
 /* ---------- Font (Radio Canada Big, self-hosted, SIL OFL) ---------- */
 @font-face {
@@ -20,15 +19,11 @@
   --wall: #f7f6f2;          /* the page: a painted gallery wall */
   --wall-2: #eeede8;        /* wells, image placeholders */
   --wall-3: #e3e2db;        /* pressed wells */
-  --night: #000;            /* the intro: the room before the lights come on */
   --line: #dddcd5;          /* hairlines between rows */
   --ink: #12161f;
   --ink-2: #2f3440;
   --ink-3: #5c616d;         /* captions and meta, 5.7:1 on the wall */
   --ink-4: #8b8f98;         /* disabled only */
-  --on-night: #f7f6f2;
-  --on-night-2: #c4c3bd;
-  --shade: rgb(0 0 0 / 0.55);  /* under text that crosses a photograph */
   --mark: #c92a1d;          /* what is chosen or hovered, never a field */
   --mark-ink: var(--wall);
   --error: #b42318;
@@ -76,7 +71,7 @@
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scrollbar-color: var(--ink-4) var(--wall); scroll-padding-top: calc(var(--bar-h) + var(--safe-t)); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { scrollbar-gutter: stable; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scrollbar-color: var(--ink-4) var(--wall); scroll-padding-top: calc(var(--bar-h) + var(--safe-t)); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 body {
   margin: 0; background: var(--wall); color: var(--ink);
   font-family: var(--font); font-size: var(--text-body); line-height: 1.5;
@@ -100,8 +95,23 @@ p { text-wrap: pretty; }
 .skip-link:focus { top: calc(var(--safe-t) + var(--space-sm)); }
 .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 
-@view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-short); animation-timing-function: ease-out; }
+/* Page transitions. A crossfade where the browser supports it; a normal page load elsewhere. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 260ms; animation-timing-function: ease-out; }
+.topbar { view-transition-name: topbar; }
+.tabbar { view-transition-name: tabbar; }
+::view-transition-old(topbar), ::view-transition-old(tabbar) { display: none; }
+::view-transition-new(topbar), ::view-transition-new(tabbar) { animation: none; }
+/* A collection photo morphs into the Work header, and back. */
+::view-transition-group(collection) { animation-duration: 560ms; animation-timing-function: var(--ease-out); z-index: 1; }
+::view-transition-old(collection), ::view-transition-new(collection) { width: 100%; height: 100%; object-fit: cover; overflow: clip; animation-duration: 320ms; }
+[data-morph="landscapes"] [data-col="landscapes"] img, [data-subject="landscapes"] [data-cover="landscapes"],
+[data-morph="cars"] [data-col="cars"] img, [data-subject="cars"] [data-cover="cars"],
+[data-morph="animals"] [data-col="animals"] img, [data-subject="animals"] [data-cover="animals"],
+[data-morph="shoots"] [data-col="shoots"] img, [data-subject="shoots"] [data-cover="shoots"],
+[data-morph="misc"] [data-col="misc"] img, [data-subject="misc"] [data-cover="misc"] { view-transition-name: collection; }
 
 /* ---------- Type ---------- */
 .title { max-width: 16ch; font-weight: 700; font-size: var(--text-page); line-height: 1; letter-spacing: -0.035em; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
@@ -198,65 +208,22 @@ main { padding-top: calc(var(--bar-h) + var(--safe-t)); }
 .tap:hover img.is-loaded { opacity: 0.88; }
 .state { display: grid; gap: var(--space-md); justify-items: start; padding-block: var(--space-3xl); }
 
-/* ---------- Intro: the room is dark ---------- */
-.fly { position: relative; height: 100lvh; }
-.fly__stage { position: sticky; top: 0; height: 100lvh; overflow: hidden; background: var(--night); color: var(--on-night); }
-.fly__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.fly__world { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
-.fly__card { position: absolute; left: 0; top: 0; padding: 0; border: 0; background: none; cursor: zoom-in; backface-visibility: hidden; visibility: hidden; }
-.fly__card img { width: 100%; height: 100%; object-fit: cover; }
-.fly__card:focus-visible { outline-color: var(--on-night); outline-offset: -6px; }
-.fly__hud { position: absolute; inset: 0 0 auto 0; height: 100svh; pointer-events: none; }
-.fly__hud a { pointer-events: auto; }
-.fly__skip {
-  position: absolute; right: var(--gutter); top: calc(var(--safe-t) + var(--bar-h));
-  display: inline-flex; align-items: center; min-height: 44px; padding-inline: var(--space-sm); margin-right: calc(var(--space-sm) * -1);
-  font-size: var(--text-sm); font-weight: 500; color: var(--on-night-2); text-decoration: none;
-  transition: color var(--dur-short) var(--ease-out), opacity var(--dur-short) var(--ease-out);
-}
-.fly__skip:hover { color: var(--on-night); }
-.fly__skip:focus-visible { outline-color: var(--on-night); }
-.fly__skip.is-off { opacity: 0; visibility: hidden; }
-.fly__caption { position: absolute; left: var(--gutter); right: calc(var(--gutter) + 72px); bottom: calc(var(--space-xl) + var(--safe-b)); opacity: 0; transition: opacity var(--dur-short) var(--ease-out); }
-.fly__caption.is-on { opacity: 1; }
-.fly__title { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
-.fly__sub, .fly__cue { font-size: var(--text-sm); color: var(--on-night-2); }
-.fly__cue { position: absolute; right: var(--gutter); bottom: calc(var(--space-xl) + var(--safe-b)); transition: opacity var(--dur-short) var(--ease-out); }
-.fly__cue.is-off { opacity: 0; }
-/* Sits above the watermark on the landing photo. */
-.fly__end { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--space-3xl) + var(--safe-b)); }
-.fly__end::before { content: ""; position: absolute; z-index: -1; inset: calc(var(--space-3xl) * -1) calc(var(--gutter) * -1) calc(var(--space-xl) * -1); background: linear-gradient(transparent, var(--shade) 55%, transparent); }
-.fly__name { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
-.fly__end p:last-child { font-size: var(--text-sm); }
-/* landscape8 on phones: crop from the right so the watermark stays whole. */
-.fly__card--tall img { object-position: 8% 50%; }
-@media (max-aspect-ratio: 9/10) { .fly__still img { object-position: 8% 50%; } }
-
-html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip { display: none; }
-.ground { display: none; }
-
-/* Flight mode: only with JS and motion allowed. intro.js lights the room. */
-.fly-mode { scroll-padding-top: 0; }
-.fly-mode .fly { height: 620lvh; }
-.fly-mode body { background: var(--night); }
-.fly-mode.wall-done body { background: var(--wall); }
-.fly-mode .ground { display: block; position: fixed; inset: 0; z-index: -1; background: var(--wall); opacity: 0; }
-.fly-mode:not(.at-wall) .topbar { background: linear-gradient(var(--shade), transparent); color: var(--on-night); transform: none; }
-.fly-mode:not(.at-wall) .topbar :focus-visible { outline-color: var(--on-night); }
-.fly-mode:not(.at-wall) .topbar a:hover, .fly-mode:not(.at-wall) .topbar .icon-btn:hover { color: var(--on-night-2); }
-.fly-mode:not(.at-wall) .topnav a[aria-current="page"] { text-decoration-color: var(--on-night); }
-.fly-mode:not(.wall-done) .tabbar { transform: translateY(100%); }
-@media (prefers-reduced-motion: reduce) {
-  .fly__caption, .fly__cue, .fly__skip { display: none; }
-}
-
-/* ---------- Home: a statement, three prints hung unevenly ---------- */
+/* ---------- Home: one large photograph, a statement, prints hung unevenly ---------- */
 #home { position: relative; }
-.statement { display: grid; gap: var(--space-lg); justify-items: start; padding-block: var(--space-3xl); }
+.hero { display: block; height: calc(100svh - var(--bar-h) - var(--safe-t) - var(--tab-h) - var(--safe-b) - var(--space-xl)); min-height: 400px; overflow: hidden; cursor: zoom-in; }
+.hero:focus-visible { outline-offset: -6px; outline-color: var(--wall); }
+.hero picture { display: block; height: 100%; }
+.hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
+/* landscape8 on phones: crop from the right so the watermark stays whole. */
+@media (max-aspect-ratio: 9/10) { .hero img { object-position: 8% 50%; } }
+/* Held back for the reveal in home.js; the delayed animation shows it if that script never runs. */
+.hero-pending .hero img { opacity: 0; animation: hero-failsafe 1ms 3.5s forwards; }
+@keyframes hero-failsafe { to { opacity: 1; } }
+.statement { display: grid; gap: var(--space-lg); justify-items: start; padding-block: var(--space-xl) var(--space-3xl); }
 .statement h1 { max-width: 16ch; font-size: var(--text-display); line-height: 1; letter-spacing: -0.035em; font-weight: 700; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
 .statement p { max-width: 46ch; }
 .statement .actions { margin-top: var(--space-sm); }
-@media (min-width: 800px) { .statement { padding-block: var(--space-4xl); } }
+@media (min-width: 800px) { .statement { padding-block: var(--space-2xl) var(--space-4xl); } }
 
 .wall { display: grid; gap: var(--space-3xl) 0; grid-template-columns: minmax(0, 1fr); }
 .plate { min-width: 0; }
@@ -268,13 +235,26 @@ html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip {
 .wall__a { margin-left: var(--gutter); }
 .wall__a figcaption { padding-right: var(--gutter); }
 .wall__b { width: 66%; margin-left: auto; margin-right: var(--gutter); }
-.wall__c figcaption { padding-inline: var(--gutter); }
 @media (min-width: 800px) {
   .wall { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-4xl) var(--space-lg); padding-inline: var(--gutter); max-width: var(--container); margin-inline: auto; }
   .wall__a { grid-column: 1 / 9; margin: 0; }
   .wall__b { grid-column: 9 / 13; width: auto; margin: 0; align-self: end; }
-  .wall__c { grid-column: 3 / 11; }
-  .wall__c figcaption { padding-inline: 0; }
+}
+.collections { display: grid; gap: var(--space-md); padding-block: var(--space-3xl) 0; }
+.collections h2 { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--tile-gap); }
+.col { display: block; text-decoration: none; font-size: var(--text-sm); font-weight: 500; }
+.col:first-child { grid-column: 1 / -1; }
+.col__ph { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--wall-2); margin-bottom: var(--space-xs); }
+.col:first-child .col__ph { aspect-ratio: 3 / 2; }
+.col img { width: 100%; height: 100%; object-fit: cover; transition: opacity var(--dur-short) var(--ease-out); }
+.col:hover img { opacity: 0.88; }
+.col__n { font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) {
+  .collections { padding-block: var(--space-4xl) 0; }
+  .cols { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .col:first-child { grid-column: auto; }
+  .col:first-child .col__ph { aspect-ratio: 4 / 5; }
 }
 .record { display: grid; gap: var(--space-xs); justify-items: start; padding-block: var(--space-3xl) 0; }
 .record p { font-size: var(--text-statement); letter-spacing: -0.02em; line-height: 1.1; max-width: 28ch; text-wrap: balance; }
@@ -292,6 +272,11 @@ html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip {
 @media (min-width: 800px) { .page-head { padding-block: var(--space-2xl) var(--space-xl); gap: var(--space-md); } }
 
 /* ---------- Work ---------- */
+.work-cover { display: none; height: 34svh; min-height: 200px; background: var(--wall-2); overflow: hidden; }
+[data-subject] .work-cover { display: block; }
+.work-cover img { display: none; width: 100%; height: 100%; object-fit: cover; }
+[data-subject="landscapes"] [data-cover="landscapes"], [data-subject="cars"] [data-cover="cars"], [data-subject="animals"] [data-cover="animals"], [data-subject="shoots"] [data-cover="shoots"], [data-subject="misc"] [data-cover="misc"] { display: block; }
+@media (min-width: 800px) { .work-cover { height: 44svh; } }
 .toolbar {
   position: sticky; top: calc(var(--bar-h) + var(--safe-t)); z-index: 40; background: var(--wall);
   transition: transform var(--dur-long) var(--ease-out);
@@ -341,15 +326,16 @@ html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip {
   position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none;
   margin: 0; padding: 0; border: 0; overflow: hidden; background: transparent; color: var(--ink);
 }
+.viewer:focus { outline: none; }
 .viewer::backdrop { background: transparent; }
 .viewer__ground { position: absolute; inset: 0; background: var(--wall); }
-.viewer__track { position: absolute; inset: 0; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior: contain; }
-.viewer__track::-webkit-scrollbar { display: none; }
-.viewer__slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; display: grid; place-items: center; padding: var(--v-top) var(--v-side) var(--v-bottom); }
+.viewer__track { position: absolute; inset: 0; display: flex; touch-action: pinch-zoom; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.viewer__track.is-dragging { cursor: grabbing; }
+.viewer__slide { flex: 0 0 100%; min-width: 0; height: 100%; display: grid; place-items: center; padding: var(--v-top) var(--v-side) var(--v-bottom); }
 .viewer__slide img {
   width: min(100%, calc(var(--stage-h) * var(--r, 1)));
   max-width: none; height: auto; aspect-ratio: var(--r, 1); background: var(--wall-2) center / cover no-repeat;
-  user-select: none; -webkit-user-drag: none;
+  -webkit-user-drag: none; pointer-events: none;
 }
 .viewer__top { position: absolute; inset: 0 0 auto 0; display: flex; align-items: center; justify-content: space-between; height: var(--v-top); padding: var(--safe-t) var(--gutter) 0; pointer-events: none; }
 .viewer__top > * { pointer-events: auto; }
@@ -458,5 +444,4 @@ html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip {
 @media (prefers-reduced-motion: reduce) {
   .topbar, .tabbar, .toolbar { transition: none; }
   .btn:active { transform: none; }
-  @view-transition { navigation: none; }
 }

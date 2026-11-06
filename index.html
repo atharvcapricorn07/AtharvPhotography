@@ -6,7 +6,7 @@
   <title>Atharv Kale | Photography</title>
   <meta name="description" content="Photography by Atharv Kale: cars, landscapes, wildlife and portraits.">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#000000" data-night>
+  <meta name="theme-color" content="#f7f6f2">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Atharv Kale Photography">
   <meta property="og:title" content="Atharv Kale | Photography">
@@ -17,14 +17,14 @@
   <link rel="canonical" href="https://atharvphotography.studio/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=13">
-  <script>document.documentElement.classList.add("js");if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("fly-mode");</script>
+  <link rel="stylesheet" href="assets/css/site.css?v=24">
+  <script>(function(){var h=document.documentElement,clear=function(){delete h.dataset.morph;try{sessionStorage.removeItem("morph")}catch(e){}};h.classList.add("js");if(matchMedia("(prefers-reduced-motion: no-preference)").matches)h.classList.add("hero-pending");try{var m=sessionStorage.getItem("morph");if(m)h.dataset.morph=m}catch(e){}addEventListener("pagereveal",function(e){if(e.viewTransition)e.viewTransition.finished.finally(clear);else clear()})})();</script>
   <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
-  <script src="assets/vendor/ScrollTrigger.min.js?v=3.13.0" defer></script>
-  <script src="assets/js/site.js?v=11" defer></script>
-  <script src="assets/js/intro.js?v=11" defer></script>
-  <script src="assets/js/home.js?v=11" defer></script>
-  <link rel="preload" as="image" href="media/animals/animal13-960.webp" imagesrcset="media/animals/animal13-480.webp 480w, media/animals/animal13-960.webp 960w, media/animals/animal13-1920.webp 1828w" imagesizes="(min-width: 800px) 46vh, 40vh">
+  <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
+  <script src="assets/js/site.js?v=24" defer></script>
+  <script src="assets/js/home.js?v=24" defer></script>
+  <link rel="preload" as="image" media="(max-aspect-ratio: 9/10)" imagesrcset="media/landscapes/landscape8-480.webp 480w, media/landscapes/landscape8-960.webp 960w, media/landscapes/landscape8-1920.webp 1920w" imagesizes="max(100vw, 65vh)">
+  <link rel="preload" as="image" media="(min-aspect-ratio: 9/10)" imagesrcset="media/landscapes/landscape11-480.webp 480w, media/landscapes/landscape11-960.webp 960w, media/landscapes/landscape11-1920.webp 1920w" imagesizes="max(100vw, 90vh)">
 </head>
 <body class="page-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -49,22 +49,12 @@
   </nav>
 
   <main id="main">
-    <section class="fly" data-fly aria-label="Intro: six favourite photographs">
-      <div class="fly__stage">
-        <picture class="fly__still"><source media="(max-aspect-ratio: 9/10)" srcset="media/landscapes/landscape8-480.webp 480w, media/landscapes/landscape8-960.webp 960w, media/landscapes/landscape8-1920.webp 1920w" sizes="75vh"><img src="media/landscapes/landscape11-960.webp" srcset="media/landscapes/landscape11-480.webp 480w, media/landscapes/landscape11-960.webp 960w, media/landscapes/landscape11-1920.webp 1920w" sizes="134vh" width="5328" height="4000" alt="Seattle skyline"></picture>
-        <div class="fly__world" data-world></div>
-        <div class="fly__hud">
-          <a class="fly__skip" href="#home" data-skip>Skip intro</a>
-          <div class="fly__caption" data-caption><p class="fly__title"></p><p class="fly__sub"></p></div>
-          <p class="fly__cue" data-cue>Scroll</p>
-          <div class="fly__end" data-end><p class="fly__name">Atharv Kale</p><p>Cars, landscapes, wildlife and portraits.</p></div>
-        </div>
-      </div>
-    </section>
-    <div class="ground" data-ground aria-hidden="true"></div>
-
     <div id="home">
-      <section class="container statement" data-statement>
+      <a class="hero" href="gallery.html?subject=landscapes#landscape11" data-hero data-tall="landscapes/landscape8" data-wide="landscapes/landscape11" data-tint-tall="#e2b778" data-tint-wide="#d8d4cc">
+        <picture><source media="(max-aspect-ratio: 9/10)" srcset="media/landscapes/landscape8-480.webp 480w, media/landscapes/landscape8-960.webp 960w, media/landscapes/landscape8-1920.webp 1920w" sizes="max(100vw, 65vh)"><img src="media/landscapes/landscape11-1920.webp" srcset="media/landscapes/landscape11-480.webp 480w, media/landscapes/landscape11-960.webp 960w, media/landscapes/landscape11-1920.webp 1920w" sizes="max(100vw, 90vh)" width="5328" height="4000" fetchpriority="high" decoding="async" alt="Seattle skyline"></picture>
+      </a>
+
+      <section class="container statement">
         <h1>Photographs of light, patience and the moments worth stopping for.</h1>
         <p>I&rsquo;m Atharv Kale, a high school photographer with eight years behind the camera. I shoot cars, landscapes, wildlife and people.</p>
         <div class="actions">
@@ -75,18 +65,25 @@
 
       <div class="wall" data-wall>
         <figure class="plate wall__a">
-          <a href="gallery.html?subject=landscapes#landscape12" data-photo="landscapes/landscape12"><img src="media/landscapes/landscape12-960.webp" srcset="media/landscapes/landscape12-480.webp 480w, media/landscapes/landscape12-960.webp 960w, media/landscapes/landscape12-1920.webp 1920w" sizes="(min-width: 800px) 62vw, calc(100vw - 16px)" width="4784" height="3592" loading="lazy" decoding="async" alt="Kayak under Mount Rainier"></a>
+          <a href="gallery.html?subject=landscapes#landscape12" data-photo="landscapes/landscape12" data-tint="#78c3e2"><img src="media/landscapes/landscape12-960.webp" srcset="media/landscapes/landscape12-480.webp 480w, media/landscapes/landscape12-960.webp 960w, media/landscapes/landscape12-1920.webp 1920w" sizes="(min-width: 800px) 62vw, calc(100vw - 16px)" width="4784" height="3592" loading="lazy" decoding="async" alt="Kayak under Mount Rainier"></a>
           <figcaption>Kayak under Mount Rainier<span class="plate__sub">Landscapes, May 2026</span></figcaption>
         </figure>
         <figure class="plate wall__b">
-          <a href="gallery.html?subject=shoots#shoot-1" data-photo="shoots/shoot-1"><img src="media/shoots/shoot-1-960.webp" srcset="media/shoots/shoot-1-480.webp 480w, media/shoots/shoot-1-960.webp 960w, media/shoots/shoot-1-1920.webp 1920w" sizes="(min-width: 800px) 30vw, 66vw" width="3730" height="4969" loading="lazy" decoding="async" alt="Silhouette on the dock"></a>
+          <a href="gallery.html?subject=shoots#shoot-1" data-photo="shoots/shoot-1" data-tint="#e2b878"><img src="media/shoots/shoot-1-960.webp" srcset="media/shoots/shoot-1-480.webp 480w, media/shoots/shoot-1-960.webp 960w, media/shoots/shoot-1-1920.webp 1920w" sizes="(min-width: 800px) 30vw, 66vw" width="3730" height="4969" loading="lazy" decoding="async" alt="Silhouette on the dock"></a>
           <figcaption>Silhouette on the dock<span class="plate__sub">Portraits, May 2026</span></figcaption>
         </figure>
-        <figure class="plate wall__c">
-          <a href="gallery.html?subject=cars#car10" data-photo="cars/car10"><img src="media/cars/car10-960.webp" srcset="media/cars/car10-480.webp 480w, media/cars/car10-960.webp 960w, media/cars/car10-1920.webp 1920w" sizes="(min-width: 800px) 62vw, 100vw" width="6000" height="4000" loading="lazy" decoding="async" alt="Porsche 911 at sunset"></a>
-          <figcaption>Porsche 911 at sunset<span class="plate__sub">Cars, September 2025</span></figcaption>
-        </figure>
       </div>
+
+      <section class="container collections" aria-labelledby="col-title">
+        <h2 id="col-title">Collections</h2>
+        <div class="cols">
+          <a class="col" href="gallery.html?subject=landscapes" data-col="landscapes" data-tint="#78a8e2"><span class="col__ph"><img src="media/landscapes/landscape13-960.webp" srcset="media/landscapes/landscape13-480.webp 480w, media/landscapes/landscape13-960.webp 960w, media/landscapes/landscape13-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="5328" height="4000" loading="lazy" decoding="async" alt=""></span><span class="col__name">Landscapes</span> <span class="col__n" data-col-n>12</span></a>
+          <a class="col" href="gallery.html?subject=cars" data-col="cars" data-tint="#789fe2"><span class="col__ph"><img src="media/cars/car16-960.webp" srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="3582" height="4771" loading="lazy" decoding="async" alt=""></span><span class="col__name">Cars</span> <span class="col__n" data-col-n>18</span></a>
+          <a class="col" href="gallery.html?subject=animals" data-col="animals" data-tint="#e2c378"><span class="col__ph"><img src="media/animals/animal11-960.webp" srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="5328" loading="lazy" decoding="async" alt=""></span><span class="col__name">Wildlife</span> <span class="col__n" data-col-n>17</span></a>
+          <a class="col" href="gallery.html?subject=shoots" data-col="shoots" data-tint="#e2bb78"><span class="col__ph"><img src="media/shoots/shoot-3-960.webp" srcset="media/shoots/shoot-3-480.webp 480w, media/shoots/shoot-3-960.webp 960w, media/shoots/shoot-3-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="6000" loading="lazy" decoding="async" alt=""></span><span class="col__name">Portraits</span> <span class="col__n" data-col-n>6</span></a>
+          <a class="col" href="gallery.html?subject=misc" data-col="misc" data-tint="#e2bd78"><span class="col__ph"><img src="media/misc/misc18-960.webp" srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="6000" loading="lazy" decoding="async" alt=""></span><span class="col__name">Misc</span> <span class="col__n" data-col-n>26</span></a>
+        </div>
+      </section>
 
       <section class="container record">
         <p data-record>19 contest results, including four Expert Choice awards.</p>

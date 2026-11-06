@@ -40,7 +40,7 @@
     const metaEl = body.querySelector(".award__meta");
     if (meta) metaEl.textContent = meta; else metaEl.replaceChildren();
     const links = body.querySelector(".award__links");
-    const add = (text, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "tlink"; b.textContent = text; b.addEventListener("click", () => S.viewer.open(slides, i, li.querySelector(".tap"))); links.appendChild(b); };
+    const add = (text, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "tlink"; b.textContent = text; b.addEventListener("click", () => S.viewer.open(slides, i, b, null, (n) => (n === 0 ? li.querySelector(".tap") : null))); links.appendChild(b); };
     if (photo) add("Photo", 0);
     if (proof) add(a.organizer === "tpa" ? "Certificate" : "Result", slides.length - 1);
     li.appendChild(body);

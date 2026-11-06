@@ -4,6 +4,7 @@
   "use strict";
   const Site = (window.Site = {});
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (window.gsap && window.Flip) gsap.registerPlugin(Flip);
 
   /* ---------- Chrome ---------- */
   // Bars step aside while you scroll down through photos and return when you scroll up.
@@ -12,8 +13,7 @@
   let lastY = scrollY;
   function onScroll() {
     const y = scrollY;
-    const flying = root.classList.contains("fly-mode") && !root.classList.contains("at-wall");
-    if (flying || y < 120) root.classList.remove("chrome-hidden");
+    if (y < 120) root.classList.remove("chrome-hidden");
     else if (y > lastY + 6) root.classList.add("chrome-hidden");
     else if (y < lastY - 6) root.classList.remove("chrome-hidden");
     lastY = y;
@@ -21,6 +21,59 @@
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
   Site.barHeight = () => (topbar ? topbar.offsetHeight : 0);
+
+  /* ---------- Ambient colour ---------- */
+  // The wall eases very slightly toward the tint of the photo nearest the centre of the screen.
+  // Every tone is checked against the lightest text before it's used, so contrast always passes.
+  Site.ambient = (function () {
+    const WALL = "#f7f6f2", LIGHTEST_TEXT = "#5c616d", STRENGTH = 0.07, MIN_CONTRAST = 4.6;
+    const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const lum = (h) => {
+      const [r, g, b] = rgb(h).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const mix = (a, b, t) => "#" + rgb(a).map((v, i) => Math.round(v + (rgb(b)[i] - v) * t).toString(16).padStart(2, "0")).join("");
+    function tone(tint) {
+      if (!/^#[0-9a-f]{6}$/i.test(tint || "")) return WALL;
+      for (let t = STRENGTH; t > 0; t -= 0.01) {
+        const c = mix(WALL, tint, t);
+        if (contrast(c, LIGHTEST_TEXT) >= MIN_CONTRAST) return c;
+      }
+      return WALL;
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const band = new Set();
+    let io = null, timer = 0, current = WALL;
+
+    function apply(hex) {
+      if (hex === current) return;
+      current = hex;
+      const surfaces = [document.body].concat(Array.from(document.querySelectorAll(".topbar, .tabbar, .toolbar")));
+      gsap.to(surfaces, { backgroundColor: hex, duration: 1.4, ease: "power2.out", overwrite: "auto", onComplete: () => { if (meta) meta.content = hex; } });
+    }
+    function choose() {
+      const mid = innerHeight / 2;
+      let best = null, gap = Infinity;
+      band.forEach((el) => {
+        const r = el.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < gap) { gap = d; best = el; }
+      });
+      apply(best ? tone(best.dataset.tint) : WALL);
+    }
+    function watch(els) {
+      if (reduceMotion || !window.gsap || !("IntersectionObserver" in window)) return;
+      if (io) io.disconnect();
+      band.clear();
+      io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) band.add(e.target); else band.delete(e.target); });
+        clearTimeout(timer);
+        timer = setTimeout(choose, band.size ? 120 : 500);
+      }, { rootMargin: "-46% 0px -46% 0px" });
+      Array.from(els).forEach((el) => io.observe(el));
+    }
+    return { watch, tone, contrast };
+  })();
   document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
 
   /* ---------- Data ---------- */
@@ -129,9 +182,9 @@
   };
 
   /* ---------- Viewer ---------- */
-  // A print on the wall. Swipe sideways between photos (native scroll snapping, so it follows your
-  // finger), swipe down or press Escape to close, and the phone's back gesture closes it too.
-  // The photo grows out of the thing you tapped and returns to it.
+  // A print on the wall. The photo grows out of its exact place on the page and returns to it
+  // (GSAP Flip). Swiping follows the finger, keeps its momentum on release and settles on a
+  // slightly underdamped spring. Swipe down, Escape or the phone's back gesture closes it.
   const ICON = {
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg>',
@@ -140,16 +193,127 @@
   };
   Site.ICON = ICON;
 
+  let lastInput = "pointer";
+  addEventListener("pointerdown", () => { lastInput = "pointer"; }, true);
+  addEventListener("keydown", () => { lastInput = "key"; }, true);
+
   Site.viewer = (function () {
+    const STIFFNESS = 220, DAMPING_RATIO = 0.82, MAX_VELOCITY = 4000;
     let dlg, ground, track, count, title, sub, info, infoBtn, prevBtn, nextBtn, chrome;
-    let slides = [], index = 0, startIndex = 0, opener = null, onChange = null, raf = 0, infoOpen = false;
-    let pushed = false, closing = false;
-    const animate = () => window.gsap && !reduceMotion;
+    let slides = [], index = 0, startIndex = 0, opener = null, onChange = null, tileAt = null, infoOpen = false;
+    let pushed = false, ownBacks = 0, closing = false, hiddenThumb = null, x = 0, stopSpring = null, g = null, zoomed = false;
+    const animate = () => window.gsap && window.Flip && !reduceMotion;
+    const width = () => dlg.clientWidth;
+    const setX = (v) => { x = v; track.style.transform = "translate3d(" + v.toFixed(2) + "px,0,0)"; };
+    const currentImg = () => track.children[index] && track.children[index].querySelector("img");
+
+    /* Motion between photos */
+    function settle(velocity) {
+      if (stopSpring) stopSpring();
+      const target = -index * width();
+      if (!window.gsap || reduceMotion) return setX(target);
+      let v = gsap.utils.clamp(-MAX_VELOCITY, MAX_VELOCITY, velocity || 0);
+      const damping = 2 * DAMPING_RATIO * Math.sqrt(STIFFNESS);
+      const tick = (time, delta) => {
+        const dt = Math.min(delta, 32) / 2000; // two substeps per frame stay stable on slow phones
+        for (let n = 0; n < 2; n++) {
+          v += (-STIFFNESS * (x - target) - damping * v) * dt;
+          x += v * dt;
+        }
+        if (Math.abs(x - target) < 0.3 && Math.abs(v) < 6) { setX(target); stopSpring(); return; }
+        setX(x);
+      };
+      stopSpring = () => { gsap.ticker.remove(tick); stopSpring = null; };
+      gsap.ticker.add(tick);
+    }
+    function go(i, velocity) {
+      if (i >= 0 && i < slides.length && i !== index) { index = i; update(); }
+      settle(velocity);
+    }
+
+    /* Gestures */
+    function onDown(e) {
+      if (closing || zoomed || (e.pointerType === "mouse" && e.button !== 0)) return;
+      if (g) { cancelGesture(); return; } // a second finger is a pinch, not a swipe
+      if (stopSpring) stopSpring();
+      g = { id: e.pointerId, x0: e.clientX, y0: e.clientY, base: x, axis: null, target: e.target, samples: [], dy: 0 };
+    }
+    function onMove(e) {
+      if (!g || e.pointerId !== g.id) return;
+      const dx = e.clientX - g.x0, dy = e.clientY - g.y0;
+      if (!g.axis) {
+        if (Math.hypot(dx, dy) < 8) return;
+        g.axis = Math.abs(dx) > Math.abs(dy) ? "x" : dy > 0 ? "y" : "none";
+        try { track.setPointerCapture(g.id); } catch (err) {}
+        track.classList.add("is-dragging");
+      }
+      if (g.axis === "x") {
+        const atEdge = (index === 0 && dx > 0) || (index === slides.length - 1 && dx < 0);
+        setX(g.base + (atEdge ? dx * 0.3 : dx));
+        g.samples.push([e.timeStamp, e.clientX]);
+        if (g.samples.length > 6) g.samples.shift();
+      } else if (g.axis === "y") {
+        g.dy = dy;
+        const img = currentImg();
+        if (window.gsap) gsap.set(img, { y: Math.max(0, dy), scale: Math.max(0.85, 1 - Math.max(0, dy) / 1200) });
+        ground.style.opacity = Math.max(0.3, 1 - Math.max(0, dy) / 400);
+      }
+    }
+    function onUp(e) {
+      if (!g || e.pointerId !== g.id) return;
+      const gesture = g;
+      g = null;
+      track.classList.remove("is-dragging");
+      if (gesture.axis === "x") {
+        const moved = e.clientX - gesture.x0;
+        const first = gesture.samples[0], last = gesture.samples[gesture.samples.length - 1];
+        const ms = first && last ? last[0] - first[0] : 0;
+        const velocity = ms > 0 ? ((last[1] - first[1]) / ms) * 1000 : 0;
+        const flick = Math.abs(velocity) > 450, far = Math.abs(moved) > width() * 0.25;
+        const dir = flick ? -Math.sign(velocity) : far ? -Math.sign(moved) : 0;
+        const next = gesture.samples.length ? gsap.utils.clamp(0, slides.length - 1, index + dir) : index;
+        // Past the first or last photo the drag was a rubber band, so it carries no momentum.
+        const pastEdge = next === index && (index + dir < 0 || index + dir >= slides.length);
+        go(next, pastEdge ? 0 : velocity);
+      } else if (gesture.axis === "y") {
+        if (gesture.dy > 110) close(); else springBack();
+      } else if (!gesture.axis && matchMedia("(hover: hover)").matches) {
+        // A click on the empty wall around a photo closes; a click on the photo does nothing.
+        const r = currentImg().getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) close();
+      }
+    }
+    function springBack() {
+      const img = currentImg();
+      if (window.gsap) gsap.to(img, { y: 0, scale: 1, duration: 0.45, ease: "back.out(1.2)", clearProps: "transform" });
+      ground.style.opacity = "";
+    }
+    function cancelGesture() {
+      if (!g) return;
+      const axis = g.axis;
+      g = null;
+      track.classList.remove("is-dragging");
+      if (axis === "y") springBack(); else settle(0);
+    }
+    function onWheel(e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      wheelSum += e.deltaX;
+      if (Date.now() > wheelLock && Math.abs(wheelSum) > 40) {
+        wheelLock = Date.now() + 450;
+        go(index + Math.sign(wheelSum));
+        wheelSum = 0;
+      }
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => { wheelSum = 0; }, 160);
+    }
+    let wheelSum = 0, wheelLock = 0, wheelTimer = 0;
 
     function build() {
       dlg = document.createElement("dialog");
       dlg.className = "viewer";
       dlg.setAttribute("aria-label", "Photo viewer");
+      dlg.tabIndex = -1;
       dlg.innerHTML =
         '<div class="viewer__ground" aria-hidden="true"></div>' +
         '<div class="viewer__track"></div>' +
@@ -184,51 +348,29 @@
         if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
         if (e.key === "i") { infoOpen = !infoOpen; renderInfo(); }
       });
-      track.addEventListener("scroll", () => {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          const i = Math.round(track.scrollLeft / track.clientWidth);
-          if (i !== index && slides[i]) { index = i; update(); }
-        });
-      }, { passive: true });
-      // A click on the empty wall around a photo closes on desktop.
-      track.addEventListener("click", (e) => { if (e.target.classList.contains("viewer__slide") && matchMedia("(hover: hover)").matches) close(); });
+      track.addEventListener("pointerdown", onDown);
+      track.addEventListener("pointermove", onMove);
+      track.addEventListener("pointerup", onUp);
+      track.addEventListener("pointercancel", cancelGesture);
+      track.addEventListener("lostpointercapture", (e) => { if (g && e.pointerId === g.id) cancelGesture(); });
+      dlg.addEventListener("wheel", onWheel, { passive: false });
+      addEventListener("blur", cancelGesture);
+      addEventListener("resize", () => { if (dlg.open && !closing) { if (stopSpring) stopSpring(); setX(-index * width()); } });
 
-      // Swipe down to close.
-      let y0 = null, x0 = 0, img = null, dy = 0;
-      const reset = () => {
-        if (img) img.style.transform = "";
-        ground.style.opacity = "";
-        y0 = null; img = null; dy = 0;
-      };
-      track.addEventListener("touchstart", (e) => {
-        if (e.touches.length !== 1 || closing) { y0 = null; return; }
-        y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; dy = 0;
-        img = currentImg();
-      }, { passive: true });
-      track.addEventListener("touchmove", (e) => {
-        if (y0 == null || !img) return;
-        const ny = e.touches[0].clientY - y0, nx = e.touches[0].clientX - x0;
-        if (ny > 0 && ny > Math.abs(nx) * 1.4) {
-          dy = ny;
-          img.style.transform = "translateY(" + dy + "px) scale(" + Math.max(0.85, 1 - dy / 1200) + ")";
-          ground.style.opacity = Math.max(0.3, 1 - dy / 400);
-        }
-      }, { passive: true });
-      track.addEventListener("touchend", () => {
-        if (!img) return;
-        if (dy > 110) { y0 = null; img = null; dy = 0; close(); } else reset();
+      // Pinch-zoom stays available; while zoomed in, one finger pans instead of swiping.
+      if (window.visualViewport) visualViewport.addEventListener("resize", () => {
+        zoomed = visualViewport.scale > 1.01;
+        track.style.touchAction = zoomed ? "auto" : "";
+        if (zoomed) cancelGesture();
       });
-      track.addEventListener("touchcancel", reset);
 
       // The back gesture closes the viewer instead of leaving the page.
       addEventListener("popstate", () => {
+        if (ownBacks > 0) { ownBacks--; return; } // our own history.back() after a close
         if (pushed) { pushed = false; if (dlg.open) close(); }
         try { history.scrollRestoration = "auto"; } catch (e) {}
       });
     }
-
-    const currentImg = () => track.children[index] && track.children[index].querySelector("img");
 
     function makeSlides() {
       track.replaceChildren(...slides.map((s) => {
@@ -267,6 +409,7 @@
     function update() {
       const s = slides[index];
       [index, index + 1, index - 1, index + 2].forEach(load);
+      Array.from(track.children).forEach((f, i) => { f.inert = i !== index; });
       title.textContent = s.title;
       sub.textContent = s.sub || "";
       count.textContent = slides.length > 1 ? index + 1 + " / " + slides.length : "";
@@ -277,96 +420,124 @@
       if (onChange) onChange(s, index);
     }
 
-    function go(i) {
-      if (i < 0 || i >= slides.length) return;
-      track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
-    }
-
-    // How to place `img` over `rect`, relative to where it sits at rest.
-    function placement(img, rect) {
-      const base = img.getBoundingClientRect();
-      const scale = rect.width / base.width;
-      return {
-        x: rect.left + rect.width / 2 - (base.left + base.width / 2),
-        y: rect.top + rect.height / 2 - (base.top + base.height / 2),
-        scale,
-      };
-    }
-
+    /* The shared element */
     function thumbOf(el) {
       if (!el) return null;
-      return el.tagName === "IMG" ? el : el.querySelector && el.querySelector("img");
+      const img = el.tagName === "IMG" ? el : el.querySelector("img");
+      return img && img.complete && img.naturalWidth && img.getBoundingClientRect().width ? img : null;
     }
+    // Thumbnails may be cropped by object-fit: cover. This finds where the whole photo would sit,
+    // so the viewer's image can be fitted over it, and the clip that shows only the visible crop.
+    function uncropped(thumb) {
+      const box = thumb.getBoundingClientRect();
+      const ratio = thumb.naturalWidth / thumb.naturalHeight;
+      const w = Math.max(box.width, box.height * ratio), h = w / ratio;
+      const pos = getComputedStyle(thumb).objectPosition.split(" ").map((v) => parseFloat(v) / 100);
+      const left = box.left + (box.width - w) * (isNaN(pos[0]) ? 0.5 : pos[0]);
+      const top = box.top + (box.height - h) * (isNaN(pos[1]) ? 0.5 : pos[1]);
+      const pct = (v) => (Math.max(0, v) * 100).toFixed(3) + "%";
+      return {
+        left, top, width: w, height: h,
+        clip: "inset(" + pct((box.top - top) / h) + " " + pct((left + w - box.right) / w) + " " + pct((top + h - box.bottom) / h) + " " + pct((box.left - left) / w) + ")",
+      };
+    }
+    function probeAt(rect) {
+      const probe = document.createElement("div");
+      probe.style.cssText = "position:fixed;visibility:hidden;pointer-events:none;left:" + rect.left + "px;top:" + rect.top + "px;width:" + rect.width + "px;height:" + rect.height + "px";
+      dlg.appendChild(probe);
+      return probe;
+    }
+    function showThumb() { if (hiddenThumb) { hiddenThumb.style.visibility = ""; hiddenThumb = null; } }
+    function hideThumb(t) { showThumb(); if (t) { t.style.visibility = "hidden"; hiddenThumb = t; } }
 
-    function open(list, i, from, change) {
+    function open(list, i, from, change, tiles) {
       if (!dlg) build();
       if (closing || dlg.open) return;
-      slides = list; index = i || 0; startIndex = index;
-      opener = from || document.activeElement; onChange = change || null; infoOpen = false;
+      slides = list; index = i || 0; startIndex = index; infoOpen = false;
+      opener = from || document.activeElement; onChange = change || null;
+      const startTile = from;
+      tileAt = tiles || ((n) => (n === startIndex ? startTile : null));
+      const thumb = thumbOf(tileAt(index));
+      const rect = thumb ? uncropped(thumb) : null; // measured before anything moves
       makeSlides();
       root.style.overflow = "hidden";
       root.classList.remove("chrome-hidden");
       dlg.showModal();
-      track.scrollLeft = index * track.clientWidth;
-      const thumb = thumbOf(from);
+      setX(-index * width());
       const img = currentImg();
       if (thumb && thumb.currentSrc) img.style.backgroundImage = 'url("' + thumb.currentSrc + '")';
       // Pushed before update(), so the page's own entry keeps its plain URL.
       try { history.scrollRestoration = "manual"; history.pushState({ viewer: true }, ""); pushed = true; } catch (e) {}
       update();
-      // Phones show the close button by the thumb, larger screens in the corner.
+      // Keyboard users land on the visible Close button. A tap focuses the dialog itself, so no
+      // focus ring appears on a button nobody chose.
       const closeBtn = Array.from(dlg.querySelectorAll("[data-close]")).find((b) => b.offsetParent);
-      if (closeBtn) closeBtn.focus({ preventScroll: true });
+      (lastInput === "key" && closeBtn ? closeBtn : dlg).focus({ preventScroll: true });
 
       if (!animate()) return;
-      gsap.killTweensOf([img, ground, chrome]);
-      gsap.fromTo(ground, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" });
-      gsap.fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.3, delay: 0.12, ease: "power1.out", clearProps: "opacity" });
-      if (thumb && thumb.getBoundingClientRect().width) {
-        gsap.from(img, Object.assign(placement(img, thumb.getBoundingClientRect()), { duration: 0.5, ease: "expo.out", clearProps: "transform" }));
+      gsap.killTweensOf([img, ground].concat(Array.from(chrome)));
+      gsap.fromTo(ground, { opacity: 0 }, { opacity: 1, duration: 0.32, ease: "power1.out" });
+      gsap.fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.3, delay: 0.14, ease: "power1.out", clearProps: "opacity" });
+      if (rect) {
+        hideThumb(thumb);
+        const rest = Flip.getState(img);
+        const probe = probeAt(rect);
+        Flip.fit(img, probe, { scale: true });
+        probe.remove();
+        gsap.set(img, { clipPath: rect.clip });
+        Flip.to(rest, { targets: img, scale: true, duration: 0.52, ease: "expo.out", onComplete: () => gsap.set(img, { clearProps: "transform" }) });
+        gsap.to(img, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.out", clearProps: "clipPath" });
       } else {
         gsap.from(img, { opacity: 0, scale: 0.98, duration: 0.3, ease: "power2.out", clearProps: "opacity,transform" });
       }
     }
 
-    // The tile for the photo now showing, when the page behind has one.
-    function returnTarget() {
-      if (index === startIndex) return opener;
-      if (opener && opener.dataset && opener.dataset.index != null) {
-        const tile = document.querySelector('.tap[data-index="' + index + '"]');
-        if (tile) { opener = tile; tile.scrollIntoView({ block: "nearest" }); return tile; }
-      }
-      return null;
+    // The tile for the photo now showing, brought on screen behind the viewer if it has moved off.
+    function returnTile() {
+      const tile = tileAt ? tileAt(index) : null;
+      if (!tile) return null;
+      const box = tile.getBoundingClientRect();
+      if (box.bottom < 0 || box.top > innerHeight) tile.scrollIntoView({ block: "center" });
+      opener = tile;
+      return thumbOf(tile);
     }
 
     function close() {
       if (!dlg || !dlg.open || closing) return;
-      if (!animate()) { dlg.close(); return; }
+      cancelGestureQuietly();
+      if (stopSpring) stopSpring();
+      if (!animate()) { const tile = tileAt && tileAt(index); if (tile) { opener = tile; tile.scrollIntoView({ block: "nearest" }); } dlg.close(); return; }
       closing = true;
+      setX(-index * width());
       const img = currentImg();
-      const thumb = thumbOf(returnTarget());
-      const rect = thumb && thumb.getBoundingClientRect();
-      const onScreen = rect && rect.width && rect.bottom > 0 && rect.top < innerHeight;
+      const thumb = returnTile();
       const done = () => {
         closing = false;
         gsap.set([img, ground], { clearProps: "all" });
         gsap.set(chrome, { clearProps: "opacity" });
+        img.style.setProperty("--r", slides[index].photo.w / slides[index].photo.h);
         dlg.close();
       };
-      // Pick up from wherever a swipe left the photo.
-      const now = img.getBoundingClientRect();
-      img.style.transform = "";
-      gsap.set(img, placement(img, now));
+      gsap.killTweensOf(img);
       gsap.to(chrome, { opacity: 0, duration: 0.12 });
-      gsap.to(ground, { opacity: 0, duration: 0.28, ease: "power1.in" });
-      if (onScreen) gsap.to(img, Object.assign(placement(img, rect), { duration: 0.34, ease: "power3.inOut", onComplete: done }));
-      else gsap.to(img, { opacity: 0, duration: 0.2, ease: "power1.in", onComplete: done });
+      gsap.to(ground, { opacity: 0, duration: 0.3, ease: "power1.in" });
+      if (thumb) {
+        hideThumb(thumb);
+        const rect = uncropped(thumb);
+        const probe = probeAt(rect);
+        gsap.to(img, { clipPath: rect.clip, duration: 0.3, delay: 0.06, ease: "power2.in" });
+        Flip.fit(img, probe, { scale: true, duration: 0.38, ease: "power3.inOut", onComplete: () => { probe.remove(); done(); } });
+      } else {
+        gsap.to(img, { opacity: 0, duration: 0.2, ease: "power1.in", onComplete: done });
+      }
     }
+    function cancelGestureQuietly() { g = null; if (track) track.classList.remove("is-dragging"); }
 
     function restore() {
+      showThumb();
       root.style.overflow = "";
       if (onChange) onChange(null, -1);
-      if (pushed) { pushed = false; history.back(); }
+      if (pushed) { pushed = false; ownBacks++; history.back(); }
       if (opener && opener.focus) opener.focus({ preventScroll: true });
     }
     return { open, close };
