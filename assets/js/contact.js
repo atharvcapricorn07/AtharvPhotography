@@ -42,6 +42,7 @@
 
     success.hidden = failure.hidden = true;
     submit.disabled = true;
+    submit.setAttribute("aria-busy", "true");
     submit.textContent = "Sending…";
 
     fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
@@ -50,9 +51,10 @@
         form.reset();
         fields.forEach((el) => { el.removeAttribute("aria-invalid"); delete el.dataset.touched; });
         success.hidden = false;
+        form.hidden = true; // done; an empty live form here would invite a second send
         success.focus();
       })
       .catch(() => { failure.hidden = false; failure.focus(); })
-      .finally(() => { submit.disabled = false; submit.textContent = submitLabel; });
+      .finally(() => { submit.disabled = false; submit.removeAttribute("aria-busy"); submit.textContent = submitLabel; });
   });
 })();

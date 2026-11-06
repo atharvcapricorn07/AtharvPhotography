@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>White Wall components</title>
+<link rel="stylesheet" href="../../../assets/css/site.css?v=40">
+</head>
+<body>
+<main class="container">
+  <header class="page-head">
+    <h1 class="title">White Wall components</h1>
+    <p class="muted">Rendered from the site's real stylesheet, so this page cannot drift from it.</p>
+  </header>
+
+  <section class="org">
+    <div class="org__head"><h2>Type</h2></div>
+    <div class="state">
+      <p class="statement"><span class="title">Page title</span></p>
+      <p class="heading">Heading</p>
+      <p class="awards-summary">One sentence set large, with a number like 19 in it.</p>
+      <p class="viewer__title">Title</p>
+      <p>Body text at the reading size, kept to a measure of about sixty characters.</p>
+      <p class="meta">Meta line, Cars, April 2026</p>
+    </div>
+  </section>
+
+  <section class="org">
+    <div class="org__head"><h2>Buttons and links</h2></div>
+    <div class="state">
+      <div class="actions"><a class="btn" href="#buttons">Default</a><button class="btn" type="button" disabled>Disabled</button><button class="btn" type="button" aria-busy="true">Sending&hellip;</button></div>
+      <div class="actions"><a class="tlink" href="#links">Text link</a><a class="link" href="#inline">Inline link</a></div>
+    </div>
+  </section>
+
+  <section class="org">
+    <div class="org__head"><h2>Filters</h2></div>
+    <div class="toolbar__inner">
+      <div class="chips" role="group" aria-label="Example">
+        <button class="chip" type="button" aria-pressed="true"><b>All</b><span>79</span></button>
+        <button class="chip" type="button" aria-pressed="false"><b>Cars</b><span>18</span></button>
+        <button class="chip" type="button" aria-pressed="false"><b>Landscapes</b><span>12</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="org">
+    <div class="org__head"><h2>Form</h2></div>
+    <form class="form" action="#form" novalidate>
+      <div class="form__row">
+        <div class="field"><label for="a">Name</label><input id="a" type="text" value="Atharv"></div>
+        <div class="field"><label for="b">Email</label><input id="b" type="email" value="nope" aria-invalid="true"><p class="field__error">Enter an email address like name@example.com.</p></div>
+      </div>
+      <div class="field"><label for="c">What's it for?</label><select id="c"><option>Portrait session</option></select></div>
+      <div class="form-status form-status--success"><strong>Message sent.</strong><p>Success status.</p></div>
+      <div class="form-status form-status--error"><strong>Your message wasn't sent.</strong><p>Error status.</p></div>
+    </form>
+  </section>
+
+  <section class="org">
+    <div class="org__head"><h2>Rows</h2><p>Parted by hairlines, never boxed.</p></div>
+    <dl class="facts">
+      <div class="fact"><dt>Camera</dt><dd>Canon EOS R10</dd></div>
+      <div class="fact"><dt>Experience</dt><dd>More than eight years</dd></div>
+    </dl>
+  </section>
+</main>
+<footer class="footer"><div class="container footer__inner"><p class="meta">Tokens live at the top of assets/css/site.css.</p></div></footer>
+</body>
+</html>

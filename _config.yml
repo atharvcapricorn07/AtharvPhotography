@@ -1,0 +1,6 @@
+# Files kept in the repository but left out of the published site.
+exclude:
+  - DESIGN.md
+  - PRODUCT.md
+  - README.md
+  - .claude

@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Work | Atharv Kale</title>
   <meta name="description" content="Every photograph by Atharv Kale: cars, landscapes, wildlife, portraits and more.">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f7f7f5">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Atharv Kale Photography">
   <meta property="og:title" content="Work | Atharv Kale">
@@ -17,17 +16,19 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://atharvphotography.studio/gallery.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=6">
-  <script>document.documentElement.classList.add("js");</script>
-  <script src="assets/js/site.js?v=6" defer></script>
-  <script src="assets/js/gallery.js?v=6" defer></script>
+  <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css?v=40">
+  <script>(function(){var h=document.documentElement,q=new URLSearchParams(location.search),s=q.get("subject")||q.get("category");if(s==="moments")s="misc";h.classList.add("js");if(["cars","landscapes","animals","shoots","misc"].indexOf(s)>-1)h.dataset.subject=s})();</script>
+  <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
+  <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
+  <script src="assets/js/site.js?v=40" defer></script>
+  <script src="assets/js/gallery.js?v=40" defer></script>
 </head>
 <body class="page-work">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="wordmark" href="index.html">Atharv Kale <span>Photography</span></a>
+      <a class="wordmark" href="index.html">Atharv Kale</a>
       <nav class="topnav" aria-label="Main">
           <a href="gallery.html" aria-current="page">Work</a>
           <a href="awards.html">Awards</a>
@@ -46,6 +47,14 @@
   </nav>
 
   <main id="main">
+    <div class="work-cover" aria-hidden="true">
+      <img data-cover="landscapes" data-src="media/landscapes/landscape6-960.webp" data-srcset="media/landscapes/landscape6-480.webp 480w, media/landscapes/landscape6-960.webp 960w, media/landscapes/landscape6-1920.webp 1920w" sizes="100vw" width="6000" height="4000" alt="">
+      <img data-cover="cars" data-src="media/cars/car16-960.webp" data-srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="100vw" width="3582" height="4771" alt="">
+      <img data-cover="animals" data-src="media/animals/animal11-960.webp" data-srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
+      <img data-cover="shoots" data-src="media/shoots/shoot-4-960.webp" data-srcset="media/shoots/shoot-4-480.webp 480w, media/shoots/shoot-4-960.webp 960w, media/shoots/shoot-4-1920.webp 1920w" sizes="100vw" width="4000" height="5328" alt="">
+      <img data-cover="misc" data-src="media/misc/misc18-960.webp" data-srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="100vw" width="4000" height="6000" alt="">
+    </div>
+    <script>(function(){var s=document.documentElement.dataset.subject,i=s&&document.querySelector('[data-cover="'+s+'"]');if(i){i.srcset=i.dataset.srcset;i.src=i.dataset.src}})();</script>
     <header class="container page-head">
       <h1 class="title">Work</h1>
       <p class="meta" data-count>&nbsp;</p>
@@ -61,12 +70,18 @@
     </div>
     <div class="container">
       <div data-work aria-busy="true" aria-label="Photographs"></div>
-      <div class="state" data-error hidden>
+      <noscript><p class="state">Photos need JavaScript to load. You can also see them on <a class="link" href="https://www.instagram.com/atharvphotography07/">Instagram</a>.</p></noscript>
+      <div class="state" data-error role="alert" hidden>
         <h2 class="heading">Photos couldn&rsquo;t load.</h2>
         <p>Check your connection, then try again.</p>
-        <button class="btn btn--quiet" type="button">Try again</button>
+        <button class="btn" type="button">Try again</button>
       </div>
     </div>
+    <section class="container closing work-end" aria-labelledby="work-end-title">
+      <h2 id="work-end-title">Let&rsquo;s make something.</h2>
+      <p>Portraits, car shoots, events and prints. Tell me what you have in mind.</p>
+      <a class="btn" href="contact.html" data-book>Get in touch</a>
+    </section>
   </main>
 
   <footer class="footer">

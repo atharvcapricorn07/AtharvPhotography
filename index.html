@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Atharv Kale | Photography</title>
   <meta name="description" content="Photography by Atharv Kale: cars, landscapes, wildlife and portraits.">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f7f7f5">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Atharv Kale Photography">
   <meta property="og:title" content="Atharv Kale | Photography">
@@ -17,18 +16,21 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://atharvphotography.studio/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=6">
-  <script>document.documentElement.classList.add("js");</script>
-  <script src="assets/js/site.js?v=6" defer></script>
-  <script src="assets/js/intro.js?v=6" defer></script>
-  <script src="assets/js/home.js?v=6" defer></script>
+  <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css?v=40">
+  <script>(function(){var h=document.documentElement,clear=function(){delete h.dataset.morph;try{sessionStorage.removeItem("morph")}catch(e){}};h.classList.add("js");if(matchMedia("(prefers-reduced-motion: no-preference)").matches)h.classList.add("hero-pending");try{var m=sessionStorage.getItem("morph");if(m)h.dataset.morph=m}catch(e){}addEventListener("pagereveal",function(e){if(e.viewTransition)e.viewTransition.finished.finally(clear);else clear()})})();</script>
+  <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
+  <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
+  <script src="assets/js/site.js?v=40" defer></script>
+  <script src="assets/js/home.js?v=40" defer></script>
+  <link rel="preload" as="image" media="(max-aspect-ratio: 9/10)" imagesrcset="media/landscapes/landscape8-480.webp 480w, media/landscapes/landscape8-960.webp 960w, media/landscapes/landscape8-1920.webp 1920w" imagesizes="max(100vw, 65vh)">
+  <link rel="preload" as="image" media="(min-aspect-ratio: 9/10)" imagesrcset="media/landscapes/landscape11-480.webp 480w, media/landscapes/landscape11-960.webp 960w, media/landscapes/landscape11-1920.webp 1920w" imagesizes="max(100vw, 90vh)">
 </head>
 <body class="page-home">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="wordmark" href="index.html" aria-current="page">Atharv Kale <span>Photography</span></a>
+      <a class="wordmark" href="index.html" aria-current="page">Atharv Kale</a>
       <nav class="topnav" aria-label="Main">
           <a href="gallery.html">Work</a>
           <a href="awards.html">Awards</a>
@@ -47,64 +49,57 @@
   </nav>
 
   <main id="main">
-    <section class="fly" data-fly aria-label="Intro: six favourite photographs">
-      <div class="fly__stage">
-        <div class="fly__world" data-world></div>
-        <div class="fly__vignette"></div>
-        <div class="fly__caption" data-caption aria-live="polite" style="opacity:0"><p class="fly__title"></p><p class="fly__sub"></p></div>
-        <p class="fly__cue" data-cue>Scroll<i></i></p>
-        <div class="fly__end"><p>Atharv Kale</p><p>Cars, landscapes, wildlife and portraits.</p></div>
-        <a class="fly__skip" href="#home" data-skip>Skip intro</a>
-      </div>
-    </section>
-
     <div id="home">
-      <section class="container statement reveal">
+      <a class="hero" href="gallery.html?subject=landscapes#landscape11" data-hero data-tall="landscapes/landscape8" data-wide="landscapes/landscape11" data-tint-tall="#e2b778" data-tint-wide="#d8d4cc" data-alt-tall="Canyon river" data-href-tall="gallery.html?subject=landscapes#landscape8">
+        <picture><source media="(max-aspect-ratio: 9/10)" srcset="media/landscapes/landscape8-480.webp 480w, media/landscapes/landscape8-960.webp 960w, media/landscapes/landscape8-1920.webp 1920w" sizes="max(100vw, 65vh)"><img src="media/landscapes/landscape11-1920.webp" srcset="media/landscapes/landscape11-480.webp 480w, media/landscapes/landscape11-960.webp 960w, media/landscapes/landscape11-1920.webp 1920w" sizes="max(100vw, 90vh)" width="5328" height="4000" fetchpriority="high" decoding="async" alt="Seattle skyline"></picture>
+      </a>
+
+      <section class="container statement">
         <h1>Photographs of light, patience and the moments worth stopping for.</h1>
         <p>I&rsquo;m Atharv Kale, a high school photographer with eight years behind the camera. I shoot cars, landscapes, wildlife and people.</p>
         <div class="actions">
           <a class="btn" href="gallery.html">See the work</a>
-          <a class="btn btn--quiet" href="contact.html">Book a shoot</a>
+          <a class="tlink" href="contact.html">Book a shoot</a>
         </div>
       </section>
 
-      <section class="container section" aria-labelledby="col-title">
-        <div class="section-title reveal"><h2 id="col-title">Collections</h2><p>Five subjects, one way of seeing.</p></div>
-        <div class="bento reveal" data-collections></div>
-      </section>
+      <div class="wall" data-wall>
+        <figure class="plate" style="--r: 1.331849">
+          <a href="gallery.html?subject=landscapes#landscape12" data-photo="landscapes/landscape12" data-tint="#78c3e2"><img src="media/landscapes/landscape12-960.webp" srcset="media/landscapes/landscape12-480.webp 480w, media/landscapes/landscape12-960.webp 960w, media/landscapes/landscape12-1920.webp 1920w" sizes="(min-width: 800px) 64vw, calc(100vw - 32px)" width="4784" height="3592" loading="lazy" decoding="async" alt="Kayak under Mount Rainier"></a>
+          <figcaption>Kayak under Mount Rainier<span class="plate__sub">Landscapes, May 2026</span></figcaption>
+        </figure>
+        <figure class="plate" style="--r: 0.750654">
+          <a href="gallery.html?subject=shoots#shoot-1" data-photo="shoots/shoot-1" data-tint="#e2b878"><img src="media/shoots/shoot-1-960.webp" srcset="media/shoots/shoot-1-480.webp 480w, media/shoots/shoot-1-960.webp 960w, media/shoots/shoot-1-1920.webp 1920w" sizes="(min-width: 800px) 36vw, calc(100vw - 32px)" width="3730" height="4969" loading="lazy" decoding="async" alt="Silhouette on the dock"></a>
+          <figcaption>Silhouette on the dock<span class="plate__sub">Portraits, May 2026</span></figcaption>
+        </figure>
+      </div>
 
-      <section class="container section reveal" aria-label="At a glance">
-        <div class="figures">
-          <div class="figure"><strong>8+</strong><span>years shooting</span></div>
-          <div class="figure"><strong data-figure="photos">79</strong><span>photos in the gallery</span></div>
-          <div class="figure"><strong data-figure="awards">19</strong><span>contest results</span></div>
-          <div class="figure"><strong data-figure="expert">4</strong><span>Expert Choice awards</span></div>
-        </div>
-      </section>
-
-      <section class="container section" aria-labelledby="rec-title">
-        <div class="section-title reveal"><h2 id="rec-title">Recognition</h2><p>Selected results from international photo contests.</p></div>
-        <div class="panel reveal">
-          <ul class="honors" data-honors></ul>
-          <div class="panel__foot"><a class="btn btn--quiet" href="awards.html">All awards and certificates</a></div>
-        </div>
-      </section>
-
-      <section class="container section" aria-labelledby="about-title">
-        <div class="panel about-card reveal">
-          <span class="ph" data-portrait></span>
-          <div>
-            <h2 id="about-title">The person behind the camera.</h2>
-            <p>I shoot on a Canon EOS R10, mostly close to home and wherever travel takes me. Away from the camera you&rsquo;ll find me playing chess, tennis or basketball. Behind it, I&rsquo;m waiting for the light.</p>
-            <div class="actions"><a class="btn btn--quiet" href="about.html">More about me</a></div>
+      <section class="container collections" aria-labelledby="col-title">
+        <h2 id="col-title">Collections</h2>
+        <div class="cols">
+          <div class="cols__row">
+            <a class="col" style="--r: 1.5" href="gallery.html?subject=landscapes" data-col="landscapes" data-tint="#789ee2"><span class="col__ph"><img src="media/landscapes/landscape6-960.webp" srcset="media/landscapes/landscape6-480.webp 480w, media/landscapes/landscape6-960.webp 960w, media/landscapes/landscape6-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="6000" height="4000" loading="lazy" decoding="async" alt=""></span><span class="col__name">Landscapes</span> <span class="col__n" data-col-n>12</span></a>
+          </div>
+          <div class="cols__row">
+            <a class="col" style="--r: 0.750786" href="gallery.html?subject=cars" data-col="cars" data-tint="#789fe2"><span class="col__ph"><img src="media/cars/car16-960.webp" srcset="media/cars/car16-480.webp 480w, media/cars/car16-960.webp 960w, media/cars/car16-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="3582" height="4771" loading="lazy" decoding="async" alt=""></span><span class="col__name">Cars</span> <span class="col__n" data-col-n>18</span></a>
+            <a class="col" style="--r: 0.750751" href="gallery.html?subject=animals" data-col="animals" data-tint="#e2c378"><span class="col__ph"><img src="media/animals/animal11-960.webp" srcset="media/animals/animal11-480.webp 480w, media/animals/animal11-960.webp 960w, media/animals/animal11-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="5328" loading="lazy" decoding="async" alt=""></span><span class="col__name">Wildlife</span> <span class="col__n" data-col-n>17</span></a>
+          </div>
+          <div class="cols__row">
+            <a class="col" style="--r: 0.750751" href="gallery.html?subject=shoots" data-col="shoots" data-tint="#e29478"><span class="col__ph"><img src="media/shoots/shoot-4-960.webp" srcset="media/shoots/shoot-4-480.webp 480w, media/shoots/shoot-4-960.webp 960w, media/shoots/shoot-4-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="5328" loading="lazy" decoding="async" alt=""></span><span class="col__name">Portraits</span> <span class="col__n" data-col-n>6</span></a>
+            <a class="col" style="--r: 0.666667" href="gallery.html?subject=moments" data-col="misc" data-tint="#e2bd78"><span class="col__ph"><img src="media/misc/misc18-960.webp" srcset="media/misc/misc18-480.webp 480w, media/misc/misc18-960.webp 960w, media/misc/misc18-1920.webp 1920w" sizes="(min-width: 800px) 20vw, 50vw" width="4000" height="6000" loading="lazy" decoding="async" alt=""></span><span class="col__name">Moments</span> <span class="col__n" data-col-n>26</span></a>
           </div>
         </div>
       </section>
 
-      <section class="container section closing reveal" aria-labelledby="cta-title">
+      <section class="container record">
+        <p data-record>19 contest results, including four Expert Choice awards.</p>
+        <a class="tlink" href="awards.html">See the awards</a>
+      </section>
+
+      <section class="container closing" aria-labelledby="cta-title">
         <h2 id="cta-title">Let&rsquo;s make something.</h2>
         <p>Portraits, car shoots, events and prints. Tell me what you have in mind.</p>
-        <div class="actions"><a class="btn" href="contact.html">Get in touch</a></div>
+        <a class="btn" href="contact.html">Get in touch</a>
       </section>
     </div>
   </main>

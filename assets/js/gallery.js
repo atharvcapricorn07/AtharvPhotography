@@ -1,4 +1,4 @@
-// Work: subject chips, grid or feed view, newest first, deep links.
+// Work: subject chips, grid or feed view, favourites then newest first, deep links.
 //   gallery.html?subject=cars           opens a subject
 //   gallery.html?subject=cars#car10     also opens that photo
 (function () {
@@ -10,47 +10,73 @@
   const countEl = document.querySelector("[data-count]");
   const errorState = document.querySelector("[data-error]");
 
+  const BOOK = { cars: "Car shoot", shoots: "Portrait session" }; // preselects the contact form
   let d = null, subject = "all", list = [], slides = [];
   let view = "grid";
   try { view = localStorage.getItem("work-view") || "grid"; } catch (e) {}
 
+  // Shown first, in this order, when viewing everything.
+  const PINNED = ["animals/animal13", "landscapes/landscape14", "misc/misc22", "animals/animal17", "landscapes/landscape11", "landscapes/landscape8"];
   const byDate = (a, b) => (b.date || "").localeCompare(a.date || "");
-  const columnsFor = () => (innerWidth >= 1200 ? 4 : innerWidth >= 760 ? 3 : 2);
+  // How wide each row aims to be, in summed aspect ratios, and the most photos it may hold.
+  const layoutFor = () => (innerWidth >= 1200 ? { key: 3, target: 3.4, most: 5 } : innerWidth >= 760 ? { key: 2, target: 2.4, most: 3 } : { key: 1, target: 1.35, most: 2 });
 
   function syncUrl(photo) {
     const url = new URL(location.href);
-    if (subject === "all") url.searchParams.delete("subject"); else url.searchParams.set("subject", subject);
+    if (subject === "all") url.searchParams.delete("subject"); else url.searchParams.set("subject", S.subjectSlug(subject));
     url.searchParams.delete("category");
     url.hash = photo ? photo.ref : "";
     history.replaceState(null, "", url.pathname + url.search + url.hash);
   }
   const onChange = (s) => syncUrl(s ? s.photo : null);
+  const tileAt = (i) => root.querySelector('.tap[data-index="' + i + '"]');
 
   function tile(p, i, sizes) {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "tap";
     b.dataset.index = i;
+    b.dataset.tint = p.tint || "";
     b.setAttribute("aria-label", "View " + p.alt);
     b.appendChild(S.picture(p, { alt: "", sizes }));
-    b.addEventListener("click", () => S.viewer.open(slides, i, b, onChange));
+    b.addEventListener("click", () => S.viewer.open(slides, i, b, onChange, tileAt));
     return b;
   }
 
+  // Justified rows, in date order. A row's height comes from the ratios it holds, so every photo in
+  // it has the same height and none is cropped. On phones a lone last photo fills the width like any
+  // other single-photo row; on larger screens a short last row keeps a normal height.
   function renderGrid() {
-    const n = columnsFor();
-    const wrap = document.createElement("div");
-    wrap.className = "masonry";
-    const cols = Array.from({ length: n }, () => { const c = document.createElement("div"); c.className = "masonry__col"; wrap.appendChild(c); return c; });
-    const heights = new Array(n).fill(0);
-    const sizes = "(max-width: 760px) 50vw, (max-width: 1200px) 33vw, 25vw";
+    const { key, target, most } = layoutFor();
+    const rows = [];
+    let row = [], sum = 0;
     list.forEach((p, i) => {
-      const k = heights.indexOf(Math.min(...heights)); // shortest column next, so order reads left to right
-      cols[k].appendChild(tile(p, i, sizes));
-      heights[k] += 1 / p.r;
+      row.push([p, i]);
+      sum += p.r;
+      if (sum >= target || row.length === most) { rows.push({ row, sum }); row = []; sum = 0; }
+    });
+    if (row.length) rows.push({ row, sum, last: true });
+
+    const wrap = document.createElement("div");
+    wrap.className = "rows";
+    rows.forEach(({ row: items, sum: total, last }) => {
+      const el = document.createElement("div");
+      el.className = "row";
+      const width = last && key > 1 ? Math.max(total, target) : total;
+      items.forEach(([p, i]) => {
+        const t = tile(p, i, Math.ceil((p.r / width) * 100) + "vw");
+        t.style.setProperty("--r", p.r / width); // shares that sum to 1, so flex always fills the row
+        el.appendChild(t);
+      });
+      if (width > total) {
+        const rest = document.createElement("span");
+        rest.className = "row__rest";
+        rest.style.setProperty("--r", (width - total) / width);
+        el.appendChild(rest);
+      }
+      wrap.appendChild(el);
     });
     root.replaceChildren(wrap);
-    root.dataset.cols = n;
   }
 
   function renderFeed() {
@@ -67,27 +93,36 @@
       feed.appendChild(fig);
     });
     root.replaceChildren(feed);
-    delete root.dataset.cols;
   }
 
   function render() {
     viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
     if (view === "feed") renderFeed(); else renderGrid();
     root.setAttribute("aria-busy", "false");
+    S.ambient.watch(root.querySelectorAll(".tap"));
   }
 
   function show(key, keepScroll) {
-    subject = d.byCat[key] ? key : "all";
+    subject = d.byCat[key] && key !== "awards" ? key : "all";
+    // The header photo for a subject; set before first paint for arrivals, in gallery.html.
+    if (subject === "all") delete document.documentElement.dataset.subject; else document.documentElement.dataset.subject = subject;
+    const cover = document.querySelector('[data-cover="' + subject + '"]');
+    if (cover && !cover.srcset) { cover.srcset = cover.dataset.srcset; cover.src = cover.dataset.src; }
+    const book = document.querySelector("[data-book]");
+    if (book) book.href = "contact.html" + (BOOK[subject] ? "?type=" + encodeURIComponent(BOOK[subject]) : "");
     chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
-    list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
+    list = subject === "all"
+      ? PINNED.map(d.find).filter(Boolean).concat(d.all.filter((p) => !PINNED.includes(p.ref)).sort(byDate))
+      : d.byCat[subject].slice().sort(byDate);
     slides = list.map((p) => S.slide(p));
-    countEl.textContent = list.length + (subject === "all" ? " photographs" : " " + S.LABEL[subject].toLowerCase() + " photographs") + ", newest first.";
+    countEl.textContent = list.length + " photographs" + (subject === "all" ? "." : " in " + S.LABEL[subject] + ", newest first.");
     render();
+    if (!keepScroll && window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) gsap.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power1.out", clearProps: "opacity" });
     syncUrl(null);
     const active = chips.querySelector('[aria-pressed="true"]');
     if (active) active.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
     if (!keepScroll) {
-      const top = document.querySelector(".toolbar").offsetTop - 56;
+      const top = document.querySelector(".toolbar").offsetTop - S.barHeight();
       if (scrollY > top) scrollTo({ top });
     }
   }
@@ -115,26 +150,30 @@
     if (d) render();
   }));
 
-  let lastCols = columnsFor();
+  let lastLayout = layoutFor().key;
   addEventListener("resize", () => {
     if (!d || view !== "grid") return;
-    const n = columnsFor();
-    if (n !== lastCols) { lastCols = n; render(); }
+    const n = layoutFor().key;
+    if (n !== lastLayout) { lastLayout = n; render(); }
   });
 
   function init() {
     errorState.hidden = true;
+    root.setAttribute("aria-busy", "true");
+    document.querySelector(".work-end").hidden = false;
+    document.querySelector(".toolbar").hidden = false;
     const params = new URLSearchParams(location.search);
     const hash = decodeURIComponent(location.hash.slice(1));
     S.data().then((res) => {
       d = res;
       buildChips();
-      show(params.get("subject") || params.get("category") || "all", true);
+      show(S.subjectFrom(params.get("subject") || params.get("category") || "all"), true);
       if (hash) {
         const i = list.findIndex((p) => p.ref === hash || p.id === hash);
-        if (i >= 0) S.viewer.open(slides, i, root.querySelector('[data-index="' + i + '"]'), onChange);
+        // The grid keeps the plain URL, so Back from a shared link lands on the work.
+        if (i >= 0) { syncUrl(null); S.viewer.open(slides, i, tileAt(i), onChange, tileAt); }
       }
-    }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; });
+    }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; document.querySelector(".work-end").hidden = true; document.querySelector(".toolbar").hidden = true; });
   }
   errorState.querySelector("button").addEventListener("click", init);
   init();

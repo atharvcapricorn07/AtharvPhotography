@@ -6,6 +6,8 @@
   const stats = document.querySelector("[data-stats]");
   const errorState = document.querySelector("[data-error]");
   const ORDER = ["tpa", "viewbug", "photocrowd"];
+  // Expert Choice and other top-tier results lead; crowd rankings wait behind the toggle.
+  const isLead = (a) => a.tier !== "crowd";
   const ordinal = (n) => { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
 
   function slidesFor(a, org, photo, proof) {
@@ -22,25 +24,34 @@
     const slides = slidesFor(a, org, photo, proof);
     const li = document.createElement("li");
     li.className = "award";
+    if (!isLead(a)) { li.dataset.more = ""; li.hidden = true; }
     const cover = photo || proof;
     if (cover) {
-      const t = S.tappable(cover, slides, 0, { sizes: "140px" });
+      const t = S.tappable(cover, slides, 0, { sizes: "(min-width: 800px) 120px, 88px" });
       t.setAttribute("aria-label", "View " + (photo ? photo.alt : "result for " + a.contest));
       li.appendChild(t);
     } else li.appendChild(document.createElement("span"));
 
     const body = document.createElement("div");
-    body.innerHTML = '<h3 class="award__contest"></h3><p class="award__result"></p><p class="award__meta"></p><div class="award__links"></div>';
-    body.children[0].textContent = a.contest;
-    body.children[1].textContent = a.result;
-    if (a.tier === "honor") body.children[1].classList.add("award__result--top");
+    body.className = "award__body";
+    body.innerHTML = '<div><h3 class="award__contest"></h3><p class="award__result"></p></div><p class="award__meta"></p><div class="award__links"></div>';
+    body.querySelector(".award__contest").textContent = a.contest;
+    const result = body.querySelector(".award__result");
+    result.textContent = a.result;
+    if (a.tier === "honor") result.classList.add("award__result--top");
     const meta = [a.date && S.day(a.date), a.entries && a.entries.toLocaleString("en-US") + " entries", a.rank && "Ranked " + ordinal(a.rank)].filter(Boolean).join(", ");
-    if (meta) body.children[2].textContent = meta; else body.children[2].remove();
+    const metaEl = body.querySelector(".award__meta");
+    if (meta) metaEl.textContent = meta; else metaEl.replaceChildren();
     const links = body.querySelector(".award__links");
-    const add = (text, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = text; b.addEventListener("click", () => S.viewer.open(slides, i, b)); links.appendChild(b); };
+    const add = (text, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "tlink"; b.textContent = text; b.addEventListener("click", () => S.viewer.open(slides, i, b, null, (n) => (n === 0 ? li.querySelector(".tap") : null))); links.appendChild(b); };
     if (photo) add("Photo", 0);
     if (proof) add(a.organizer === "tpa" ? "Certificate" : "Result", slides.length - 1);
     li.appendChild(body);
+    // The whole row opens the entry, as the page says. Thumbnail and links stay the keyboard's way in.
+    li.addEventListener("click", (e) => {
+      if (e.target.closest("button, a") || !slides.length || String(getSelection())) return;
+      S.viewer.open(slides, 0, li.querySelector(".tap"), null, (n) => (n === 0 ? li.querySelector(".tap") : null));
+    });
     return li;
   }
 
@@ -48,20 +59,14 @@
     const list = json.awards;
     const ranks = list.filter((a) => a.rank).map((a) => a.rank);
     const dated = list.filter((a) => a.date).map((a) => a.date).sort();
-    stats.replaceChildren(...[
-      [list.length, "contest results"],
-      [list.filter((a) => /Expert Choice/.test(a.result)).length, "Expert Choice awards"],
-      [ranks.length && ordinal(Math.min(...ranks)), "best crowd ranking"],
-      [dated.length && dated[0].slice(0, 4), "first recognition"],
-    ].filter((x) => x[0]).map(([v, l]) => {
-      const div = document.createElement("div");
-      div.className = "stat";
-      div.innerHTML = "<strong></strong><span></span>";
-      div.firstChild.textContent = v; div.lastChild.textContent = l;
-      return div;
-    }));
+    const expert = list.filter((a) => /Expert Choice/.test(a.result)).length;
+    const parts = [list.length + " contest results", expert + " Expert Choice awards"];
+    if (ranks.length) parts.push("a best crowd ranking of " + ordinal(Math.min(...ranks)));
+    let line = parts.length > 2 ? parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1] : parts.join(" and ");
+    if (dated.length) line += ", since " + dated[0].slice(0, 4);
+    stats.textContent = line + ".";
 
-    root.replaceChildren(...ORDER.map((key) => {
+    const sections = ORDER.map((key) => {
       const org = json.organizers[key];
       const items = list.filter((a) => a.organizer === key);
       const sec = document.createElement("section");
@@ -72,7 +77,22 @@
       sec.querySelector("p").textContent = org.note + " " + (items.length === 1 ? "1 result." : items.length + " results.");
       sec.querySelector("ol").append(...items.map((a) => row(a, org, d)));
       return sec;
-    }));
+    });
+    const more = document.createElement("div");
+    more.className = "awards-more";
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "tlink";
+    toggle.textContent = "Show all results";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Show fewer results" : "Show all results";
+      root.querySelectorAll("[data-more]").forEach((row) => { row.hidden = !open; });
+    });
+    more.appendChild(toggle);
+    root.replaceChildren(...sections, more);
     root.setAttribute("aria-busy", "false");
   }
 

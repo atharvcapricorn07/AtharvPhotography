@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Awards | Atharv Kale</title>
   <meta name="description" content="Contest results and certificates for Atharv Kale's photography.">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f7f7f5">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Atharv Kale Photography">
   <meta property="og:title" content="Awards | Atharv Kale">
@@ -17,17 +16,19 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://atharvphotography.studio/awards.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/site.css?v=6">
+  <link rel="preload" href="assets/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css?v=40">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="assets/js/site.js?v=6" defer></script>
-  <script src="assets/js/awards.js?v=6" defer></script>
+  <script src="assets/vendor/gsap.min.js?v=3.13.0" defer></script>
+  <script src="assets/vendor/Flip.min.js?v=3.13.0" defer></script>
+  <script src="assets/js/site.js?v=40" defer></script>
+  <script src="assets/js/awards.js?v=40" defer></script>
 </head>
 <body class="page-awards">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="wordmark" href="index.html">Atharv Kale <span>Photography</span></a>
+      <a class="wordmark" href="index.html">Atharv Kale</a>
       <nav class="topnav" aria-label="Main">
           <a href="gallery.html">Work</a>
           <a href="awards.html" aria-current="page">Awards</a>
@@ -50,13 +51,14 @@
       <header class="page-head">
         <h1 class="title">Awards</h1>
         <p class="muted">Results from international photo contests. Tap any entry to see the photo and its certificate.</p>
-        <div class="stats" data-stats></div>
+        <p class="awards-summary" data-stats></p>
       </header>
       <div data-awards aria-busy="true"></div>
-      <div class="state" data-error hidden>
+      <noscript><p class="state">Awards need JavaScript to load. You can also ask me about them on <a class="link" href="contact.html">the contact page</a>.</p></noscript>
+      <div class="state" data-error role="alert" hidden>
         <h2 class="heading">Awards couldn&rsquo;t load.</h2>
         <p>Check your connection, then try again.</p>
-        <button class="btn btn--quiet" type="button">Try again</button>
+        <button class="btn" type="button">Try again</button>
       </div>
     </div>
   </main>
