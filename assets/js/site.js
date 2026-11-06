@@ -6,33 +6,22 @@
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Chrome ---------- */
+  // Bars step aside while you scroll down through photos and return when you scroll up.
+  const root = document.documentElement;
   const topbar = document.querySelector(".topbar");
-  const tabbar = document.querySelector(".tabbar");
   let lastY = scrollY;
   function onScroll() {
     const y = scrollY;
-    // Over the home reel the bar stays clear until the photos scroll away.
-    const threshold = 8;
-    if (topbar) topbar.classList.toggle("is-solid", y > threshold);
-    // The tab bar steps aside while you scroll down through photos and returns when you scroll up.
-    if (tabbar) {
-      if (y > lastY + 6 && y > 240) tabbar.classList.add("is-hidden");
-      else if (y < lastY - 6 || y < 240) tabbar.classList.remove("is-hidden");
-    }
+    const flying = root.classList.contains("fly-mode") && !root.classList.contains("at-wall");
+    if (flying || y < 120) root.classList.remove("chrome-hidden");
+    else if (y > lastY + 6) root.classList.add("chrome-hidden");
+    else if (y < lastY - 6) root.classList.remove("chrome-hidden");
     lastY = y;
   }
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+  Site.barHeight = () => (topbar ? topbar.offsetHeight : 0);
   document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
-
-  // Tints small UI details, and the phone's browser bar, with the current photo's own color.
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  Site.tint = function (photo) {
-    if (!photo) return;
-    document.documentElement.style.setProperty("--tint", photo.tint || "#d8d4cc");
-    if (themeMeta && photo.color) themeMeta.content = photo.color;
-  };
-  Site.resetTint = function () { if (themeMeta) themeMeta.content = "#000000"; };
 
   /* ---------- Data ---------- */
   const CATEGORIES = [
@@ -92,7 +81,6 @@
     o = o || {};
     const frame = document.createElement("span");
     frame.className = "ph" + (o.className ? " " + o.className : "");
-    frame.style.setProperty("--ph", p.color || "");
     frame.style.setProperty("--ar", p.w + " / " + p.h);
     const img = document.createElement("img");
     img.alt = o.alt != null ? o.alt : p.alt;
@@ -141,38 +129,41 @@
   };
 
   /* ---------- Viewer ---------- */
-  // Swipe sideways between photos (native scroll snapping, so it follows your finger),
-  // swipe down to close. Controls sit at the bottom, in reach of a thumb.
+  // A print on the wall. Swipe sideways between photos (native scroll snapping, so it follows your
+  // finger), swipe down or press Escape to close, and the phone's back gesture closes it too.
+  // The photo grows out of the thing you tapped and returns to it.
   const ICON = {
-    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg>',
-    prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
-    next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg>',
+    prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+    next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   };
   Site.ICON = ICON;
 
   Site.viewer = (function () {
-    let dlg, track, ambient, count, title, sub, info, infoBtn, prevBtn, nextBtn;
-    let slides = [], index = 0, opener = null, onChange = null, raf = 0, infoOpen = false;
+    let dlg, ground, track, count, title, sub, info, infoBtn, prevBtn, nextBtn, chrome;
+    let slides = [], index = 0, startIndex = 0, opener = null, onChange = null, raf = 0, infoOpen = false;
+    let pushed = false, closing = false;
+    const animate = () => window.gsap && !reduceMotion;
 
     function build() {
       dlg = document.createElement("dialog");
       dlg.className = "viewer";
       dlg.setAttribute("aria-label", "Photo viewer");
       dlg.innerHTML =
-        '<div class="viewer__ambient" aria-hidden="true"></div>' +
+        '<div class="viewer__ground" aria-hidden="true"></div>' +
         '<div class="viewer__track"></div>' +
-        '<div class="viewer__top"><p class="viewer__count" aria-live="polite"></p>' +
+        '<div class="viewer__top" data-chrome><p class="viewer__count" aria-live="polite"></p>' +
         '<button class="icon-btn" type="button" data-close aria-label="Close">' + ICON.close + "</button></div>" +
-        '<button class="icon-btn viewer__nav viewer__nav--prev" type="button" aria-label="Previous photo">' + ICON.prev + "</button>" +
-        '<button class="icon-btn viewer__nav viewer__nav--next" type="button" aria-label="Next photo">' + ICON.next + "</button>" +
-        '<div class="viewer__bottom"><div class="viewer__row"><div><p class="viewer__title"></p><p class="viewer__sub"></p></div>' +
+        '<button class="icon-btn viewer__nav viewer__nav--prev" type="button" data-chrome aria-label="Previous photo">' + ICON.prev + "</button>" +
+        '<button class="icon-btn viewer__nav viewer__nav--next" type="button" data-chrome aria-label="Next photo">' + ICON.next + "</button>" +
+        '<div class="viewer__bottom" data-chrome><div class="viewer__row"><div><p class="viewer__title"></p><p class="viewer__sub"></p></div>' +
         '<div class="viewer__btns"><button class="icon-btn" type="button" data-info aria-expanded="false" aria-label="Photo details">' + ICON.info + "</button>" +
         '<button class="icon-btn" type="button" data-close aria-label="Close">' + ICON.close + "</button></div></div>" +
         '<dl class="viewer__info" hidden></dl></div>';
       document.body.appendChild(dlg);
+      ground = dlg.querySelector(".viewer__ground");
       track = dlg.querySelector(".viewer__track");
-      ambient = dlg.querySelector(".viewer__ambient");
       count = dlg.querySelector(".viewer__count");
       title = dlg.querySelector(".viewer__title");
       sub = dlg.querySelector(".viewer__sub");
@@ -180,6 +171,7 @@
       infoBtn = dlg.querySelector("[data-info]");
       prevBtn = dlg.querySelector(".viewer__nav--prev");
       nextBtn = dlg.querySelector(".viewer__nav--next");
+      chrome = dlg.querySelectorAll("[data-chrome]");
 
       dlg.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
       infoBtn.addEventListener("click", () => { infoOpen = !infoOpen; renderInfo(); });
@@ -199,35 +191,44 @@
           if (i !== index && slides[i]) { index = i; update(); }
         });
       }, { passive: true });
-      // Tap on the empty area around a photo closes on desktop.
+      // A click on the empty wall around a photo closes on desktop.
       track.addEventListener("click", (e) => { if (e.target.classList.contains("viewer__slide") && matchMedia("(hover: hover)").matches) close(); });
 
       // Swipe down to close.
       let y0 = null, x0 = 0, img = null, dy = 0;
+      const reset = () => {
+        if (img) img.style.transform = "";
+        ground.style.opacity = "";
+        y0 = null; img = null; dy = 0;
+      };
       track.addEventListener("touchstart", (e) => {
-        if (e.touches.length !== 1) { y0 = null; return; }
+        if (e.touches.length !== 1 || closing) { y0 = null; return; }
         y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; dy = 0;
-        img = track.children[index] && track.children[index].querySelector("img");
+        img = currentImg();
       }, { passive: true });
       track.addEventListener("touchmove", (e) => {
         if (y0 == null || !img) return;
         const ny = e.touches[0].clientY - y0, nx = e.touches[0].clientX - x0;
         if (ny > 0 && ny > Math.abs(nx) * 1.4) {
           dy = ny;
-          img.style.transition = "none";
           img.style.transform = "translateY(" + dy + "px) scale(" + Math.max(0.85, 1 - dy / 1200) + ")";
-          dlg.style.backgroundColor = "rgba(0,0,0," + Math.max(0.3, 1 - dy / 400) + ")";
+          ground.style.opacity = Math.max(0.3, 1 - dy / 400);
         }
       }, { passive: true });
       track.addEventListener("touchend", () => {
         if (!img) return;
-        img.style.transition = "";
-        if (dy > 110) close();
-        img.style.transform = "";
-        dlg.style.backgroundColor = "";
-        y0 = null; img = null; dy = 0;
+        if (dy > 110) { y0 = null; img = null; dy = 0; close(); } else reset();
+      });
+      track.addEventListener("touchcancel", reset);
+
+      // The back gesture closes the viewer instead of leaving the page.
+      addEventListener("popstate", () => {
+        if (pushed) { pushed = false; if (dlg.open) close(); }
+        try { history.scrollRestoration = "auto"; } catch (e) {}
       });
     }
+
+    const currentImg = () => track.children[index] && track.children[index].querySelector("img");
 
     function makeSlides() {
       track.replaceChildren(...slides.map((s) => {
@@ -236,7 +237,9 @@
         const img = document.createElement("img");
         img.alt = s.photo.alt;
         img.width = s.photo.w; img.height = s.photo.h;
-        img.addEventListener("load", () => img.classList.add("is-loaded"));
+        img.draggable = false;
+        img.style.setProperty("--r", s.photo.w / s.photo.h);
+        img.addEventListener("load", () => { img.style.backgroundImage = "none"; });
         fig.appendChild(img);
         return fig;
       }));
@@ -267,12 +270,10 @@
       title.textContent = s.title;
       sub.textContent = s.sub || "";
       count.textContent = slides.length > 1 ? index + 1 + " / " + slides.length : "";
-      ambient.style.backgroundImage = "url(" + s.photo.base + "-480.webp)";
       prevBtn.hidden = nextBtn.hidden = slides.length < 2;
       prevBtn.disabled = index === 0;
       nextBtn.disabled = index === slides.length - 1;
       renderInfo();
-      Site.tint(s.photo);
       if (onChange) onChange(s, index);
     }
 
@@ -281,22 +282,91 @@
       track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion ? "auto" : "smooth" });
     }
 
+    // How to place `img` over `rect`, relative to where it sits at rest.
+    function placement(img, rect) {
+      const base = img.getBoundingClientRect();
+      const scale = rect.width / base.width;
+      return {
+        x: rect.left + rect.width / 2 - (base.left + base.width / 2),
+        y: rect.top + rect.height / 2 - (base.top + base.height / 2),
+        scale,
+      };
+    }
+
+    function thumbOf(el) {
+      if (!el) return null;
+      return el.tagName === "IMG" ? el : el.querySelector && el.querySelector("img");
+    }
+
     function open(list, i, from, change) {
       if (!dlg) build();
-      slides = list; index = i || 0; opener = from || document.activeElement; onChange = change || null;
+      if (closing || dlg.open) return;
+      slides = list; index = i || 0; startIndex = index;
+      opener = from || document.activeElement; onChange = change || null; infoOpen = false;
       makeSlides();
-      document.documentElement.style.overflow = "hidden";
-      if (tabbar) tabbar.classList.add("is-hidden");
+      root.style.overflow = "hidden";
+      root.classList.remove("chrome-hidden");
       dlg.showModal();
       track.scrollLeft = index * track.clientWidth;
+      const thumb = thumbOf(from);
+      const img = currentImg();
+      if (thumb && thumb.currentSrc) img.style.backgroundImage = 'url("' + thumb.currentSrc + '")';
+      // Pushed before update(), so the page's own entry keeps its plain URL.
+      try { history.scrollRestoration = "manual"; history.pushState({ viewer: true }, ""); pushed = true; } catch (e) {}
       update();
-      dlg.querySelector(".viewer__btns [data-close]").focus({ preventScroll: true });
+      // Phones show the close button by the thumb, larger screens in the corner.
+      const closeBtn = Array.from(dlg.querySelectorAll("[data-close]")).find((b) => b.offsetParent);
+      if (closeBtn) closeBtn.focus({ preventScroll: true });
+
+      if (!animate()) return;
+      gsap.killTweensOf([img, ground, chrome]);
+      gsap.fromTo(ground, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" });
+      gsap.fromTo(chrome, { opacity: 0 }, { opacity: 1, duration: 0.3, delay: 0.12, ease: "power1.out", clearProps: "opacity" });
+      if (thumb && thumb.getBoundingClientRect().width) {
+        gsap.from(img, Object.assign(placement(img, thumb.getBoundingClientRect()), { duration: 0.5, ease: "expo.out", clearProps: "transform" }));
+      } else {
+        gsap.from(img, { opacity: 0, scale: 0.98, duration: 0.3, ease: "power2.out", clearProps: "opacity,transform" });
+      }
     }
-    function close() { if (dlg && dlg.open) dlg.close(); }
+
+    // The tile for the photo now showing, when the page behind has one.
+    function returnTarget() {
+      if (index === startIndex) return opener;
+      if (opener && opener.dataset && opener.dataset.index != null) {
+        const tile = document.querySelector('.tap[data-index="' + index + '"]');
+        if (tile) { opener = tile; tile.scrollIntoView({ block: "nearest" }); return tile; }
+      }
+      return null;
+    }
+
+    function close() {
+      if (!dlg || !dlg.open || closing) return;
+      if (!animate()) { dlg.close(); return; }
+      closing = true;
+      const img = currentImg();
+      const thumb = thumbOf(returnTarget());
+      const rect = thumb && thumb.getBoundingClientRect();
+      const onScreen = rect && rect.width && rect.bottom > 0 && rect.top < innerHeight;
+      const done = () => {
+        closing = false;
+        gsap.set([img, ground], { clearProps: "all" });
+        gsap.set(chrome, { clearProps: "opacity" });
+        dlg.close();
+      };
+      // Pick up from wherever a swipe left the photo.
+      const now = img.getBoundingClientRect();
+      img.style.transform = "";
+      gsap.set(img, placement(img, now));
+      gsap.to(chrome, { opacity: 0, duration: 0.12 });
+      gsap.to(ground, { opacity: 0, duration: 0.28, ease: "power1.in" });
+      if (onScreen) gsap.to(img, Object.assign(placement(img, rect), { duration: 0.34, ease: "power3.inOut", onComplete: done }));
+      else gsap.to(img, { opacity: 0, duration: 0.2, ease: "power1.in", onComplete: done });
+    }
+
     function restore() {
-      document.documentElement.style.overflow = "";
-      if (tabbar) tabbar.classList.remove("is-hidden");
+      root.style.overflow = "";
       if (onChange) onChange(null, -1);
+      if (pushed) { pushed = false; history.back(); }
       if (opener && opener.focus) opener.focus({ preventScroll: true });
     }
     return { open, close };

@@ -81,13 +81,14 @@
     chips.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.key === subject)));
     list = (subject === "all" ? d.all : d.byCat[subject]).slice().sort(byDate);
     slides = list.map((p) => S.slide(p));
-    countEl.textContent = list.length + (subject === "all" ? " photographs" : " " + S.LABEL[subject].toLowerCase() + " photographs") + ", newest first.";
+    countEl.textContent = list.length + " photographs" + (subject === "all" ? "" : " in " + S.LABEL[subject]) + ", newest first.";
     render();
+    if (!keepScroll && window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) gsap.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power1.out", clearProps: "opacity" });
     syncUrl(null);
     const active = chips.querySelector('[aria-pressed="true"]');
     if (active) active.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
     if (!keepScroll) {
-      const top = document.querySelector(".toolbar").offsetTop - 56;
+      const top = document.querySelector(".toolbar").offsetTop - S.barHeight();
       if (scrollY > top) scrollTo({ top });
     }
   }
@@ -132,7 +133,8 @@
       show(params.get("subject") || params.get("category") || "all", true);
       if (hash) {
         const i = list.findIndex((p) => p.ref === hash || p.id === hash);
-        if (i >= 0) S.viewer.open(slides, i, root.querySelector('[data-index="' + i + '"]'), onChange);
+        // The grid keeps the plain URL, so Back from a shared link lands on the work.
+        if (i >= 0) { syncUrl(null); S.viewer.open(slides, i, root.querySelector('[data-index="' + i + '"]'), onChange); }
       }
     }).catch(() => { root.setAttribute("aria-busy", "false"); errorState.hidden = false; });
   }
