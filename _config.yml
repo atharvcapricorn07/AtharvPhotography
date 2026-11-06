@@ -4,3 +4,4 @@ exclude:
   - PRODUCT.md
   - README.md
   - .claude
+  - photos
