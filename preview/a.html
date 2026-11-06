@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Preview A: Darkroom</title>
+  <meta name="description" content="Design study for the Atharv Kale Photography home page.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0908">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="a/page.css?v=4">
+  <script src="../assets/vendor/gsap.min.js?v=3.13.0" defer></script>
+  <script src="../assets/vendor/ScrollTrigger.min.js?v=3.13.0" defer></script>
+  <script src="fly.js?v=4" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#home">Skip to content</a>
+  <header class="bar">
+    <a class="bar__name" href="#top">Atharv Kale</a>
+    <nav class="bar__links" aria-label="Main"><a href="../gallery.html">Work</a><a href="../awards.html">Awards</a><a href="../about.html">About</a><a href="../contact.html">Contact</a></nav>
+    <button class="bar__menu" type="button" data-menu-open>Menu</button>
+  </header>
+  <dialog class="menu" data-menu aria-label="Menu">
+    <button class="menu__close" type="button" data-menu-close>Close</button>
+    <nav aria-label="Main"><a href="../gallery.html">Work</a><a href="../awards.html">Awards</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener">Instagram</a></nav>
+  </dialog>
+  <main id="top">
+    <section class="fly" data-fly="bank" aria-label="Intro: six favourite photographs">
+      <div class="fly__stage">
+        <picture class="fly__still"><source media="(max-aspect-ratio: 9/10)" srcset="../media/landscapes/landscape8-480.webp 480w, ../media/landscapes/landscape8-960.webp 960w, ../media/landscapes/landscape8-1920.webp 1920w" sizes="100vw"><img src="../media/landscapes/landscape11-960.webp" srcset="../media/landscapes/landscape11-480.webp 480w, ../media/landscapes/landscape11-960.webp 960w, ../media/landscapes/landscape11-1920.webp 1920w" sizes="100vw" width="5328" height="4000" alt="Seattle skyline"></picture>
+        <div class="fly__world" aria-hidden="true"></div>
+        <div class="fly__hud">
+          <a class="fly__skip" href="#home">Skip intro</a>
+          <div class="fly__caption" aria-live="off"><p class="fly__title"></p><p class="fly__sub"></p></div>
+          <p class="fly__cue">Scroll</p>
+          <div class="fly__end"><p class="fly__name">Atharv Kale</p><p>Cars, landscapes, wildlife and portraits.</p></div>
+        </div>
+      </div>
+    </section>
+    <div id="home">
+      <section class="container state">
+        <h1>Photographs of light, patience and the moments worth stopping for.</h1>
+        <div class="state__side">
+          <p>I&rsquo;m Atharv Kale, a high school photographer with eight years behind the camera.</p>
+          <div class="acts"><a class="btn" href="../gallery.html">See the work</a><a class="btn btn--quiet" href="../contact.html">Book a shoot</a></div>
+        </div>
+      </section>
+      <figure class="plate plate--bleed"><img src="../media/cars/car10-960.webp" srcset="../media/cars/car10-480.webp 480w, ../media/cars/car10-960.webp 960w, ../media/cars/car10-1920.webp 1920w" sizes="100vw" width="6000" height="4000" loading="lazy" decoding="async" alt="Porsche 911 at sunset"><figcaption><span>Porsche 911 at sunset</span> <span class="plate__sub">Cars, September 2025</span></figcaption></figure>
+      <div class="container"><figure class="plate plate--held"><img src="../media/animals/animal11-960.webp" srcset="../media/animals/animal11-480.webp 480w, ../media/animals/animal11-960.webp 960w, ../media/animals/animal11-1920.webp 1920w" sizes="(min-width: 800px) 42vw, calc(100vw - 32px)" width="4000" height="5328" loading="lazy" decoding="async" alt="Peacock in full display"><figcaption><span>Peacock in full display</span> <span class="plate__sub">Wildlife, April 2026</span></figcaption></figure></div>
+      <figure class="plate plate--bleed"><img src="../media/landscapes/landscape12-960.webp" srcset="../media/landscapes/landscape12-480.webp 480w, ../media/landscapes/landscape12-960.webp 960w, ../media/landscapes/landscape12-1920.webp 1920w" sizes="100vw" width="4784" height="3592" loading="lazy" decoding="async" alt="Kayak under Mount Rainier"><figcaption><span>Kayak under Mount Rainier</span> <span class="plate__sub">Landscapes, May 2026</span></figcaption></figure>
+      <section class="container record">
+        <a class="record__link" href="../awards.html">19 contest results, including four Expert Choice awards</a>
+      </section>
+      <section class="container close">
+        <h2>Let&rsquo;s make something.</h2>
+        <p>Portraits, car shoots, events and prints. Tell me what you have in mind.</p>
+        <a class="btn" href="../contact.html">Get in touch</a>
+      </section>
+    </div>
+  </main>
+  <footer class="foot"><div class="container foot__in">
+      <p>&copy; 2026 Atharv Kale. Please ask before using any photos.</p>
+      <nav aria-label="Footer"><a href="../gallery.html">Work</a><a href="../awards.html">Awards</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="https://www.instagram.com/atharvphotography07/" target="_blank" rel="noopener">Instagram</a></nav>
+    </div></footer>
+  <script>
+    (function () {
+      var m = document.querySelector("[data-menu]");
+      document.querySelector("[data-menu-open]").addEventListener("click", function () { m.showModal(); });
+      document.querySelector("[data-menu-close]").addEventListener("click", function () { m.close(); });
+    })();
+  </script>
+</body>
+</html>

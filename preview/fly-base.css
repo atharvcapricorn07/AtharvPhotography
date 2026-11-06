@@ -1,0 +1,25 @@
+/* Shared by both previews: the mechanics of the flight, no look. */
+.fly { position: relative; height: 100lvh; }
+.fly__stage { position: sticky; top: 0; height: 100lvh; overflow: hidden; background: var(--color-paper); }
+.fly__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fly__world { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
+.fly__card { position: absolute; left: 0; top: 0; backface-visibility: hidden; visibility: hidden; }
+.fly__card img { width: 100%; height: 100%; object-fit: cover; }
+.fly__hud { position: absolute; inset: 0 0 auto 0; height: 100svh; pointer-events: none; }
+.fly__hud a { pointer-events: auto; }
+.fly__caption { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--space-xl) + env(safe-area-inset-bottom, 0px)); opacity: 0; transition: opacity var(--dur-short) var(--ease-out); }
+.fly__caption.is-on { opacity: 1; }
+.fly__cue, .fly__skip { transition: opacity var(--dur-short) var(--ease-out); }
+.fly__cue.is-off { opacity: 0; }
+.fly__skip.is-off { opacity: 0; visibility: hidden; }
+.fly__cue { position: absolute; right: var(--gutter); bottom: calc(var(--space-xl) + env(safe-area-inset-bottom, 0px)); margin: 0; }
+.fly__skip { position: absolute; right: var(--gutter); top: calc(env(safe-area-inset-top, 0px) + 60px); display: inline-flex; align-items: center; min-height: 44px; padding-inline: var(--space-sm); margin-right: calc(var(--space-sm) * -1); }
+.fly__end { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--space-3xl) + env(safe-area-inset-bottom, 0px)); }
+.js .fly__caption, .js .fly__cue { visibility: visible; }
+html:not(.js) .fly__caption, html:not(.js) .fly__cue, html:not(.js) .fly__skip { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .fly { height: 620lvh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fly__caption, .fly__cue, .fly__skip { display: none; }
+}
