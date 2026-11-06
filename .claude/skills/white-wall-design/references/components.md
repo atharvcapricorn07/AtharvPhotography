@@ -20,7 +20,7 @@ One filled button per screen. A second action is a text link.
 
 ## Photographs
 
-- `.plate`: a hung photo with its caption, title in weight 500 and the meta line `.plate__sub`. Width and offset vary by page (`.wall__a`, `.wall__b`, `.wall__c`).
+- `.plate`: a hung photo with its caption, title in weight 500 and the meta line `.plate__sub`. Stacked on phones at one width inside the gutters; side by side from 800px.
 - `.hero`: one large photo at the top of Home, opening the viewer on tap.
 - Rows: `.wall`, `.cols__row` and `.row` give each item `flex: var(--r) 1 0` with `--r` set to its aspect ratio, so heights match without cropping. On Work, `renderGrid` in `gallery.js` builds the rows in date order.
 - `.col`: a collection tile linking to its Work subject. Its photo morphs into `.work-cover`, the header image Work shows for a subject.

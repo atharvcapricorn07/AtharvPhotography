@@ -225,21 +225,18 @@ main { padding-top: calc(var(--bar-h) + var(--safe-t)); }
 .statement .actions { margin-top: var(--space-sm); }
 @media (min-width: 800px) { .statement { padding-block: var(--space-2xl) var(--space-4xl); } }
 
-.wall { display: grid; gap: var(--space-3xl) 0; grid-template-columns: minmax(0, 1fr); }
+/* Phones: stacked, both prints the same width inside the page gutters. */
+.wall { display: grid; gap: var(--space-3xl) 0; grid-template-columns: minmax(0, 1fr); padding-inline: var(--gutter); }
 .plate { min-width: 0; }
 .plate a { display: block; }
 .plate img { width: 100%; height: auto; aspect-ratio: var(--r, auto); background: var(--wall-2); transition: opacity var(--dur-short) var(--ease-out); }
 .plate a:hover img { opacity: 0.88; }
 .plate figcaption { padding-top: var(--space-sm); font-size: var(--text-sm); font-weight: 500; }
 .plate__sub { display: block; font-weight: 400; color: var(--ink-3); }
-.wall__a { margin-left: var(--gutter); }
-.wall__a figcaption { padding-right: var(--gutter); }
-.wall__b { width: 66%; margin-left: auto; margin-right: var(--gutter); }
 @media (min-width: 800px) {
   /* Width in proportion to aspect ratio: the row fills the width and heights match, uncropped. */
-  .wall { display: flex; align-items: flex-start; gap: var(--space-lg); padding-inline: var(--gutter); max-width: var(--container); margin-inline: auto; }
-  .wall .plate { flex: var(--r) 1 0; width: auto; margin: 0; }
-  .wall__a figcaption { padding-right: 0; }
+  .wall { display: flex; align-items: flex-start; gap: var(--space-lg); max-width: var(--container); margin-inline: auto; }
+  .wall .plate { flex: var(--r) 1 0; }
 }
 .collections { display: grid; gap: var(--space-md); padding-block: var(--space-3xl) 0; }
 .collections h2 { font-weight: 700; font-size: var(--text-title); line-height: 1.2; letter-spacing: -0.015em; }
