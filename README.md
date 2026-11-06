@@ -31,29 +31,32 @@ order they appear in the file.
 
 ## Curating the home page
 
-The reel (tall photos for phones, wide for desktop), the collection covers and the "Selected work"
-spreads are short lists at the top of `assets/js/home.js`.
+The photos in the intro are the `FLIGHT` list and `FINAL_TALL`/`FINAL_WIDE` at the top of
+`assets/js/intro.js`. The three photos hung on the home page are plain markup in `index.html`.
 
 ## Running locally
 
 ```sh
-npm run serve    # then open http://localhost:8080
+python3 -m http.server 8000    # then open http://localhost:8000
 ```
 
-A local server is needed because pages fetch `data/*.json`.
+A local server is needed because pages fetch `data/*.json`. After changing a CSS or JS file, bump the
+`?v=` number on its link so browsers don't show the old one.
 
 ## Layout
 
 ```
 index.html gallery.html awards.html about.html contact.html 404.html
 assets/css/site.css     every style, with tokens at the top
-assets/js/site.js       shared: nav, photo data, image helpers, lightbox
+assets/js/site.js       shared: bars, photo data, image helpers, photo viewer
 assets/js/*.js          one script per page
-assets/fonts/           Newsreader and Geist (SIL Open Font License)
+assets/vendor/          GSAP and ScrollTrigger, self-hosted
+assets/fonts/           Radio Canada Big (SIL Open Font License)
 data/                   photos.json (generated), titles.json, awards.json
 media/                  generated web images (do not edit by hand)
 photos/                 originals
 scripts/build-photos.mjs
+.claude/skills/white-wall-design/   the design language: read before changing the look
 ```
 
 The contact form posts to Formspree (`mjkoqoka`).

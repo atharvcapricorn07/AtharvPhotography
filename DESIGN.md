@@ -1,46 +1,33 @@
 # Design notes
 
-## Brief
+The design language is **White Wall**. Its full specification, with tokens and components, is the
+skill in `.claude/skills/white-wall-design/`. Say "White Wall design" or `/white-wall-design` to load
+it before changing the look of the site. Tokens live at the top of `assets/css/site.css`.
 
-Photos first, the photographer second. Built for phones, since most visitors arrive from Instagram on
-a phone. Clean and minimal, but not generic.
+## In one paragraph
 
-## What the research said, and what we did with it
+A gallery with the lights off, then on. Scroll flies through six favourite photos on black, landing
+full screen. As the home content rises, the room lights up to an off-white wall, and from then on
+the interface is only a label beside the print: one bold grotesque, square edges, no shadows, and
+red only to mark what is chosen.
 
-| Finding | Source | Decision |
-| --- | --- | --- |
-| Strong portfolios open on the work, not a title | Portfolio surveys (Framer, Format) | Home opens on a full-screen photo. The name is a small wordmark. |
-| Few links belong in a sticky bar at the bottom, in thumb reach | Smashing Magazine, "The Thumb Zone" | Floating tab bar on phones: Work, Awards, About, Contact. |
-| Auto-rotating carousels annoy people and cause errors | Nielsen Norman Group | The reel never moves on its own; you swipe it. |
-| On phones, people expect to swipe through galleries | Baymard Institute | Viewer and reel use native scroll snapping, so photos follow your finger. |
-| Close buttons in top corners are hard to reach | Smashing Magazine | Viewer controls sit at the bottom on phones; swipe down also closes. |
-| Letting viewers choose density works well for photo archives | Justin Bettman's portfolio | Work page toggles between a grid and a one-at-a-time feed. |
+## Decisions worth remembering
 
-## Look
-
-- **Black ground.** Photos glow; OLED phones go fully dark around them.
-- **The photo picks the color.** Each photo's most vivid hue is computed at build time (`tint` in
-  `data/photos.json`). It colors the reel's progress marks, the viewer's ambient glow and the
-  booking card, so the site changes with the work instead of having a brand color.
-- **Type:** Geist throughout, self-hosted. Headlines are semibold with tight tracking, body text is
-  regular, so hierarchy comes from size and weight rather than a second typeface.
-- **Shape:** rounded photos where they act as buttons (collections, thumbnails), square edges where
-  a photo is the work itself (reel, selected work, viewer).
-
-## Structure
-
-- **Intro (home):** scroll flies the camera through Atharv's six favourite photos in CSS 3D. The
-  last one arrives at full screen (a canyon river on phones, the Seattle skyline on wide screens) with his name, then the home page scrolls up.
-  Skip button; returning in the same visit lands on the home content; reduced motion shows a still.
-- **Home:** one centered statement → collections as a bento grid → four facts → recognition panel →
-  about card → closing call to action. Sections fade up once as they enter.
-- **Work:** chips for subjects, grid or feed, newest first. The grid fills shortest column first so
-  it reads left to right, matching the viewer's order.
-- **Viewer:** swipe between photos, swipe down to close, details panel with camera, lens, settings
-  and date.
+| Decision | Why |
+| --- | --- |
+| Intro on black, everything else on the wall | The owner's call: photos glow in the dark, then read as prints |
+| Bars slide away on scroll down | Phones from Instagram get the whole screen for photos |
+| Plain text tab bar instead of a floating pill | The pill sat on top of the work |
+| Viewer on the wall, with no colour glow | A glow taken from the photo competed with it |
+| The viewer photo grows from its tile | Keeps your place, and it's the one transition that explains itself |
+| Back gesture closes the viewer | On phones, back otherwise left the gallery |
+| Numbers go in sentences | A row of stat tiles read as a SaaS template |
+| No scroll reveals on sections | One authored moment lands harder than many small ones |
+| `landscape8` crops from the right on phones | Keeps the watermark whole; see `.fly__card--tall` |
+| `car16` replaced `car9` in the intro | `car9` is only 648px wide |
 
 ## Quality floor
 
-Every control is at least 44px, forms use 16px text so iOS doesn't zoom, safe areas are respected on
-notched phones, motion respects reduced-motion settings, and the viewer works with a keyboard
-(arrows, Escape, `i` for details).
+Every control is at least 44px, inputs use 16px text so iOS doesn't zoom, safe areas are respected,
+motion has a reduced-motion state, the content is readable without JavaScript, and the viewer works
+with a keyboard (arrows, Escape, `i` for details).

@@ -1,0 +1,91 @@
+name: "White Wall"
+philosophy: "A gallery with the lights off, then on. Photographs fly through the dark, the room lights up to a painted wall, and from then on the interface is only a label beside the print."
+primary_mode: "light"
+brand_domain: "photography portfolio for Atharv Kale, cars, landscapes, wildlife, portraits"
+brand_type: "content-rich"
+mono_for_code: false
+mono_for_metrics: false
+
+primitives:
+  colors:
+    neutral:
+      50: "#F7F6F2"
+      100: "#EEEDE8"
+      200: "#E3E2DB"
+      300: "#DDDCD5"
+      400: "#C4C3BD"
+      500: "#8B8F98"
+      600: "#5C616D"
+      700: "#2F3440"
+      800: "#1E222B"
+      900: "#12161F"
+      950: "#000000"
+    brand:
+      500: "#C92A1D"
+      700: "#B42318"
+    green:
+      500: "#17663A"
+  spacing: [4, 8, 12, 16, 24, 40, 64, 96, 144]
+  radii: [0]
+
+tokens:
+  colors:
+    light:
+      background: "#F7F6F2"
+      surface1: "#EEEDE8"
+      surface2: "#E3E2DB"
+      border: "#DDDCD5"
+      text1: "#12161F"
+      text2: "#2F3440"
+      text3: "#5C616D"
+      text4: "#8B8F98"
+      accent: "#C92A1D"
+    dark:
+      background: "#000000"
+      text1: "#F7F6F2"
+      text2: "#C4C3BD"
+      accent: "#F7F6F2"
+    success: "#17663A"
+    error: "#B42318"
+    shade: "rgb(0 0 0 / 0.55)"
+  spacing: { 2xs: 4, xs: 8, sm: 12, md: 16, lg: 24, xl: 40, 2xl: 64, 3xl: 96, 4xl: 144 }
+  radii: { all: 0 }
+  typography:
+    display: { family: "Radio Canada Big", size: "clamp(2.75rem, 6vw + 1rem, 6.5rem)", weight: 700, line_height: 1, tracking: "-0.035em" }
+    page: { family: "Radio Canada Big", size: "clamp(2.5rem, 4vw + 1.25rem, 5rem)", weight: 700, line_height: 1, tracking: "-0.035em" }
+    statement: { family: "Radio Canada Big", size: "clamp(1.75rem, 2.5vw + 1rem, 3.5rem)", weight: 400, line_height: 1.1, tracking: "-0.02em" }
+    title: { family: "Radio Canada Big", size: "1.25rem", weight: 700, line_height: 1.2, tracking: "-0.015em" }
+    body: { family: "Radio Canada Big", size: "1.0625rem", weight: 400, line_height: 1.5, tracking: "0" }
+    small: { family: "Radio Canada Big", size: "0.9375rem", weight: 500, line_height: 1.4, tracking: "0" }
+    caption: { family: "Radio Canada Big", size: "0.875rem", weight: 400, line_height: 1.4, tracking: "0" }
+  elevation: { strategy: "flat", note: "No shadows. Depth is a step of tone, or a photograph." }
+  motion:
+    personality: "smooth"
+    ease_out: "cubic-bezier(0.16, 1, 0.3, 1)"
+    micro: "120ms"
+    short: "220ms"
+    long: "420ms"
+    authored_moments: ["intro flight, scrubbed", "black to wall lighting, scrubbed", "viewer grows out of the tile"]
+  hero_stage:
+    preset: "editorial-photo"
+    observed_style:
+      description: "The user's own photographs on true black, straight on, one at a time, landing full bleed."
+      where_used: ["home intro"]
+    background: { medium: "photo", color_mode: "monochrome", saturation: "flat", light_source: "none", falloff: "hard", vignette: "off", texture: "clean", motion: "static", intensity: "subtle", safe_zone: "full-bleed" }
+    hero: { subject: "none" }
+    relation: { type: "flat", bleed: 0 }
+  iconography:
+    observed_style:
+      description: "Six hand-drawn line icons at 1.6px with butt caps and square joins, used only for viewer controls and Instagram."
+      stroke_weight: "regular"
+      corner_treatment: "sharp"
+      fill_style: "outline"
+      form_language: "geometric"
+      visual_density: "minimal"
+    fallback_kit: { name: "none", match_reasoning: "The set is small and inline in assets/js/site.js; adding a kit would add weight and no meaning." }
+
+components:
+  button_primary: { source: "observed", background: "text1", color: "background", height: "52px", radius: 0, font_weight: 500, hover: { background: "accent" }, active: { transform: "scale(0.98)" }, disabled: { background: "surface2", color: "text3" } }
+  text_link: { source: "observed", min_height: "44px", underline: "1px", hover: { underline: "accent" } }
+  filter: { source: "derived", min_height: "44px", color: "text3", selected: { color: "text1", underline: "2px accent" } }
+  input: { source: "derived", border_bottom: "1px text3", font_size: "16px", min_height: "48px", error: { border: "error" } }
