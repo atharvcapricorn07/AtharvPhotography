@@ -62,13 +62,13 @@
       const width = last && key > 1 ? Math.max(total, target) : total;
       items.forEach(([p, i]) => {
         const t = tile(p, i, Math.ceil((p.r / width) * 100) + "vw");
-        t.style.setProperty("--r", p.r);
+        t.style.setProperty("--r", p.r / width); // shares that sum to 1, so flex always fills the row
         el.appendChild(t);
       });
       if (width > total) {
         const rest = document.createElement("span");
         rest.className = "row__rest";
-        rest.style.setProperty("--r", width - total);
+        rest.style.setProperty("--r", (width - total) / width);
         el.appendChild(rest);
       }
       wrap.appendChild(el);
